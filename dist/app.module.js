@@ -29,14 +29,13 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 useFactory: (config) => ({
                     type: 'postgres',
-                    host: config.get('DATABASE_HOST'),
-                    port: config.get('DATABASE_PORT'),
-                    username: config.get('DATABASE_USER'),
-                    password: config.get('DATABASE_PASSWORD'),
-                    database: config.get('DATABASE_NAME'),
+                    url: config.get('DATABASE_URL'),
                     entities: [user_entity_1.User, task_entity_1.Task, campaign_entity_1.Campaign],
                     synchronize: true,
                     logging: false,
+                    ssl: {
+                        rejectUnauthorized: false,
+                    },
                 }),
                 inject: [config_1.ConfigService],
             }),
