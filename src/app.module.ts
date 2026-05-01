@@ -17,14 +17,13 @@ import { Campaign } from './campaigns/entities/campaign.entity';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get('DATABASE_HOST'),
-        port: config.get<number>('DATABASE_PORT'),
-        username: config.get('DATABASE_USER'),
-        password: config.get('DATABASE_PASSWORD'),
-        database: config.get('DATABASE_NAME'),
+        url: config.get('DATABASE_URL'),
         entities: [User, Task, Campaign],
         synchronize: true,
         logging: false,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
       inject: [ConfigService],
     }),
