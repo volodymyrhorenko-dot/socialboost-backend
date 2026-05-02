@@ -43,6 +43,20 @@ let UsersService = class UsersService {
             user.totalPointsSpent += Math.abs(points);
         return this.userRepo.save(user);
     }
+    async incrementTasksCompleted(userId) {
+        const user = await this.findById(userId);
+        if (!user)
+            return;
+        user.tasksCompleted += 1;
+        await this.userRepo.save(user);
+    }
+    async incrementCampaignsCreated(userId) {
+        const user = await this.findById(userId);
+        if (!user)
+            return;
+        user.campaignsCreated += 1;
+        await this.userRepo.save(user);
+    }
     async linkSocial(userId, platform, url, handle) {
         const user = await this.findById(userId);
         if (!user)

@@ -1,8 +1,10 @@
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
+import { UsersService } from '../users/users.service';
 export declare class TasksService {
     private taskRepo;
-    constructor(taskRepo: Repository<Task>);
+    private usersService;
+    constructor(taskRepo: Repository<Task>, usersService: UsersService);
     findAll(platform?: string, type?: string): Promise<Task[]>;
     complete(taskId: string, userId: string): Promise<{
         points: number;

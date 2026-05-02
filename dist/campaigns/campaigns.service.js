@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const campaign_entity_1 = require("./entities/campaign.entity");
+const users_service_1 = require("../users/users.service");
 let CampaignsService = class CampaignsService {
     campaignRepo;
-    constructor(campaignRepo) {
+    usersService;
+    constructor(campaignRepo, usersService) {
         this.campaignRepo = campaignRepo;
+        this.usersService = usersService;
     }
     async findByUser(userId) {
         return this.campaignRepo.createQueryBuilder('campaign')
@@ -29,6 +32,14 @@ let CampaignsService = class CampaignsService {
             .getMany();
     }
     async create(userId, data) {
+        const user = await this.usersService.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        if (user.pointBalance < data.totalCost) {
+            throw new common_1.BadRequestException(`Недостатньо балів. Потрібно: ${data.totalCost}, є: ${user.pointBalance}`);
+        }
+        await this.usersService.updatePoints(userId, -data.totalCost);
+        await this.usersService.incrementCampaignsCreated(userId);
         const campaign = this.campaignRepo.create({ ...data, owner: { id: userId } });
         return this.campaignRepo.save(campaign);
     }
@@ -47,6 +58,7 @@ exports.CampaignsService = CampaignsService;
 exports.CampaignsService = CampaignsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        users_service_1.UsersService])
 ], CampaignsService);
 //# sourceMappingURL=campaigns.service.js.map

@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const task_entity_1 = require("./entities/task.entity");
+const users_service_1 = require("../users/users.service");
 let TasksService = class TasksService {
     taskRepo;
-    constructor(taskRepo) {
+    usersService;
+    constructor(taskRepo, usersService) {
         this.taskRepo = taskRepo;
+        this.usersService = usersService;
     }
     async findAll(platform, type) {
         const query = this.taskRepo.createQueryBuilder('task')
@@ -34,7 +37,9 @@ let TasksService = class TasksService {
     async complete(taskId, userId) {
         const task = await this.taskRepo.findOne({ where: { id: taskId } });
         if (!task)
-            throw new Error('Task not found');
+            throw new common_1.NotFoundException('Task not found');
+        await this.usersService.updatePoints(userId, task.pointsReward);
+        await this.usersService.incrementTasksCompleted(userId);
         return { points: task.pointsReward };
     }
     async seed() {
@@ -58,6 +63,7 @@ exports.TasksService = TasksService;
 exports.TasksService = TasksService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(task_entity_1.Task)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        users_service_1.UsersService])
 ], TasksService);
 //# sourceMappingURL=tasks.service.js.map

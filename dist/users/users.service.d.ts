@@ -7,6 +7,8 @@ export declare class UsersService {
     findById(id: string): Promise<User | null>;
     create(data: Partial<User>): Promise<User>;
     updatePoints(userId: string, points: number): Promise<User>;
+    incrementTasksCompleted(userId: string): Promise<void>;
+    incrementCampaignsCreated(userId: string): Promise<void>;
     linkSocial(userId: string, platform: 'tiktok' | 'youtube', url: string, handle: string): Promise<User>;
     getStats(userId: string): Promise<{
         pointBalance: number;
