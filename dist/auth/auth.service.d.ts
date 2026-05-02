@@ -4,7 +4,22 @@ export declare class AuthService {
     private usersService;
     private jwtService;
     constructor(usersService: UsersService, jwtService: JwtService);
-    googleAuth(googleData: {
+    register(data: {
+        email: string;
+        password: string;
+        displayName?: string;
+    }): Promise<{
+        user: import("../users/entities/user.entity").User;
+        token: string;
+    }>;
+    login(data: {
+        email: string;
+        password: string;
+    }): Promise<{
+        user: import("../users/entities/user.entity").User;
+        token: string;
+    }>;
+    googleAuth(data: {
         email: string;
         displayName?: string;
         avatarUrl?: string;
@@ -12,7 +27,7 @@ export declare class AuthService {
         user: import("../users/entities/user.entity").User;
         token: string;
     }>;
-    appleAuth(appleData: {
+    appleAuth(data: {
         email: string;
         displayName?: string;
     }): Promise<{

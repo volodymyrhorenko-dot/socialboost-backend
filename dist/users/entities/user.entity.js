@@ -15,12 +15,14 @@ var AuthProvider;
 (function (AuthProvider) {
     AuthProvider["GOOGLE"] = "google";
     AuthProvider["APPLE"] = "apple";
+    AuthProvider["EMAIL"] = "email";
 })(AuthProvider || (exports.AuthProvider = AuthProvider = {}));
 let User = class User {
     id;
     email;
     displayName;
     avatarUrl;
+    passwordHash;
     pointBalance;
     authProvider;
     tiktokUrl;
@@ -53,11 +55,15 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "avatarUrl", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "passwordHash", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], User.prototype, "pointBalance", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: AuthProvider, default: AuthProvider.GOOGLE }),
+    (0, typeorm_1.Column)({ type: 'enum', enum: AuthProvider, default: AuthProvider.EMAIL }),
     __metadata("design:type", String)
 ], User.prototype, "authProvider", void 0);
 __decorate([
