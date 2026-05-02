@@ -74,6 +74,18 @@ let PaymentsService = class PaymentsService {
         }
         return { received: true };
     }
+    async handleSuccess(sessionId) {
+        try {
+            const session = await this.stripe.checkout.sessions.retrieve(sessionId);
+            if (session.payment_status === 'paid') {
+                const { userId, points } = session.metadata;
+                await this.usersService.updatePoints(userId, parseInt(points));
+            }
+        }
+        catch (e) {
+            console.error('Handle success error:', e);
+        }
+    }
 };
 exports.PaymentsService = PaymentsService;
 exports.PaymentsService = PaymentsService = __decorate([

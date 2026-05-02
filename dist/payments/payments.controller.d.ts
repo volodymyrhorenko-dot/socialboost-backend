@@ -1,4 +1,5 @@
 import { PaymentsService } from './payments.service';
+import { Response } from 'express';
 export declare class PaymentsController {
     private paymentsService;
     constructor(paymentsService: PaymentsService);
@@ -11,4 +12,6 @@ export declare class PaymentsController {
     webhook(body: any): Promise<{
         received: boolean;
     }>;
+    success(sessionId: string, res: Response): Promise<Response<any, Record<string, any>>>;
+    cancel(res: Response): Promise<Response<any, Record<string, any>>>;
 }

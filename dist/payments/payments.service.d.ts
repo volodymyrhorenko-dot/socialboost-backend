@@ -12,4 +12,5 @@ export declare class PaymentsService {
     handleWebhook(payload: any): Promise<{
         received: boolean;
     }>;
+    handleSuccess(sessionId: string): Promise<void>;
 }

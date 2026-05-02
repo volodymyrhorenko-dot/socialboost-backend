@@ -27,6 +27,36 @@ let PaymentsController = class PaymentsController {
     async webhook(body) {
         return this.paymentsService.handleWebhook(body);
     }
+    async success(sessionId, res) {
+        await this.paymentsService.handleSuccess(sessionId);
+        return res.send(`
+      <html>
+        <head><meta charset="utf-8"><title>Оплата успішна</title></head>
+        <body style="background:#0A0A0F;color:#F1F0FF;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center">
+          <div>
+            <div style="font-size:64px">🎉</div>
+            <h1 style="color:#10B981">Оплата успішна!</h1>
+            <p style="color:#9B99BB">Бали зараховано на ваш рахунок</p>
+            <p style="color:#5B5980;font-size:13px">Поверніться до додатку SocialBoost</p>
+          </div>
+        </body>
+      </html>
+    `);
+    }
+    async cancel(res) {
+        return res.send(`
+      <html>
+        <head><meta charset="utf-8"><title>Оплата скасована</title></head>
+        <body style="background:#0A0A0F;color:#F1F0FF;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center">
+          <div>
+            <div style="font-size:64px">❌</div>
+            <h1 style="color:#F43F5E">Оплату скасовано</h1>
+            <p style="color:#9B99BB">Повертайтесь до додатку</p>
+          </div>
+        </body>
+      </html>
+    `);
+    }
 };
 exports.PaymentsController = PaymentsController;
 __decorate([
@@ -45,6 +75,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], PaymentsController.prototype, "webhook", null);
+__decorate([
+    (0, common_1.Get)('success'),
+    __param(0, (0, common_1.Query)('session_id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "success", null);
+__decorate([
+    (0, common_1.Get)('cancel'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "cancel", null);
 exports.PaymentsController = PaymentsController = __decorate([
     (0, common_1.Controller)('payments'),
     __metadata("design:paramtypes", [payments_service_1.PaymentsService])
