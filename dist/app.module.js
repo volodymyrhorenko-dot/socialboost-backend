@@ -15,9 +15,7 @@ const users_module_1 = require("./users/users.module");
 const tasks_module_1 = require("./tasks/tasks.module");
 const campaigns_module_1 = require("./campaigns/campaigns.module");
 const points_module_1 = require("./points/points.module");
-const user_entity_1 = require("./users/entities/user.entity");
-const task_entity_1 = require("./tasks/entities/task.entity");
-const campaign_entity_1 = require("./campaigns/entities/campaign.entity");
+const payments_module_1 = require("./payments/payments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,15 +25,12 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
-                useFactory: (config) => ({
+                useFactory: (configService) => ({
                     type: 'postgres',
-                    url: config.get('DATABASE_URL'),
-                    entities: [user_entity_1.User, task_entity_1.Task, campaign_entity_1.Campaign],
+                    url: configService.get('DATABASE_URL'),
+                    ssl: { rejectUnauthorized: false },
+                    autoLoadEntities: true,
                     synchronize: true,
-                    logging: false,
-                    ssl: {
-                        rejectUnauthorized: false,
-                    },
                 }),
                 inject: [config_1.ConfigService],
             }),
@@ -44,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             tasks_module_1.TasksModule,
             campaigns_module_1.CampaignsModule,
             points_module_1.PointsModule,
+            payments_module_1.PaymentsModule,
         ],
     })
 ], AppModule);
