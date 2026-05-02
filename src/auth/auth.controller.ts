@@ -6,6 +6,16 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Post('register')
+  async register(@Body() body: { email: string; password: string; displayName?: string }) {
+    return this.authService.register(body);
+  }
+
+  @Post('login')
+  async login(@Body() body: { email: string; password: string }) {
+    return this.authService.login(body);
+  }
+
   @Post('google')
   async googleAuth(@Body() body: { email: string; displayName?: string; avatarUrl?: string }) {
     return this.authService.googleAuth(body);

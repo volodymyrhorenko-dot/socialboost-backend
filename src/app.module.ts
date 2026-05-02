@@ -6,24 +6,20 @@ import { UsersModule } from './users/users.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { PointsModule } from './points/points.module';
-import { User } from './users/entities/user.entity';
-import { Task } from './tasks/entities/task.entity';
-import { Campaign } from './campaigns/entities/campaign.entity';
+import { PaymentsModule } from './payments/payments.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: config.get('DATABASE_URL'),
-        entities: [User, Task, Campaign],
+        url: configService.get('DATABASE_URL'),
+        ssl: { rejectUnauthorized: false },
+        autoLoadEntities: true,
         synchronize: true,
-        logging: false,
-        ssl: {
-          rejectUnauthorized: false,
-        },
       }),
       inject: [ConfigService],
     }),
@@ -32,6 +28,8 @@ import { Campaign } from './campaigns/entities/campaign.entity';
     TasksModule,
     CampaignsModule,
     PointsModule,
+    PaymentsModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}

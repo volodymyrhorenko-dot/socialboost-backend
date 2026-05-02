@@ -32,16 +32,25 @@ export class UsersService {
     return this.userRepo.save(user);
   }
 
+  async incrementTasksCompleted(userId: string): Promise<void> {
+    const user = await this.findById(userId);
+    if (!user) return;
+    user.tasksCompleted += 1;
+    await this.userRepo.save(user);
+  }
+
+  async incrementCampaignsCreated(userId: string): Promise<void> {
+    const user = await this.findById(userId);
+    if (!user) return;
+    user.campaignsCreated += 1;
+    await this.userRepo.save(user);
+  }
+
   async linkSocial(userId: string, platform: 'tiktok' | 'youtube', url: string, handle: string): Promise<User> {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');
-    if (platform === 'tiktok') {
-      user.tiktokUrl = url;
-      user.tiktokHandle = handle;
-    } else {
-      user.youtubeUrl = url;
-      user.youtubeHandle = handle;
-    }
+    if (platform === 'tiktok') { user.tiktokUrl = url; user.tiktokHandle = handle; }
+    else { user.youtubeUrl = url; user.youtubeHandle = handle; }
     return this.userRepo.save(user);
   }
 

@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export enum AuthProvider {
   GOOGLE = 'google',
   APPLE = 'apple',
+  EMAIL = 'email',
 }
 
 @Entity('users')
@@ -19,10 +20,13 @@ export class User {
   @Column({ nullable: true })
   avatarUrl: string;
 
+  @Column({ nullable: true })
+  passwordHash: string;
+
   @Column({ default: 0 })
   pointBalance: number;
 
-  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.GOOGLE })
+  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.EMAIL })
   authProvider: AuthProvider;
 
   @Column({ nullable: true })
