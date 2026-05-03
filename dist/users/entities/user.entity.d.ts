@@ -15,6 +15,9 @@ export declare class User {
     youtubeUrl: string;
     tiktokHandle: string;
     youtubeHandle: string;
+    youtubeAccessToken: string;
+    youtubeRefreshToken: string;
+    youtubeTokenExpiry: Date;
     isVip: boolean;
     tasksCompleted: number;
     campaignsCreated: number;

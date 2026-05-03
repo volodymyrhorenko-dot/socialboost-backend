@@ -26,7 +26,7 @@ export class User {
   @Column({ default: 0 })
   pointBalance: number;
 
-  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.EMAIL })
+  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.GOOGLE })
   authProvider: AuthProvider;
 
   @Column({ nullable: true })
@@ -40,6 +40,15 @@ export class User {
 
   @Column({ nullable: true })
   youtubeHandle: string;
+
+  @Column({ nullable: true, type: 'text' })
+  youtubeAccessToken: string;
+
+  @Column({ nullable: true, type: 'text' })
+  youtubeRefreshToken: string;
+
+  @Column({ nullable: true })
+  youtubeTokenExpiry: Date;
 
   @Column({ default: false })
   isVip: boolean;

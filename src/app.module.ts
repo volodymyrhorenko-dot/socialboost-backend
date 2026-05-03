@@ -8,6 +8,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
 import { PointsModule } from './points/points.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { YouTubeModule } from './youtube/youtube.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     PointsModule,
     PaymentsModule,
     TransactionsModule,
+    YouTubeModule,
   ],
 })
 export class AppModule {}

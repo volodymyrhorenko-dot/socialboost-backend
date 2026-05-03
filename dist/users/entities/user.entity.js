@@ -29,6 +29,9 @@ let User = class User {
     youtubeUrl;
     tiktokHandle;
     youtubeHandle;
+    youtubeAccessToken;
+    youtubeRefreshToken;
+    youtubeTokenExpiry;
     isVip;
     tasksCompleted;
     campaignsCreated;
@@ -63,7 +66,7 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "pointBalance", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: AuthProvider, default: AuthProvider.EMAIL }),
+    (0, typeorm_1.Column)({ type: 'enum', enum: AuthProvider, default: AuthProvider.GOOGLE }),
     __metadata("design:type", String)
 ], User.prototype, "authProvider", void 0);
 __decorate([
@@ -82,6 +85,18 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "youtubeHandle", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'text' }),
+    __metadata("design:type", String)
+], User.prototype, "youtubeAccessToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'text' }),
+    __metadata("design:type", String)
+], User.prototype, "youtubeRefreshToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "youtubeTokenExpiry", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

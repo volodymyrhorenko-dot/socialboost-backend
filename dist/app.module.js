@@ -17,6 +17,7 @@ const campaigns_module_1 = require("./campaigns/campaigns.module");
 const points_module_1 = require("./points/points.module");
 const payments_module_1 = require("./payments/payments.module");
 const transactions_module_1 = require("./transactions/transactions.module");
+const youtube_module_1 = require("./youtube/youtube.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -42,6 +43,7 @@ exports.AppModule = AppModule = __decorate([
             points_module_1.PointsModule,
             payments_module_1.PaymentsModule,
             transactions_module_1.TransactionsModule,
+            youtube_module_1.YouTubeModule,
         ],
     })
 ], AppModule);

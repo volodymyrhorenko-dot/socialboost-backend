@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, AuthProvider } from './entities/user.entity';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -51,6 +51,17 @@ export class UsersService {
     if (!user) throw new NotFoundException('User not found');
     if (platform === 'tiktok') { user.tiktokUrl = url; user.tiktokHandle = handle; }
     else { user.youtubeUrl = url; user.youtubeHandle = handle; }
+    return this.userRepo.save(user);
+  }
+
+  async saveYouTubeTokens(userId: string, data: { accessToken: string; refreshToken: string; expiry: Date; handle: string; url: string }): Promise<User> {
+    const user = await this.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    user.youtubeAccessToken = data.accessToken;
+    user.youtubeRefreshToken = data.refreshToken;
+    user.youtubeTokenExpiry = data.expiry;
+    if (data.handle) user.youtubeHandle = data.handle;
+    if (data.url) user.youtubeUrl = data.url;
     return this.userRepo.save(user);
   }
 

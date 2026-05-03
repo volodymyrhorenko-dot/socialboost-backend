@@ -10,6 +10,13 @@ export declare class UsersService {
     incrementTasksCompleted(userId: string): Promise<void>;
     incrementCampaignsCreated(userId: string): Promise<void>;
     linkSocial(userId: string, platform: 'tiktok' | 'youtube', url: string, handle: string): Promise<User>;
+    saveYouTubeTokens(userId: string, data: {
+        accessToken: string;
+        refreshToken: string;
+        expiry: Date;
+        handle: string;
+        url: string;
+    }): Promise<User>;
     getStats(userId: string): Promise<{
         pointBalance: number;
         tasksCompleted: number;

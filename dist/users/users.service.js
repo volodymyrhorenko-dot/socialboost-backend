@@ -71,6 +71,19 @@ let UsersService = class UsersService {
         }
         return this.userRepo.save(user);
     }
+    async saveYouTubeTokens(userId, data) {
+        const user = await this.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        user.youtubeAccessToken = data.accessToken;
+        user.youtubeRefreshToken = data.refreshToken;
+        user.youtubeTokenExpiry = data.expiry;
+        if (data.handle)
+            user.youtubeHandle = data.handle;
+        if (data.url)
+            user.youtubeUrl = data.url;
+        return this.userRepo.save(user);
+    }
     async getStats(userId) {
         const user = await this.findById(userId);
         if (!user)
