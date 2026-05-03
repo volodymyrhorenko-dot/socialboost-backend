@@ -16,53 +16,64 @@ exports.TasksService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const task_entity_1 = require("./entities/task.entity");
+const campaign_entity_1 = require("../campaigns/entities/campaign.entity");
 const users_service_1 = require("../users/users.service");
 let TasksService = class TasksService {
-    taskRepo;
+    campaignRepo;
     usersService;
-    constructor(taskRepo, usersService) {
-        this.taskRepo = taskRepo;
+    constructor(campaignRepo, usersService) {
+        this.campaignRepo = campaignRepo;
         this.usersService = usersService;
     }
-    async findAll(platform, type) {
-        const query = this.taskRepo.createQueryBuilder('task')
-            .where('task.isActive = :isActive', { isActive: true });
+    async findAll(userId, platform, type) {
+        const query = this.campaignRepo.createQueryBuilder('campaign')
+            .leftJoinAndSelect('campaign.owner', 'owner')
+            .where('campaign.status = :status', { status: campaign_entity_1.CampaignStatus.ACTIVE })
+            .andWhere('campaign.completedCount < campaign.targetCount')
+            .andWhere('owner.id != :userId', { userId });
         if (platform)
-            query.andWhere('task.platform = :platform', { platform });
+            query.andWhere('campaign.platform = :platform', { platform });
         if (type)
-            query.andWhere('task.type = :type', { type });
-        return query.orderBy('task.createdAt', 'DESC').getMany();
+            query.andWhere('campaign.type = :type', { type });
+        const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
+        return campaigns.map(c => ({
+            id: c.id,
+            platform: c.platform,
+            type: c.type,
+            targetUrl: c.targetUrl,
+            targetChannel: c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
+            pointsReward: c.pointsPerAction,
+            timeRequiredSeconds: c.type === 'watch' ? 30 : 0,
+            remaining: c.targetCount - c.completedCount,
+        }));
     }
-    async complete(taskId, userId) {
-        const task = await this.taskRepo.findOne({ where: { id: taskId } });
-        if (!task)
-            throw new common_1.NotFoundException('Task not found');
-        await this.usersService.updatePoints(userId, task.pointsReward);
+    async complete(campaignId, userId) {
+        const campaign = await this.campaignRepo.findOne({ where: { id: campaignId }, relations: ['owner'] });
+        if (!campaign)
+            throw new common_1.NotFoundException('Campaign not found');
+        if (campaign.owner.id === userId)
+            throw new common_1.BadRequestException('Cannot complete your own campaign');
+        if (campaign.completedCount >= campaign.targetCount)
+            throw new common_1.BadRequestException('Campaign already completed');
+        if (campaign.status !== campaign_entity_1.CampaignStatus.ACTIVE)
+            throw new common_1.BadRequestException('Campaign not active');
+        campaign.completedCount += 1;
+        if (campaign.completedCount >= campaign.targetCount) {
+            campaign.status = campaign_entity_1.CampaignStatus.COMPLETED;
+        }
+        await this.campaignRepo.save(campaign);
+        const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
         await this.usersService.incrementTasksCompleted(userId);
-        return { points: task.pointsReward };
+        return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };
     }
     async seed() {
-        const count = await this.taskRepo.count();
-        if (count > 0)
-            return;
-        const tasks = [
-            { platform: task_entity_1.TaskPlatform.TIKTOK, type: task_entity_1.TaskType.SUBSCRIBE, targetUrl: 'https://tiktok.com/@dance_ua', targetChannel: '@dance_ua', pointsReward: 15, timeRequiredSeconds: 0 },
-            { platform: task_entity_1.TaskPlatform.YOUTUBE, type: task_entity_1.TaskType.LIKE, targetUrl: 'https://youtube.com/@techreview', targetChannel: 'TechReview UA', pointsReward: 10, timeRequiredSeconds: 0 },
-            { platform: task_entity_1.TaskPlatform.TIKTOK, type: task_entity_1.TaskType.WATCH, targetUrl: 'https://tiktok.com/@comedy_club', targetChannel: '@comedy_club', pointsReward: 8, timeRequiredSeconds: 30 },
-            { platform: task_entity_1.TaskPlatform.YOUTUBE, type: task_entity_1.TaskType.SUBSCRIBE, targetUrl: 'https://youtube.com/@gaming_ua', targetChannel: 'Gaming UA', pointsReward: 15, timeRequiredSeconds: 0 },
-            { platform: task_entity_1.TaskPlatform.TIKTOK, type: task_entity_1.TaskType.LIKE, targetUrl: 'https://tiktok.com/@fitness_life', targetChannel: '@fitness_life', pointsReward: 10, timeRequiredSeconds: 0 },
-            { platform: task_entity_1.TaskPlatform.YOUTUBE, type: task_entity_1.TaskType.WATCH, targetUrl: 'https://youtube.com/@cooking', targetChannel: 'Cooking Master', pointsReward: 8, timeRequiredSeconds: 30 },
-        ];
-        for (const task of tasks) {
-            await this.taskRepo.save(this.taskRepo.create(task));
-        }
+        return;
     }
 };
 exports.TasksService = TasksService;
 exports.TasksService = TasksService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(task_entity_1.Task)),
+    __param(0, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         users_service_1.UsersService])
 ], TasksService);

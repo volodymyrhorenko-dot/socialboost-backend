@@ -21,9 +21,8 @@ let TasksController = class TasksController {
     constructor(tasksService) {
         this.tasksService = tasksService;
     }
-    async findAll(platform, type) {
-        await this.tasksService.seed();
-        return this.tasksService.findAll(platform, type);
+    async findAll(req, platform, type) {
+        return this.tasksService.findAll(req.user.id, platform, type);
     }
     async complete(id, req) {
         return this.tasksService.complete(id, req.user.id);
@@ -32,10 +31,11 @@ let TasksController = class TasksController {
 exports.TasksController = TasksController;
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Query)('platform')),
-    __param(1, (0, common_1.Query)('type')),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Query)('platform')),
+    __param(2, (0, common_1.Query)('type')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "findAll", null);
 __decorate([

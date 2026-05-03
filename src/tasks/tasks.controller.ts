@@ -8,9 +8,8 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  async findAll(@Query('platform') platform?: string, @Query('type') type?: string) {
-    await this.tasksService.seed();
-    return this.tasksService.findAll(platform, type);
+  async findAll(@Request() req, @Query('platform') platform?: string, @Query('type') type?: string) {
+    return this.tasksService.findAll(req.user.id, platform, type);
   }
 
   @Post(':id/complete')

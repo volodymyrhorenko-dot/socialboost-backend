@@ -1,48 +1,61 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+﻿import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Task, TaskPlatform, TaskType } from './entities/task.entity';
+import { Campaign, CampaignStatus } from '../campaigns/entities/campaign.entity';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task)
-    private taskRepo: Repository<Task>,
+    @InjectRepository(Campaign)
+    private campaignRepo: Repository<Campaign>,
     private usersService: UsersService,
   ) {}
 
-  async findAll(platform?: string, type?: string): Promise<Task[]> {
-    const query = this.taskRepo.createQueryBuilder('task')
-      .where('task.isActive = :isActive', { isActive: true });
-    if (platform) query.andWhere('task.platform = :platform', { platform });
-    if (type) query.andWhere('task.type = :type', { type });
-    return query.orderBy('task.createdAt', 'DESC').getMany();
+  async findAll(userId: string, platform?: string, type?: string): Promise<any[]> {
+    const query = this.campaignRepo.createQueryBuilder('campaign')
+      .leftJoinAndSelect('campaign.owner', 'owner')
+      .where('campaign.status = :status', { status: CampaignStatus.ACTIVE })
+      .andWhere('campaign.completedCount < campaign.targetCount')
+      .andWhere('owner.id != :userId', { userId });
+
+    if (platform) query.andWhere('campaign.platform = :platform', { platform });
+    if (type) query.andWhere('campaign.type = :type', { type });
+
+    const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
+
+    return campaigns.map(c => ({
+      id: c.id,
+      platform: c.platform,
+      type: c.type,
+      targetUrl: c.targetUrl,
+      targetChannel: c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
+      pointsReward: c.pointsPerAction,
+      timeRequiredSeconds: c.type === 'watch' ? 30 : 0,
+      remaining: c.targetCount - c.completedCount,
+    }));
   }
 
-  async complete(taskId: string, userId: string): Promise<{ points: number }> {
-    const task = await this.taskRepo.findOne({ where: { id: taskId } });
-    if (!task) throw new NotFoundException('Task not found');
-    // Нараховуємо бали користувачу
-    await this.usersService.updatePoints(userId, task.pointsReward);
-    // Оновлюємо статистику
+  async complete(campaignId: string, userId: string): Promise<{ points: number; balanceAfter: number }> {
+    const campaign = await this.campaignRepo.findOne({ where: { id: campaignId }, relations: ['owner'] });
+    if (!campaign) throw new NotFoundException('Campaign not found');
+    if (campaign.owner.id === userId) throw new BadRequestException('Cannot complete your own campaign');
+    if (campaign.completedCount >= campaign.targetCount) throw new BadRequestException('Campaign already completed');
+    if (campaign.status !== CampaignStatus.ACTIVE) throw new BadRequestException('Campaign not active');
+
+    campaign.completedCount += 1;
+    if (campaign.completedCount >= campaign.targetCount) {
+      campaign.status = CampaignStatus.COMPLETED;
+    }
+    await this.campaignRepo.save(campaign);
+
+    const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
     await this.usersService.incrementTasksCompleted(userId);
-    return { points: task.pointsReward };
+
+    return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };
   }
 
   async seed(): Promise<void> {
-    const count = await this.taskRepo.count();
-    if (count > 0) return;
-    const tasks = [
-      { platform: TaskPlatform.TIKTOK, type: TaskType.SUBSCRIBE, targetUrl: 'https://tiktok.com/@dance_ua', targetChannel: '@dance_ua', pointsReward: 15, timeRequiredSeconds: 0 },
-      { platform: TaskPlatform.YOUTUBE, type: TaskType.LIKE, targetUrl: 'https://youtube.com/@techreview', targetChannel: 'TechReview UA', pointsReward: 10, timeRequiredSeconds: 0 },
-      { platform: TaskPlatform.TIKTOK, type: TaskType.WATCH, targetUrl: 'https://tiktok.com/@comedy_club', targetChannel: '@comedy_club', pointsReward: 8, timeRequiredSeconds: 30 },
-      { platform: TaskPlatform.YOUTUBE, type: TaskType.SUBSCRIBE, targetUrl: 'https://youtube.com/@gaming_ua', targetChannel: 'Gaming UA', pointsReward: 15, timeRequiredSeconds: 0 },
-      { platform: TaskPlatform.TIKTOK, type: TaskType.LIKE, targetUrl: 'https://tiktok.com/@fitness_life', targetChannel: '@fitness_life', pointsReward: 10, timeRequiredSeconds: 0 },
-      { platform: TaskPlatform.YOUTUBE, type: TaskType.WATCH, targetUrl: 'https://youtube.com/@cooking', targetChannel: 'Cooking Master', pointsReward: 8, timeRequiredSeconds: 30 },
-    ];
-    for (const task of tasks) {
-      await this.taskRepo.save(this.taskRepo.create(task));
-    }
+    return;
   }
 }

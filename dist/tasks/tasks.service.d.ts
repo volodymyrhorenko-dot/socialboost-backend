@@ -1,13 +1,14 @@
 import { Repository } from 'typeorm';
-import { Task } from './entities/task.entity';
+import { Campaign } from '../campaigns/entities/campaign.entity';
 import { UsersService } from '../users/users.service';
 export declare class TasksService {
-    private taskRepo;
+    private campaignRepo;
     private usersService;
-    constructor(taskRepo: Repository<Task>, usersService: UsersService);
-    findAll(platform?: string, type?: string): Promise<Task[]>;
-    complete(taskId: string, userId: string): Promise<{
+    constructor(campaignRepo: Repository<Campaign>, usersService: UsersService);
+    findAll(userId: string, platform?: string, type?: string): Promise<any[]>;
+    complete(campaignId: string, userId: string): Promise<{
         points: number;
+        balanceAfter: number;
     }>;
     seed(): Promise<void>;
 }
