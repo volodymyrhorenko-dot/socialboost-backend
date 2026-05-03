@@ -18,16 +18,21 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const campaign_entity_1 = require("./entities/campaign.entity");
 const users_service_1 = require("../users/users.service");
+const transactions_service_1 = require("../transactions/transactions.service");
+const transaction_entity_1 = require("../transactions/transaction.entity");
 let CampaignsService = class CampaignsService {
     campaignRepo;
     usersService;
-    constructor(campaignRepo, usersService) {
+    transactionsService;
+    constructor(campaignRepo, usersService, transactionsService) {
         this.campaignRepo = campaignRepo;
         this.usersService = usersService;
+        this.transactionsService = transactionsService;
     }
     async findByUser(userId) {
         return this.campaignRepo.createQueryBuilder('campaign')
-            .where('campaign.owner = :userId', { userId })
+            .leftJoin('campaign.owner', 'owner')
+            .where('owner.id = :userId', { userId })
             .orderBy('campaign.createdAt', 'DESC')
             .getMany();
     }
@@ -35,13 +40,23 @@ let CampaignsService = class CampaignsService {
         const user = await this.usersService.findById(userId);
         if (!user)
             throw new common_1.NotFoundException('User not found');
-        if (user.pointBalance < data.totalCost) {
-            throw new common_1.BadRequestException(`Недостатньо балів. Потрібно: ${data.totalCost}, є: ${user.pointBalance}`);
+        if (user.pointBalance < (data.totalCost || 0)) {
+            throw new common_1.BadRequestException('Недостатньо балів для створення кампанії');
         }
-        await this.usersService.updatePoints(userId, -data.totalCost);
-        await this.usersService.incrementCampaignsCreated(userId);
         const campaign = this.campaignRepo.create({ ...data, owner: { id: userId } });
-        return this.campaignRepo.save(campaign);
+        const saved = await this.campaignRepo.save(campaign);
+        const updated = await this.usersService.updatePoints(userId, -(data.totalCost || 0));
+        await this.usersService.incrementCampaignsCreated(userId);
+        const platformLabel = data.platform === 'tiktok' ? 'TikTok' : 'YouTube';
+        const typeLabel = data.type === 'subscribe' ? 'підписки' : data.type === 'like' ? 'лайки' : 'перегляди';
+        await this.transactionsService.create({
+            userId,
+            type: transaction_entity_1.TransactionType.SPEND,
+            amount: data.totalCost || 0,
+            description: `Кампанія ${platformLabel} ${typeLabel}`,
+            balanceAfter: updated.pointBalance,
+        });
+        return saved;
     }
     async pause(id, userId) {
         const campaign = await this.campaignRepo.findOne({ where: { id } });
@@ -59,6 +74,7 @@ exports.CampaignsService = CampaignsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        users_service_1.UsersService])
+        users_service_1.UsersService,
+        transactions_service_1.TransactionsService])
 ], CampaignsService);
 //# sourceMappingURL=campaigns.service.js.map

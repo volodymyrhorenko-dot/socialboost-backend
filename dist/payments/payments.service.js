@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const stripe_1 = __importDefault(require("stripe"));
 const users_service_1 = require("../users/users.service");
+const transactions_service_1 = require("../transactions/transactions.service");
+const transaction_entity_1 = require("../transactions/transaction.entity");
 const PACKAGES = {
     'pack_500': { points: 500, price: 99, name: '500 балів' },
     'pack_1200': { points: 1200, price: 199, name: '1200 балів' },
@@ -26,10 +28,12 @@ const PACKAGES = {
 let PaymentsService = class PaymentsService {
     configService;
     usersService;
+    transactionsService;
     stripe;
-    constructor(configService, usersService) {
+    constructor(configService, usersService, transactionsService) {
         this.configService = configService;
         this.usersService = usersService;
+        this.transactionsService = transactionsService;
         this.stripe = new stripe_1.default(this.configService.get('STRIPE_SECRET_KEY'), {
             apiVersion: '2025-03-31.basil',
         });
@@ -70,7 +74,7 @@ let PaymentsService = class PaymentsService {
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object;
             const { userId, points } = session.metadata;
-            await this.usersService.updatePoints(userId, parseInt(points));
+            await this.creditPurchase(userId, parseInt(points));
         }
         return { received: true };
     }
@@ -79,18 +83,33 @@ let PaymentsService = class PaymentsService {
             const session = await this.stripe.checkout.sessions.retrieve(sessionId);
             if (session.payment_status === 'paid') {
                 const { userId, points } = session.metadata;
-                await this.usersService.updatePoints(userId, parseInt(points));
+                await this.creditPurchase(userId, parseInt(points));
             }
         }
         catch (e) {
             console.error('Handle success error:', e);
         }
     }
+    async creditPurchase(userId, points) {
+        const existing = await this.transactionsService.findByUser(userId);
+        const alreadyCredited = existing.some(t => t.type === transaction_entity_1.TransactionType.PURCHASE && t.amount === points && (Date.now() - new Date(t.createdAt).getTime() < 60000));
+        if (alreadyCredited)
+            return;
+        const user = await this.usersService.updatePoints(userId, points);
+        await this.transactionsService.create({
+            userId,
+            type: transaction_entity_1.TransactionType.PURCHASE,
+            amount: points,
+            description: `Покупка ${points} балів`,
+            balanceAfter: user.pointBalance,
+        });
+    }
 };
 exports.PaymentsService = PaymentsService;
 exports.PaymentsService = PaymentsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
-        users_service_1.UsersService])
+        users_service_1.UsersService,
+        transactions_service_1.TransactionsService])
 ], PaymentsService);
 //# sourceMappingURL=payments.service.js.map

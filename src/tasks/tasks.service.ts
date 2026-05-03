@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Campaign, CampaignStatus } from '../campaigns/entities/campaign.entity';
 import { UsersService } from '../users/users.service';
+import { TransactionsService } from '../transactions/transactions.service';
+import { TransactionType } from '../transactions/transaction.entity';
 
 @Injectable()
 export class TasksService {
@@ -10,6 +12,7 @@ export class TasksService {
     @InjectRepository(Campaign)
     private campaignRepo: Repository<Campaign>,
     private usersService: UsersService,
+    private transactionsService: TransactionsService,
   ) {}
 
   async findAll(userId: string, platform?: string, type?: string): Promise<any[]> {
@@ -51,6 +54,16 @@ export class TasksService {
 
     const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
     await this.usersService.incrementTasksCompleted(userId);
+
+    const typeLabel = campaign.type === 'subscribe' ? 'підписка' : campaign.type === 'like' ? 'лайк' : 'перегляд';
+    const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
+    await this.transactionsService.create({
+      userId,
+      type: TransactionType.EARN,
+      amount: campaign.pointsPerAction,
+      description: `${platformLabel} ${typeLabel}`,
+      balanceAfter: user.pointBalance,
+    });
 
     return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };
   }

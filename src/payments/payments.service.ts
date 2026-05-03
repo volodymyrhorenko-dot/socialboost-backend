@@ -2,6 +2,8 @@
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { UsersService } from '../users/users.service';
+import { TransactionsService } from '../transactions/transactions.service';
+import { TransactionType } from '../transactions/transaction.entity';
 
 const PACKAGES = {
   'pack_500': { points: 500, price: 99, name: '500 балів' },
@@ -17,6 +19,7 @@ export class PaymentsService {
   constructor(
     private configService: ConfigService,
     private usersService: UsersService,
+    private transactionsService: TransactionsService,
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE_SECRET_KEY'), {
       apiVersion: '2025-03-31.basil',
@@ -61,21 +64,35 @@ export class PaymentsService {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const { userId, points } = session.metadata;
-      await this.usersService.updatePoints(userId, parseInt(points));
+      await this.creditPurchase(userId, parseInt(points));
     }
     return { received: true };
   }
 
   async handleSuccess(sessionId: string) {
-  try {
-    const session = await this.stripe.checkout.sessions.retrieve(sessionId);
-    if (session.payment_status === 'paid') {
-      const { userId, points } = session.metadata;
-      await this.usersService.updatePoints(userId, parseInt(points));
+    try {
+      const session = await this.stripe.checkout.sessions.retrieve(sessionId);
+      if (session.payment_status === 'paid') {
+        const { userId, points } = session.metadata;
+        await this.creditPurchase(userId, parseInt(points));
+      }
+    } catch (e) {
+      console.error('Handle success error:', e);
     }
-  } catch (e) {
-    console.error('Handle success error:', e);
   }
-}
 
+  private async creditPurchase(userId: string, points: number) {
+    const existing = await this.transactionsService.findByUser(userId);
+    const alreadyCredited = existing.some(t => t.type === TransactionType.PURCHASE && t.amount === points && (Date.now() - new Date(t.createdAt).getTime() < 60000));
+    if (alreadyCredited) return;
+
+    const user = await this.usersService.updatePoints(userId, points);
+    await this.transactionsService.create({
+      userId,
+      type: TransactionType.PURCHASE,
+      amount: points,
+      description: `Покупка ${points} балів`,
+      balanceAfter: user.pointBalance,
+    });
+  }
 }

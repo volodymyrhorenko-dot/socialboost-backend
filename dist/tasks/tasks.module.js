@@ -13,12 +13,13 @@ const tasks_service_1 = require("./tasks.service");
 const tasks_controller_1 = require("./tasks.controller");
 const campaign_entity_1 = require("../campaigns/entities/campaign.entity");
 const users_module_1 = require("../users/users.module");
+const transactions_module_1 = require("../transactions/transactions.module");
 let TasksModule = class TasksModule {
 };
 exports.TasksModule = TasksModule;
 exports.TasksModule = TasksModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign]), users_module_1.UsersModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign]), users_module_1.UsersModule, transactions_module_1.TransactionsModule],
         controllers: [tasks_controller_1.TasksController],
         providers: [tasks_service_1.TasksService],
         exports: [tasks_service_1.TasksService],
