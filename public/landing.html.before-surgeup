@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialBoost — Mutual Growth Platform for YouTube</title>
+<meta name="description" content="Earn points by completing tasks. Spend points to promote your YouTube content. Real growth, real community.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0A0A0F;
+    color: #F1F0FF;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  .bg-gradient {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(ellipse at top, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, rgba(255, 0, 0, 0.06) 0%, transparent 50%);
+    z-index: -1;
+  }
+
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 20px 40px;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #7C3AED, #9333EA);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+  }
+  nav {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  nav a {
+    color: #9B99BB;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: #F1F0FF; }
+
+  .lang-switcher {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    padding: 4px;
+    gap: 2px;
+  }
+  .lang-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: #9B99BB;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: linear-gradient(135deg, #7C3AED, #9333EA);
+    color: white;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+  }
+  .badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 100px;
+    color: #10B981;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.6s ease;
+  }
+  h1 {
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #F1F0FF 0%, #A78BFA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    max-width: 900px;
+    animation: fadeInUp 0.7s ease 0.1s both;
+  }
+  .hero p {
+    font-size: clamp(16px, 2vw, 20px);
+    color: #9B99BB;
+    max-width: 640px;
+    margin-bottom: 40px;
+    animation: fadeInUp 0.7s ease 0.2s both;
+  }
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.7s ease 0.3s both;
+  }
+  .btn {
+    padding: 16px 32px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #7C3AED, #9333EA);
+    color: white;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
+  }
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #F1F0FF;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .platforms-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 60px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.7s ease 0.4s both;
+  }
+  .platform-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(255, 0, 0, 0.06);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #F1F0FF;
+  }
+  .platform-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .yt { background: #FF0000; }
+
+  section {
+    padding: 100px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .section-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(124, 58, 237, 0.1);
+    border-radius: 100px;
+    color: #A78BFA;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    color: #9B99BB;
+    font-size: 17px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .step {
+    background: rgba(17, 17, 24, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 32px;
+    transition: transform 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .step:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124, 58, 237, 0.3);
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.5), transparent);
+  }
+  .step-number {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #7C3AED, #9333EA);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+  }
+  .step h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step p {
+    color: #9B99BB;
+    font-size: 15px;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .feature {
+    background: rgba(17, 17, 24, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.3s;
+  }
+  .feature:hover {
+    background: rgba(17, 17, 24, 0.6);
+    border-color: rgba(124, 58, 237, 0.2);
+    transform: translateY(-2px);
+  }
+  .feature-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .feature h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .feature p {
+    color: #9B99BB;
+    font-size: 14px;
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 0, 0, 0.05));
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 32px;
+    padding: 64px 32px;
+    text-align: center;
+    margin: 40px auto;
+    max-width: 900px;
+  }
+  .cta-section h2 {
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: #9B99BB;
+    margin-bottom: 32px;
+    font-size: 17px;
+  }
+
+  footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 40px 24px;
+    text-align: center;
+    color: #5B5980;
+    font-size: 14px;
+  }
+  footer a {
+    color: #9B99BB;
+    text-decoration: none;
+    margin: 0 12px;
+    transition: color 0.2s;
+  }
+  footer a:hover {
+    color: #A78BFA;
+  }
+  .copy {
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 16px 20px; }
+    nav { gap: 12px; }
+    nav a:not(.lang-switcher a) { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    section { padding: 60px 20px; }
+    .cta-section { padding: 40px 24px; margin: 20px; border-radius: 24px; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">SB</div>
+      <span>SocialBoost</span>
+    </div>
+    <nav>
+      <a href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#features" data-i18n="nav_features">Features</a>
+      <a href="/terms" data-i18n="nav_terms">Terms</a>
+      <a href="/privacy" data-i18n="nav_privacy">Privacy</a>
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="uk">УК</button>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="badge" data-i18n="hero_badge">✨ Built for content creators</span>
+    <h1 data-i18n="hero_title">Grow your YouTube channel together</h1>
+    <p data-i18n="hero_subtitle">SocialBoost is a mutual growth platform for YouTube creators. Earn points by engaging with content. Spend points to amplify your reach.</p>
+    <div class="cta-row">
+      <a href="#how" class="btn btn-primary"><span data-i18n="hero_cta1">See how it works →</span></a>
+      <a href="#features" class="btn btn-secondary" data-i18n="hero_cta2">Explore features</a>
+    </div>
+    <div class="platforms-row">
+      <div class="platform-badge"><span class="platform-icon yt">▶</span> <span data-i18n="platform_yt">YouTube creators platform</span></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="how_tag">How it works</span>
+      <h2 data-i18n="how_title">Three simple steps</h2>
+      <p class="section-subtitle" data-i18n="how_subtitle">A real community of creators helping creators grow authentically</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3 data-i18n="step1_title">Connect your account</h3>
+        <p data-i18n="step1_text">Link your YouTube account via secure Google OAuth 2.0. No passwords, no scraping — official Google API only.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3 data-i18n="step2_title">Earn points</h3>
+        <p data-i18n="step2_text">Engage with other creators' content authentically. Each genuine subscribe, like or view rewards you with points.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3 data-i18n="step3_title">Promote your content</h3>
+        <p data-i18n="step3_text">Spend points to launch campaigns. Real users will engage with your channel and videos, helping you reach new audiences.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="feat_tag">Features</span>
+      <h2 data-i18n="feat_title">Built for real growth</h2>
+      <p class="section-subtitle" data-i18n="feat_subtitle">Authentic engagement, secure integration, and a fair points economy</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔐</div>
+        <h3 data-i18n="feat1_title">Official OAuth</h3>
+        <p data-i18n="feat1_text">Secure authentication via Google OAuth 2.0. Your credentials never touch our servers.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3 data-i18n="feat2_title">Real engagement</h3>
+        <p data-i18n="feat2_text">YouTube subscribes and likes happen via official YouTube Data API v3 with explicit user authorization.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💎</div>
+        <h3 data-i18n="feat3_title">Fair economy</h3>
+        <p data-i18n="feat3_text">Earn points for genuine engagement. Spend points to grow. No bots, no fake accounts, no shortcuts.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3 data-i18n="feat4_title">Transparent history</h3>
+        <p data-i18n="feat4_text">Every transaction tracked. See exactly how you earned and spent every point in your account.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <h3 data-i18n="feat5_title">Targeted campaigns</h3>
+        <p data-i18n="feat5_text">Choose your action type and target audience size. Campaigns run until completion.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🛡️</div>
+        <h3 data-i18n="feat6_title">Privacy first</h3>
+        <p data-i18n="feat6_text">We only request the minimum scopes needed. Disconnect anytime. Your data stays yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta-section">
+      <h2 data-i18n="cta_title">Ready to grow?</h2>
+      <p data-i18n="cta_subtitle">Join SocialBoost and turn community engagement into real reach.</p>
+      <a href="#" class="btn btn-primary" data-i18n="cta_btn">Coming soon to Google Play &amp; App Store</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>
+      <a href="/terms" data-i18n="footer_terms">Terms of Service</a>
+      <a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a>
+      <a href="mailto:support@socialboost.app" data-i18n="footer_contact">Contact</a>
+    </div>
+    <div class="copy" data-i18n="footer_copy">© 2026 SocialBoost. Built for creators, by creators.</div>
+  </footer>
+
+<script>
+  const translations = {
+    en: {
+      nav_how: "How it works",
+      nav_features: "Features",
+      nav_terms: "Terms",
+      nav_privacy: "Privacy",
+      hero_badge: "✨ Built for content creators",
+      hero_title: "Grow your YouTube channel together",
+      hero_subtitle: "SocialBoost is a mutual growth platform for YouTube creators. Earn points by engaging with content. Spend points to amplify your reach.",
+      hero_cta1: "See how it works →",
+      hero_cta2: "Explore features",
+      platform_yt: "YouTube creators platform",
+      how_tag: "How it works",
+      how_title: "Three simple steps",
+      how_subtitle: "A real community of creators helping creators grow authentically",
+      step1_title: "Connect your account",
+      step1_text: "Link your YouTube account via secure Google OAuth 2.0. No passwords, no scraping — official Google API only.",
+      step2_title: "Earn points",
+      step2_text: "Engage with other creators' content authentically. Each genuine subscribe, like or view rewards you with points.",
+      step3_title: "Promote your content",
+      step3_text: "Spend points to launch campaigns. Real users will engage with your channel and videos, helping you reach new audiences.",
+      feat_tag: "Features",
+      feat_title: "Built for real growth",
+      feat_subtitle: "Authentic engagement, secure integration, and a fair points economy",
+      feat1_title: "Official OAuth",
+      feat1_text: "Secure authentication via Google OAuth 2.0. Your credentials never touch our servers.",
+      feat2_title: "Real engagement",
+      feat2_text: "YouTube subscribes and likes happen via official YouTube Data API v3 with explicit user authorization.",
+      feat3_title: "Fair economy",
+      feat3_text: "Earn points for genuine engagement. Spend points to grow. No bots, no fake accounts, no shortcuts.",
+      feat4_title: "Transparent history",
+      feat4_text: "Every transaction tracked. See exactly how you earned and spent every point in your account.",
+      feat5_title: "Targeted campaigns",
+      feat5_text: "Choose your action type and target audience size. Campaigns run until completion.",
+      feat6_title: "Privacy first",
+      feat6_text: "We only request the minimum scopes needed. Disconnect anytime. Your data stays yours.",
+      cta_title: "Ready to grow?",
+      cta_subtitle: "Join SocialBoost and turn community engagement into real reach.",
+      cta_btn: "Coming soon to Google Play &amp; App Store",
+      footer_terms: "Terms of Service",
+      footer_privacy: "Privacy Policy",
+      footer_contact: "Contact",
+      footer_copy: "© 2026 SocialBoost. Built for creators, by creators."
+    },
+    uk: {
+      nav_how: "Як це працює",
+      nav_features: "Можливості",
+      nav_terms: "Умови",
+      nav_privacy: "Приватність",
+      hero_badge: "✨ Створено для авторів контенту",
+      hero_title: "Розвивай свій YouTube канал разом",
+      hero_subtitle: "SocialBoost — платформа взаємного росту для YouTube авторів. Заробляй бали за взаємодію з контентом. Витрачай бали щоб розширити свою аудиторію.",
+      hero_cta1: "Як це працює →",
+      hero_cta2: "Можливості",
+      platform_yt: "Платформа для YouTube авторів",
+      how_tag: "Як це працює",
+      how_title: "Три прості кроки",
+      how_subtitle: "Реальна спільнота авторів які допомагають одне одному органічно рости",
+      step1_title: "Підключи акаунт",
+      step1_text: "Зв'яжи свій YouTube акаунт через безпечний Google OAuth 2.0. Жодних паролів чи скрапінгу — тільки офіційний Google API.",
+      step2_title: "Заробляй бали",
+      step2_text: "Взаємодій з контентом інших авторів автентично. Кожна щира підписка, лайк або перегляд винагороджує тебе балами.",
+      step3_title: "Просувай свій контент",
+      step3_text: "Витрачай бали щоб запустити кампанії. Реальні користувачі взаємодіятимуть з твоїм каналом та відео, допомагаючи дотягнутись до нових аудиторій.",
+      feat_tag: "Можливості",
+      feat_title: "Створено для справжнього росту",
+      feat_subtitle: "Автентична взаємодія, безпечна інтеграція та чесна економіка балів",
+      feat1_title: "Офіційний OAuth",
+      feat1_text: "Безпечна автентифікація через Google OAuth 2.0. Твої облікові дані ніколи не зберігаються на наших серверах.",
+      feat2_title: "Реальні дії",
+      feat2_text: "Підписки та лайки на YouTube відбуваються через офіційний YouTube Data API v3 з твоєю явною авторизацією.",
+      feat3_title: "Чесна економіка",
+      feat3_text: "Заробляй бали за справжню взаємодію. Витрачай бали щоб рости. Жодних ботів, фейкових акаунтів чи обхідних шляхів.",
+      feat4_title: "Прозора історія",
+      feat4_text: "Кожна транзакція відстежується. Дивись точно як ти заробив та витратив кожен бал на своєму акаунті.",
+      feat5_title: "Таргетовані кампанії",
+      feat5_text: "Обирай тип дії та розмір цільової аудиторії. Кампанії працюють до повного виконання.",
+      feat6_title: "Приватність насамперед",
+      feat6_text: "Ми запитуємо лише мінімально необхідні дозволи. Відключи в будь-який момент. Твої дані залишаються твоїми.",
+      cta_title: "Готовий рости?",
+      cta_subtitle: "Приєднуйся до SocialBoost і перетвори взаємодію зі спільнотою на реальне охоплення.",
+      cta_btn: "Незабаром у Google Play та App Store",
+      footer_terms: "Умови використання",
+      footer_privacy: "Політика приватності",
+      footer_contact: "Зв'язатися",
+      footer_copy: "© 2026 SocialBoost. Створено авторами для авторів."
+    }
+  };
+
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.getAttribute('data-lang')));
+  });
+
+  // Detect language on load
+  const savedLang = localStorage.getItem('lang');
+  const browserLang = navigator.language.startsWith('uk') ? 'uk' : 'en';
+  setLang(savedLang || browserLang);
+</script>
+</body>
+</html>

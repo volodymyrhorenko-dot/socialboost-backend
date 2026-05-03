@@ -1,608 +1,835 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SocialBoost — Mutual Growth Platform for YouTube</title>
-<meta name="description" content="Earn points by completing tasks. Spend points to promote your YouTube content. Real growth, real community.">
+<meta name="description" content="SurgeUp — взаємний ріст YouTube каналів. Виконуй завдання, отримуй підписників, лайки, перегляди від реальних креаторів.">
+<title>SurgeUp — Зростай на YouTube разом</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%237C3AED'/><text x='50' y='66' font-size='44' text-anchor='middle' fill='white' font-weight='800' font-family='Arial'>S</text></svg>">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0A0A0F;
+    background: #06060B;
     color: #F1F0FF;
     overflow-x: hidden;
     line-height: 1.6;
+    min-height: 100vh;
   }
-
   .bg-gradient {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: radial-gradient(ellipse at top, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(255, 0, 0, 0.06) 0%, transparent 50%);
-    z-index: -1;
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(124, 58, 237, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 60%, rgba(236, 72, 153, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
   }
-
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 20px 40px;
-    background: rgba(10, 10, 15, 0.8);
-    backdrop-filter: blur(20px);
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 18px;
-    font-weight: 700;
-  }
-  .logo-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #7C3AED, #9333EA);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: white;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
-  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  
   nav {
-    display: flex;
-    gap: 32px;
-    align-items: center;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    background: rgba(6, 6, 11, 0.7);
+    border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+    padding: 14px 0;
   }
-  nav a {
-    color: #9B99BB;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.2s;
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, #7C3AED, #EC4899);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: white; font-size: 18px;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
   }
-  nav a:hover { color: #F1F0FF; }
-
-  .lang-switcher {
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 100px;
-    padding: 4px;
-    gap: 2px;
+  .logo-text {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #F1F0FF, #A78BFA);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  .lang-btn {
-    padding: 6px 14px;
-    background: transparent;
-    border: none;
-    color: #9B99BB;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 100px;
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: #9B99BB; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: #F1F0FF; }
+  .lang-switch { display: flex; gap: 4px; background: #0F0F18; border-radius: 10px; padding: 4px; border: 1px solid #2A2A3A; }
+  .lang-btn { padding: 6px 12px; background: none; border: none; color: #9B99BB; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 7px; transition: all 0.2s; }
+  .lang-btn.active { background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; background: linear-gradient(135deg, #7C3AED, #9333EA);
+    color: white; text-decoration: none; border: none; cursor: pointer;
+    border-radius: 12px; font-weight: 700; font-size: 14px;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(124, 58, 237, 0.5); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; background: rgba(255, 255, 255, 0.05);
+    color: #F1F0FF; text-decoration: none; border: 1px solid #2A2A3A; cursor: pointer;
+    border-radius: 12px; font-weight: 600; font-size: 14px;
     transition: all 0.2s;
   }
-  .lang-btn.active {
-    background: linear-gradient(135deg, #7C3AED, #9333EA);
-    color: white;
-  }
-
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 120px 24px 80px;
-    position: relative;
-  }
-  .badge {
-    display: inline-block;
-    padding: 8px 16px;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 100px;
-    color: #10B981;
-    font-size: 13px;
-    font-weight: 500;
+  .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: #7C3AED; }
+  
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 100px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    color: #A78BFA; font-size: 13px; font-weight: 600;
     margin-bottom: 24px;
-    animation: fadeInUp 0.6s ease;
   }
-  h1 {
-    font-size: clamp(40px, 7vw, 72px);
-    font-weight: 800;
-    line-height: 1.1;
+  .hero h1 {
+    font-size: clamp(38px, 7vw, 72px);
+    font-weight: 800; line-height: 1.05; letter-spacing: -2px;
     margin-bottom: 24px;
-    background: linear-gradient(135deg, #F1F0FF 0%, #A78BFA 100%);
-    -webkit-background-clip: text;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, #7C3AED, #EC4899);
+    -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    max-width: 900px;
-    animation: fadeInUp 0.7s ease 0.1s both;
   }
   .hero p {
-    font-size: clamp(16px, 2vw, 20px);
-    color: #9B99BB;
-    max-width: 640px;
-    margin-bottom: 40px;
-    animation: fadeInUp 0.7s ease 0.2s both;
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: #9B99BB; max-width: 640px; margin: 0 auto 40px;
   }
-  .cta-row {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeInUp 0.7s ease 0.3s both;
-  }
-  .btn {
-    padding: 16px 32px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, #7C3AED, #9333EA);
-    color: white;
-    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
-  }
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: #F1F0FF;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-2px);
-  }
-
-  .platforms-row {
-    display: flex;
-    gap: 24px;
-    margin-top: 60px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeInUp 0.7s ease 0.4s both;
-  }
-  .platform-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 24px;
-    background: rgba(255, 0, 0, 0.06);
-    border: 1px solid rgba(255, 0, 0, 0.2);
-    border-radius: 100px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #F1F0FF;
-  }
-  .platform-icon {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .yt { background: #FF0000; }
-
-  section {
-    padding: 100px 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .section-header {
-    text-align: center;
-    margin-bottom: 64px;
-  }
-  .section-tag {
-    display: inline-block;
-    padding: 6px 14px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 100px;
-    color: #A78BFA;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 16px;
-  }
-  h2 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .section-subtitle {
-    color: #9B99BB;
-    font-size: 17px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-  }
-  .step {
-    background: rgba(17, 17, 24, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+  .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+  .hero-cta .btn-primary, .hero-cta .btn-secondary { padding: 16px 32px; font-size: 16px; }
+  
+  .trust-bar {
+    display: flex; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap;
+    padding: 32px 24px;
+    background: linear-gradient(135deg, rgba(15, 15, 24, 0.8), rgba(11, 11, 18, 0.5));
     border-radius: 24px;
+    border: 1px solid rgba(124, 58, 237, 0.15);
+    backdrop-filter: blur(20px);
+  }
+  .trust-item { text-align: center; }
+  .trust-num {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 800;
+    background: linear-gradient(135deg, #7C3AED, #EC4899);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .trust-label { font-size: 12px; color: #5B5980; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  
+  section { padding: 80px 0; position: relative; }
+  .section-header { text-align: center; margin-bottom: 60px; }
+  .section-tag {
+    display: inline-block; padding: 6px 14px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    color: #A78BFA; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    border-radius: 100px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .section-header h2 {
+    font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .section-header p { color: #9B99BB; font-size: 17px; max-width: 600px; margin: 0 auto; }
+  
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .feature-card {
     padding: 32px;
-    transition: transform 0.3s, border-color 0.3s;
-    position: relative;
-    overflow: hidden;
+    background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5));
+    border: 1px solid #2A2A3A; border-radius: 20px;
+    transition: all 0.3s; backdrop-filter: blur(10px);
+    position: relative; overflow: hidden;
   }
-  .step:hover {
-    transform: translateY(-4px);
-    border-color: rgba(124, 58, 237, 0.3);
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
   }
-  .step::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.5), transparent);
-  }
-  .step-number {
-    width: 48px; height: 48px;
-    background: linear-gradient(135deg, #7C3AED, #9333EA);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
-  }
-  .step h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .step p {
-    color: #9B99BB;
-    font-size: 15px;
-  }
-
-  .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-  .feature {
-    background: rgba(17, 17, 24, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 20px;
-    padding: 28px;
-    transition: all 0.3s;
-  }
-  .feature:hover {
-    background: rgba(17, 17, 24, 0.6);
-    border-color: rgba(124, 58, 237, 0.2);
-    transform: translateY(-2px);
-  }
+  .feature-card:hover { transform: translateY(-6px); border-color: rgba(124, 58, 237, 0.4); box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15); }
   .feature-icon {
-    font-size: 32px;
-    margin-bottom: 16px;
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(124, 58, 237, 0.05));
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    display: flex; align-items: center; justify-content: center; font-size: 26px;
+    margin-bottom: 20px;
   }
-  .feature h3 {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 8px;
+  .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #F1F0FF; }
+  .feature-card p { color: #9B99BB; font-size: 14px; }
+  
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+  .step-card {
+    text-align: center; padding: 36px 24px;
+    background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5));
+    border: 1px solid #2A2A3A; border-radius: 20px;
+    backdrop-filter: blur(10px);
   }
-  .feature p {
-    color: #9B99BB;
-    font-size: 14px;
+  .step-num {
+    width: 64px; height: 64px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, #7C3AED, #EC4899);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 800; color: white;
+    box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4);
   }
-
-  .cta-section {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 0, 0, 0.05));
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    border-radius: 32px;
-    padding: 64px 32px;
+  .step-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .step-card p { color: #9B99BB; font-size: 14px; }
+  
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .price-card {
+    padding: 32px 24px; position: relative;
+    background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5));
+    border: 1px solid #2A2A3A; border-radius: 20px;
+    backdrop-filter: blur(10px); transition: all 0.3s;
+  }
+  .price-card:hover { transform: translateY(-6px); border-color: rgba(124, 58, 237, 0.5); }
+  .price-card.popular { border-color: #7C3AED; background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.04)); box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2); }
+  .popular-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #F59E0B, #F43F5E);
+    color: white; font-size: 11px; font-weight: 800; padding: 6px 14px;
+    border-radius: 100px; letter-spacing: 0.5px;
+  }
+  .price-emoji { font-size: 40px; text-align: center; margin-bottom: 14px; }
+  .price-points { font-size: 32px; font-weight: 800; text-align: center; color: #F1F0FF; margin-bottom: 4px; }
+  .price-bonus { text-align: center; color: #10B981; font-size: 13px; font-weight: 600; margin-bottom: 18px; min-height: 18px; }
+  .price-amount { text-align: center; font-size: 28px; font-weight: 800; margin-bottom: 20px; background: linear-gradient(135deg, #7C3AED, #EC4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .price-card .btn-primary { width: 100%; justify-content: center; padding: 14px; }
+  
+  .download-section {
     text-align: center;
-    margin: 40px auto;
-    max-width: 900px;
+    padding: 60px 32px;
+    background: linear-gradient(135deg, rgba(31, 15, 64, 0.6), rgba(15, 15, 26, 0.4), rgba(42, 15, 48, 0.6));
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 28px;
+    backdrop-filter: blur(20px);
   }
-  .cta-section h2 {
-    margin-bottom: 16px;
+  .download-section h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-bottom: 14px; letter-spacing: -1px; }
+  .download-section p { color: #9B99BB; margin-bottom: 32px; font-size: 16px; max-width: 500px; margin: 0 auto 32px; }
+  .download-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .download-buttons .btn-primary { padding: 16px 28px; font-size: 15px; }
+  .coming-soon { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: rgba(255, 255, 255, 0.04); border: 1px dashed #2A2A3A; border-radius: 12px; color: #5B5980; font-weight: 600; font-size: 14px; }
+  
+  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .faq-item {
+    background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5));
+    border: 1px solid #2A2A3A; border-radius: 16px;
+    backdrop-filter: blur(10px); overflow: hidden;
   }
-  .cta-section p {
-    color: #9B99BB;
-    margin-bottom: 32px;
-    font-size: 17px;
-  }
-
-  footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 40px 24px;
-    text-align: center;
-    color: #5B5980;
-    font-size: 14px;
-  }
-  footer a {
-    color: #9B99BB;
-    text-decoration: none;
-    margin: 0 12px;
-    transition: color 0.2s;
-  }
-  footer a:hover {
-    color: #A78BFA;
-  }
-  .copy {
-    margin-top: 16px;
-    font-size: 13px;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
+  .faq-q { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-weight: 600; font-size: 15px; transition: color 0.2s; }
+  .faq-q:hover { color: #A78BFA; }
+  .faq-q::after { content: '+'; font-size: 26px; color: #7C3AED; transition: transform 0.3s; flex-shrink: 0; line-height: 1; }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s, padding 0.3s; color: #9B99BB; font-size: 14px; }
+  .faq-item.open .faq-a { padding: 0 24px 20px; max-height: 300px; }
+  
+  footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .footer-brand p { color: #9B99BB; font-size: 14px; margin-top: 14px; max-width: 320px; }
+  .footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: #5B5980; margin-bottom: 14px; text-transform: uppercase; }
+  .footer-col a { display: block; color: #9B99BB; text-decoration: none; font-size: 14px; padding: 6px 0; transition: color 0.2s; }
+  .footer-col a:hover { color: #A78BFA; }
+  .footer-bottom { padding-top: 24px; border-top: 1px solid #2A2A3A; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; color: #5B5980; font-size: 13px; }
+  
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+  .modal.active { display: flex; }
+  .modal-content { background: #0F0F18; border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 24px; padding: 40px 32px; max-width: 440px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #5B5980; cursor: pointer; font-size: 28px; line-height: 1; padding: 4px 10px; border-radius: 8px; transition: all 0.2s; }
+  .modal-close:hover { color: #F1F0FF; background: rgba(255, 255, 255, 0.05); }
+  .modal h2 { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .modal-subtitle { color: #9B99BB; margin-bottom: 28px; font-size: 14px; }
+  .modal input { width: 100%; padding: 14px 16px; background: #1A1A24; border: 1px solid #2A2A3A; border-radius: 12px; color: #F1F0FF; font-size: 14px; margin-bottom: 12px; transition: border-color 0.2s; outline: none; }
+  .modal input:focus { border-color: #7C3AED; }
+  .modal .btn-primary { width: 100%; justify-content: center; padding: 14px; margin-top: 8px; }
+  .modal-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #5B5980; font-size: 12px; }
+  .modal-divider::before, .modal-divider::after { content: ''; flex: 1; height: 1px; background: #2A2A3A; }
+  .modal-google { width: 100%; justify-content: center; padding: 14px; }
+  .modal-toggle { text-align: center; margin-top: 18px; color: #9B99BB; font-size: 14px; }
+  .modal-toggle a { color: #A78BFA; text-decoration: none; font-weight: 700; cursor: pointer; }
+  .modal-error { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); color: #F43F5E; padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px; display: none; }
+  .modal-error.active { display: block; }
+  
   @media (max-width: 768px) {
-    header { padding: 16px 20px; }
-    nav { gap: 12px; }
-    nav a:not(.lang-switcher a) { display: none; }
-    .hero { padding: 100px 20px 60px; }
-    section { padding: 60px 20px; }
-    .cta-section { padding: 40px 24px; margin: 20px; border-radius: 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 60px 0 40px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .footer-col a { display: inline-block; margin: 0 12px; }
+    .modal-content { padding: 32px 24px; }
   }
 </style>
 </head>
 <body>
-  <div class="bg-gradient"></div>
+<div class="bg-gradient"></div>
 
-  <header>
-    <div class="logo">
-      <div class="logo-icon">SB</div>
-      <span>SocialBoost</span>
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">S</div>
+      <div class="logo-text">SurgeUp</div>
+    </a>
+    <div class="nav-links">
+      <a href="#features" data-uk="Можливості" data-en="Features">Можливості</a>
+      <a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a>
+      <a href="#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a>
+      <a href="#faq">FAQ</a>
     </div>
-    <nav>
-      <a href="#how" data-i18n="nav_how">How it works</a>
-      <a href="#features" data-i18n="nav_features">Features</a>
-      <a href="/terms" data-i18n="nav_terms">Terms</a>
-      <a href="/privacy" data-i18n="nav_privacy">Privacy</a>
-      <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="uk">УК</button>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="uk">UA</button>
+        <button class="lang-btn" data-lang="en">EN</button>
       </div>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <span class="badge" data-i18n="hero_badge">✨ Built for content creators</span>
-    <h1 data-i18n="hero_title">Grow your YouTube channel together</h1>
-    <p data-i18n="hero_subtitle">SocialBoost is a mutual growth platform for YouTube creators. Earn points by engaging with content. Spend points to amplify your reach.</p>
-    <div class="cta-row">
-      <a href="#how" class="btn btn-primary"><span data-i18n="hero_cta1">See how it works →</span></a>
-      <a href="#features" class="btn btn-secondary" data-i18n="hero_cta2">Explore features</a>
+      <a href="#" class="btn-primary" onclick="openModal('login'); return false;" data-uk="Увійти" data-en="Sign in">Увійти</a>
     </div>
-    <div class="platforms-row">
-      <div class="platform-badge"><span class="platform-icon yt">▶</span> <span data-i18n="platform_yt">YouTube creators platform</span></div>
-    </div>
-  </section>
+  </div>
+</nav>
 
-  <section id="how">
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span>✨</span>
+      <span data-uk="Тільки YouTube. Тільки реальні підписники." data-en="YouTube only. Real subscribers only.">Тільки YouTube. Тільки реальні підписники.</span>
+    </div>
+    <h1>
+      <span data-uk="Зростай на YouTube" data-en="Grow on YouTube">Зростай на YouTube</span><br>
+      <span class="gradient" data-uk="разом зі спільнотою" data-en="with the community">разом зі спільнотою</span>
+    </h1>
+    <p data-uk="Заробляй бали виконуючи завдання. Витрачай їх на просування свого каналу через реальних креаторів. Без ботів, без накруток, тільки органічний ріст." data-en="Earn points by completing tasks. Spend them to promote your channel through real creators. No bots, no fake numbers — only organic growth.">
+      Заробляй бали виконуючи завдання. Витрачай їх на просування свого каналу через реальних креаторів. Без ботів, без накруток, тільки органічний ріст.
+    </p>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary" onclick="openModal('register'); return false;">
+        <span data-uk="🚀 Почати безкоштовно" data-en="🚀 Start for free">🚀 Почати безкоштовно</span>
+      </a>
+      <a href="#pricing" class="btn-secondary">
+        <span data-uk="💎 Купити бали" data-en="💎 Buy points">💎 Купити бали</span>
+      </a>
+    </div>
+    
+    <div class="trust-bar">
+      <div class="trust-item">
+        <div class="trust-num">1000+</div>
+        <div class="trust-label" data-uk="Креаторів" data-en="Creators">Креаторів</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">50K+</div>
+        <div class="trust-label" data-uk="Підписок" data-en="Subscriptions">Підписок</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">100%</div>
+        <div class="trust-label" data-uk="Безпечно" data-en="Safe">Безпечно</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">24/7</div>
+        <div class="trust-label" data-uk="Підтримка" data-en="Support">Підтримка</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
     <div class="section-header">
-      <span class="section-tag" data-i18n="how_tag">How it works</span>
-      <h2 data-i18n="how_title">Three simple steps</h2>
-      <p class="section-subtitle" data-i18n="how_subtitle">A real community of creators helping creators grow authentically</p>
+      <div class="section-tag" data-uk="Можливості" data-en="Features">Можливості</div>
+      <h2 data-uk="Все що потрібно для росту" data-en="Everything you need to grow">Все що потрібно для росту</h2>
+      <p data-uk="Преміум інструменти для серйозних креаторів YouTube" data-en="Premium tools for serious YouTube creators">Преміум інструменти для серйозних креаторів YouTube</p>
     </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3 data-i18n="step1_title">Connect your account</h3>
-        <p data-i18n="step1_text">Link your YouTube account via secure Google OAuth 2.0. No passwords, no scraping — official Google API only.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3 data-uk="Реальні підписники" data-en="Real subscribers">Реальні підписники</h3>
+        <p data-uk="Тільки активні YouTube креатори підписуються на твій канал. Без ботів, без фейкових акаунтів." data-en="Only active YouTube creators subscribe to your channel. No bots, no fake accounts.">Тільки активні YouTube креатори підписуються на твій канал. Без ботів, без фейкових акаунтів.</p>
       </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3 data-i18n="step2_title">Earn points</h3>
-        <p data-i18n="step2_text">Engage with other creators' content authentically. Each genuine subscribe, like or view rewards you with points.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3 data-i18n="step3_title">Promote your content</h3>
-        <p data-i18n="step3_text">Spend points to launch campaigns. Real users will engage with your channel and videos, helping you reach new audiences.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="features">
-    <div class="section-header">
-      <span class="section-tag" data-i18n="feat_tag">Features</span>
-      <h2 data-i18n="feat_title">Built for real growth</h2>
-      <p class="section-subtitle" data-i18n="feat_subtitle">Authentic engagement, secure integration, and a fair points economy</p>
-    </div>
-    <div class="features">
-      <div class="feature">
+      <div class="feature-card">
         <div class="feature-icon">🔐</div>
-        <h3 data-i18n="feat1_title">Official OAuth</h3>
-        <p data-i18n="feat1_text">Secure authentication via Google OAuth 2.0. Your credentials never touch our servers.</p>
+        <h3 data-uk="OAuth інтеграція" data-en="OAuth integration">OAuth інтеграція</h3>
+        <p data-uk="Безпечне підключення YouTube через офіційний Google OAuth. Ми не зберігаємо твій пароль." data-en="Secure YouTube connection via official Google OAuth. We don't store your password.">Безпечне підключення YouTube через офіційний Google OAuth. Ми не зберігаємо твій пароль.</p>
       </div>
-      <div class="feature">
+      <div class="feature-card">
         <div class="feature-icon">⚡</div>
-        <h3 data-i18n="feat2_title">Real engagement</h3>
-        <p data-i18n="feat2_text">YouTube subscribes and likes happen via official YouTube Data API v3 with explicit user authorization.</p>
+        <h3 data-uk="Швидкий ріст" data-en="Fast growth">Швидкий ріст</h3>
+        <p data-uk="Перші підписники — вже за кілька годин. Створюй кампанії і отримуй результат у реальному часі." data-en="First subscribers within hours. Create campaigns and get real-time results.">Перші підписники — вже за кілька годин. Створюй кампанії і отримуй результат у реальному часі.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon">💎</div>
-        <h3 data-i18n="feat3_title">Fair economy</h3>
-        <p data-i18n="feat3_text">Earn points for genuine engagement. Spend points to grow. No bots, no fake accounts, no shortcuts.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📊</div>
-        <h3 data-i18n="feat4_title">Transparent history</h3>
-        <p data-i18n="feat4_text">Every transaction tracked. See exactly how you earned and spent every point in your account.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🎯</div>
-        <h3 data-i18n="feat5_title">Targeted campaigns</h3>
-        <p data-i18n="feat5_text">Choose your action type and target audience size. Campaigns run until completion.</p>
-      </div>
-      <div class="feature">
+      <div class="feature-card">
         <div class="feature-icon">🛡️</div>
-        <h3 data-i18n="feat6_title">Privacy first</h3>
-        <p data-i18n="feat6_text">We only request the minimum scopes needed. Disconnect anytime. Your data stays yours.</p>
+        <h3 data-uk="Безпека акаунту" data-en="Account safety">Безпека акаунту</h3>
+        <p data-uk="Ми дотримуємось правил YouTube. Жодних автоматизацій що можуть зашкодити твоєму каналу." data-en="We follow YouTube's rules. No automations that could harm your channel.">Ми дотримуємось правил YouTube. Жодних автоматизацій що можуть зашкодити твоєму каналу.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3 data-uk="Преміум якість" data-en="Premium quality">Преміум якість</h3>
+        <p data-uk="Усі підписники, лайки і коментарі — від реальних людей з активних каналів." data-en="All subscribers, likes and comments come from real people with active channels.">Усі підписники, лайки і коментарі — від реальних людей з активних каналів.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3 data-uk="Точне націлення" data-en="Precise targeting">Точне націлення</h3>
+        <p data-uk="Підписки, лайки, перегляди, коментарі — обирай саме те що потрібно твоєму каналу." data-en="Subscriptions, likes, views, comments — pick exactly what your channel needs.">Підписки, лайки, перегляди, коментарі — обирай саме те що потрібно твоєму каналу.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="cta-section">
-      <h2 data-i18n="cta_title">Ready to grow?</h2>
-      <p data-i18n="cta_subtitle">Join SocialBoost and turn community engagement into real reach.</p>
-      <a href="#" class="btn btn-primary" data-i18n="cta_btn">Coming soon to Google Play &amp; App Store</a>
+<section id="how">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" data-uk="Як це працює" data-en="How it works">Як це працює</div>
+      <h2 data-uk="3 простих кроки до росту" data-en="3 simple steps to growth">3 простих кроки до росту</h2>
+      <p data-uk="Почни заробляти і витрачати бали вже сьогодні" data-en="Start earning and spending points today">Почни заробляти і витрачати бали вже сьогодні</p>
     </div>
-  </section>
-
-  <footer>
-    <div>
-      <a href="/terms" data-i18n="footer_terms">Terms of Service</a>
-      <a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a>
-      <a href="mailto:support@socialboost.app" data-i18n="footer_contact">Contact</a>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-uk="Підключи YouTube" data-en="Connect YouTube">Підключи YouTube</h3>
+        <p data-uk="Безпечне підключення через Google OAuth. Без передачі паролю — тільки офіційний API." data-en="Secure connection via Google OAuth. No password sharing — only official API.">Безпечне підключення через Google OAuth. Без передачі паролю — тільки офіційний API.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-uk="Виконуй завдання" data-en="Complete tasks">Виконуй завдання</h3>
+        <p data-uk="Підписуйся, лайкай, коментуй відео інших креаторів. За кожну дію — бали на твій рахунок." data-en="Subscribe, like, comment on other creators' videos. Earn points for each action.">Підписуйся, лайкай, коментуй відео інших креаторів. За кожну дію — бали на твій рахунок.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-uk="Отримуй підписників" data-en="Get subscribers">Отримуй підписників</h3>
+        <p data-uk="Створюй кампанії і витрачай бали щоб отримати реальних підписників, лайки та перегляди." data-en="Create campaigns and spend points to get real subscribers, likes and views.">Створюй кампанії і витрачай бали щоб отримати реальних підписників, лайки та перегляди.</p>
+      </div>
     </div>
-    <div class="copy" data-i18n="footer_copy">© 2026 SocialBoost. Built for creators, by creators.</div>
-  </footer>
+  </div>
+</section>
 
+<section id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" data-uk="Пакети балів" data-en="Point packages">Пакети балів</div>
+      <h2 data-uk="Купуй бали — прискорюй ріст" data-en="Buy points — speed up growth">Купуй бали — прискорюй ріст</h2>
+      <p data-uk="Захищені платежі через Stripe. Підтримка Apple Pay та Google Pay." data-en="Secure payments via Stripe. Apple Pay and Google Pay supported.">Захищені платежі через Stripe. Підтримка Apple Pay та Google Pay.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-emoji">💎</div>
+        <div class="price-points">500</div>
+        <div class="price-bonus">&nbsp;</div>
+        <div class="price-amount">$0.99</div>
+        <button class="btn-primary" onclick="buyPack('pack_500')" data-uk="Купити" data-en="Buy">Купити</button>
+      </div>
+      <div class="price-card popular">
+        <div class="popular-badge" data-uk="🔥 ПОПУЛЯРНЕ" data-en="🔥 POPULAR">🔥 ПОПУЛЯРНЕ</div>
+        <div class="price-emoji">💎</div>
+        <div class="price-points">1200</div>
+        <div class="price-bonus" data-uk="+ 200 бонус" data-en="+ 200 bonus">+ 200 бонус</div>
+        <div class="price-amount">$1.99</div>
+        <button class="btn-primary" onclick="buyPack('pack_1200')" data-uk="Купити" data-en="Buy">Купити</button>
+      </div>
+      <div class="price-card">
+        <div class="price-emoji">💎</div>
+        <div class="price-points">3000</div>
+        <div class="price-bonus" data-uk="+ 800 бонус" data-en="+ 800 bonus">+ 800 бонус</div>
+        <div class="price-amount">$3.99</div>
+        <button class="btn-primary" onclick="buyPack('pack_3000')" data-uk="Купити" data-en="Buy">Купити</button>
+      </div>
+      <div class="price-card">
+        <div class="price-emoji">💎</div>
+        <div class="price-points">8000</div>
+        <div class="price-bonus" data-uk="+ 3000 бонус" data-en="+ 3000 bonus">+ 3000 бонус</div>
+        <div class="price-amount">$8.99</div>
+        <button class="btn-primary" onclick="buyPack('pack_8000')" data-uk="Купити" data-en="Buy">Купити</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="download-section">
+      <h2 data-uk="Готовий рости? 🚀" data-en="Ready to grow? 🚀">Готовий рости? 🚀</h2>
+      <p data-uk="Відкрий додаток у браузері або зачекай на мобільну версію в App Store і Google Play" data-en="Open the app in your browser or wait for the mobile version on App Store and Google Play">
+        Відкрий додаток у браузері або зачекай на мобільну версію в App Store і Google Play
+      </p>
+      <div class="download-buttons">
+        <a href="#" class="btn-primary" onclick="openModal('register'); return false;">
+          <span data-uk="🌐 Відкрити додаток" data-en="🌐 Open the app">🌐 Відкрити додаток</span>
+        </a>
+        <span class="coming-soon">📱 <span data-uk="App Store — скоро" data-en="App Store — soon">App Store — скоро</span></span>
+        <span class="coming-soon">🤖 <span data-uk="Google Play — скоро" data-en="Google Play — soon">Google Play — скоро</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">FAQ</div>
+      <h2 data-uk="Поширені питання" data-en="Frequently asked">Поширені питання</h2>
+      <p data-uk="Відповіді на найчастіші питання про SurgeUp" data-en="Answers to the most common questions about SurgeUp">Відповіді на найчастіші питання про SurgeUp</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Це безпечно для мого YouTube каналу?" data-en="Is it safe for my YouTube channel?">Це безпечно для мого YouTube каналу?</div>
+        <div class="faq-a" data-uk="Так. Ми використовуємо лише офіційний YouTube Data API через Google OAuth. Жодних ботів, жодних автоматизованих скриптів. Усі дії виконуються реальними людьми." data-en="Yes. We only use the official YouTube Data API via Google OAuth. No bots, no automated scripts. All actions are performed by real people.">Так. Ми використовуємо лише офіційний YouTube Data API через Google OAuth. Жодних ботів, жодних автоматизованих скриптів. Усі дії виконуються реальними людьми.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Скільки коштує реєстрація?" data-en="How much does registration cost?">Скільки коштує реєстрація?</div>
+        <div class="faq-a" data-uk="Реєстрація повністю безкоштовна. Ти отримуєш 500 балів стартового бонусу. Бали можна заробляти виконуючи завдання або купляти пакетами." data-en="Registration is completely free. You get 500 starter bonus points. Points can be earned by completing tasks or purchased in packages.">Реєстрація повністю безкоштовна. Ти отримуєш 500 балів стартового бонусу. Бали можна заробляти виконуючи завдання або купляти пакетами.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Як швидко я отримаю підписників?" data-en="How quickly will I get subscribers?">Як швидко я отримаю підписників?</div>
+        <div class="faq-a" data-uk="Перші підписники з'являються вже через декілька годин після створення кампанії. Швидкість залежить від активності спільноти та бюджету твоєї кампанії." data-en="First subscribers appear within a few hours after creating a campaign. Speed depends on community activity and your campaign budget.">Перші підписники з'являються вже через декілька годин після створення кампанії. Швидкість залежить від активності спільноти та бюджету твоєї кампанії.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Чи будуть підписники активними?" data-en="Will the subscribers be active?">Чи будуть підписники активними?</div>
+        <div class="faq-a" data-uk="Так. Усі підписники — реальні YouTube креатори з активними каналами. Багато хто з них також буде дивитись твої майбутні відео." data-en="Yes. All subscribers are real YouTube creators with active channels. Many of them will also watch your future videos.">Так. Усі підписники — реальні YouTube креатори з активними каналами. Багато хто з них також буде дивитись твої майбутні відео.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Які способи оплати ви приймаєте?" data-en="What payment methods do you accept?">Які способи оплати ви приймаєте?</div>
+        <div class="faq-a" data-uk="Ми приймаємо всі основні картки (Visa, Mastercard, American Express), Apple Pay та Google Pay через захищений платіжний шлюз Stripe." data-en="We accept all major cards (Visa, Mastercard, American Express), Apple Pay and Google Pay via the secure Stripe payment gateway.">Ми приймаємо всі основні картки (Visa, Mastercard, American Express), Apple Pay та Google Pay через захищений платіжний шлюз Stripe.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" data-uk="Чи можу я отримати повернення коштів?" data-en="Can I get a refund?">Чи можу я отримати повернення коштів?</div>
+        <div class="faq-a" data-uk="Так. Якщо бали ще не витрачені, ми повернемо кошти протягом 14 днів. Зв'яжись з підтримкою через support@surgeup.app." data-en="Yes. If points haven't been spent yet, we refund within 14 days. Contact support via support@surgeup.app.">Так. Якщо бали ще не витрачені, ми повернемо кошти протягом 14 днів. Зв'яжись з підтримкою через support@surgeup.app.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <div class="logo-text">SurgeUp</div>
+        </a>
+        <p data-uk="Платформа взаємного росту YouTube каналів. Зростай органічно разом зі спільнотою креаторів." data-en="A mutual growth platform for YouTube channels. Grow organically with the creator community.">
+          Платформа взаємного росту YouTube каналів. Зростай органічно разом зі спільнотою креаторів.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4 data-uk="Продукт" data-en="Product">Продукт</h4>
+        <a href="#features" data-uk="Можливості" data-en="Features">Можливості</a>
+        <a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a>
+        <a href="#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-uk="Юридичне" data-en="Legal">Юридичне</h4>
+        <a href="/privacy" data-uk="Конфіденційність" data-en="Privacy">Конфіденційність</a>
+        <a href="/terms" data-uk="Умови" data-en="Terms">Умови</a>
+        <a href="mailto:support@surgeup.app" data-uk="Підтримка" data-en="Support">Підтримка</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SurgeUp. <span data-uk="Всі права захищено." data-en="All rights reserved.">Всі права захищено.</span></span>
+      <span data-uk="Зроблено з 💜 в Україні" data-en="Made with 💜 in Ukraine">Зроблено з 💜 в Україні</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="authModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2 id="modalTitle" data-uk="Увійти" data-en="Sign in">Увійти</h2>
+    <p class="modal-subtitle" id="modalSubtitle" data-uk="Увійди щоб купувати бали та керувати кампаніями" data-en="Sign in to buy points and manage campaigns">Увійди щоб купувати бали та керувати кампаніями</p>
+    <div class="modal-error" id="modalError"></div>
+    <input type="text" id="nameInput" placeholder="Ім'я" style="display:none">
+    <input type="email" id="emailInput" placeholder="email@example.com">
+    <input type="password" id="passwordInput" placeholder="Пароль">
+    <button class="btn-primary" id="submitBtn" onclick="submitAuth()" data-uk="Увійти" data-en="Sign in">Увійти</button>
+    <div class="modal-divider" data-uk="або" data-en="or">або</div>
+    <button class="btn-secondary modal-google" onclick="loginGoogle()">
+      <span style="color:#4285F4;font-size:18px;font-weight:800">G</span>
+      <span data-uk="Увійти через Google" data-en="Sign in with Google">Увійти через Google</span>
+    </button>
+    <div class="modal-toggle" id="modalToggle">
+      <span data-uk="Немає акаунту?" data-en="No account?">Немає акаунту?</span>
+      <a onclick="toggleAuthMode()" data-uk="Зареєструватись" data-en="Sign up">Зареєструватись</a>
+    </div>
+  </div>
+</div>
 <script>
-  const translations = {
-    en: {
-      nav_how: "How it works",
-      nav_features: "Features",
-      nav_terms: "Terms",
-      nav_privacy: "Privacy",
-      hero_badge: "✨ Built for content creators",
-      hero_title: "Grow your YouTube channel together",
-      hero_subtitle: "SocialBoost is a mutual growth platform for YouTube creators. Earn points by engaging with content. Spend points to amplify your reach.",
-      hero_cta1: "See how it works →",
-      hero_cta2: "Explore features",
-      platform_yt: "YouTube creators platform",
-      how_tag: "How it works",
-      how_title: "Three simple steps",
-      how_subtitle: "A real community of creators helping creators grow authentically",
-      step1_title: "Connect your account",
-      step1_text: "Link your YouTube account via secure Google OAuth 2.0. No passwords, no scraping — official Google API only.",
-      step2_title: "Earn points",
-      step2_text: "Engage with other creators' content authentically. Each genuine subscribe, like or view rewards you with points.",
-      step3_title: "Promote your content",
-      step3_text: "Spend points to launch campaigns. Real users will engage with your channel and videos, helping you reach new audiences.",
-      feat_tag: "Features",
-      feat_title: "Built for real growth",
-      feat_subtitle: "Authentic engagement, secure integration, and a fair points economy",
-      feat1_title: "Official OAuth",
-      feat1_text: "Secure authentication via Google OAuth 2.0. Your credentials never touch our servers.",
-      feat2_title: "Real engagement",
-      feat2_text: "YouTube subscribes and likes happen via official YouTube Data API v3 with explicit user authorization.",
-      feat3_title: "Fair economy",
-      feat3_text: "Earn points for genuine engagement. Spend points to grow. No bots, no fake accounts, no shortcuts.",
-      feat4_title: "Transparent history",
-      feat4_text: "Every transaction tracked. See exactly how you earned and spent every point in your account.",
-      feat5_title: "Targeted campaigns",
-      feat5_text: "Choose your action type and target audience size. Campaigns run until completion.",
-      feat6_title: "Privacy first",
-      feat6_text: "We only request the minimum scopes needed. Disconnect anytime. Your data stays yours.",
-      cta_title: "Ready to grow?",
-      cta_subtitle: "Join SocialBoost and turn community engagement into real reach.",
-      cta_btn: "Coming soon to Google Play &amp; App Store",
-      footer_terms: "Terms of Service",
-      footer_privacy: "Privacy Policy",
-      footer_contact: "Contact",
-      footer_copy: "© 2026 SocialBoost. Built for creators, by creators."
-    },
-    uk: {
-      nav_how: "Як це працює",
-      nav_features: "Можливості",
-      nav_terms: "Умови",
-      nav_privacy: "Приватність",
-      hero_badge: "✨ Створено для авторів контенту",
-      hero_title: "Розвивай свій YouTube канал разом",
-      hero_subtitle: "SocialBoost — платформа взаємного росту для YouTube авторів. Заробляй бали за взаємодію з контентом. Витрачай бали щоб розширити свою аудиторію.",
-      hero_cta1: "Як це працює →",
-      hero_cta2: "Можливості",
-      platform_yt: "Платформа для YouTube авторів",
-      how_tag: "Як це працює",
-      how_title: "Три прості кроки",
-      how_subtitle: "Реальна спільнота авторів які допомагають одне одному органічно рости",
-      step1_title: "Підключи акаунт",
-      step1_text: "Зв'яжи свій YouTube акаунт через безпечний Google OAuth 2.0. Жодних паролів чи скрапінгу — тільки офіційний Google API.",
-      step2_title: "Заробляй бали",
-      step2_text: "Взаємодій з контентом інших авторів автентично. Кожна щира підписка, лайк або перегляд винагороджує тебе балами.",
-      step3_title: "Просувай свій контент",
-      step3_text: "Витрачай бали щоб запустити кампанії. Реальні користувачі взаємодіятимуть з твоїм каналом та відео, допомагаючи дотягнутись до нових аудиторій.",
-      feat_tag: "Можливості",
-      feat_title: "Створено для справжнього росту",
-      feat_subtitle: "Автентична взаємодія, безпечна інтеграція та чесна економіка балів",
-      feat1_title: "Офіційний OAuth",
-      feat1_text: "Безпечна автентифікація через Google OAuth 2.0. Твої облікові дані ніколи не зберігаються на наших серверах.",
-      feat2_title: "Реальні дії",
-      feat2_text: "Підписки та лайки на YouTube відбуваються через офіційний YouTube Data API v3 з твоєю явною авторизацією.",
-      feat3_title: "Чесна економіка",
-      feat3_text: "Заробляй бали за справжню взаємодію. Витрачай бали щоб рости. Жодних ботів, фейкових акаунтів чи обхідних шляхів.",
-      feat4_title: "Прозора історія",
-      feat4_text: "Кожна транзакція відстежується. Дивись точно як ти заробив та витратив кожен бал на своєму акаунті.",
-      feat5_title: "Таргетовані кампанії",
-      feat5_text: "Обирай тип дії та розмір цільової аудиторії. Кампанії працюють до повного виконання.",
-      feat6_title: "Приватність насамперед",
-      feat6_text: "Ми запитуємо лише мінімально необхідні дозволи. Відключи в будь-який момент. Твої дані залишаються твоїми.",
-      cta_title: "Готовий рости?",
-      cta_subtitle: "Приєднуйся до SocialBoost і перетвори взаємодію зі спільнотою на реальне охоплення.",
-      cta_btn: "Незабаром у Google Play та App Store",
-      footer_terms: "Умови використання",
-      footer_privacy: "Політика приватності",
-      footer_contact: "Зв'язатися",
-      footer_copy: "© 2026 SocialBoost. Створено авторами для авторів."
-    }
-  };
-
-  function setLang(lang) {
+  // ============================================================
+  // API CONFIG
+  // ============================================================
+  const API_BASE = 'https://surgeup.app/api/v1';
+  const TOKEN_KEY = 'surgeup_auth_token';
+  
+  // ============================================================
+  // LANGUAGE SWITCHER
+  // ============================================================
+  let currentLang = localStorage.getItem('surgeup_lang') || 'uk';
+  
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('surgeup_lang', lang);
     document.documentElement.lang = lang;
-    localStorage.setItem('lang', lang);
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (translations[lang][key]) {
-        el.innerHTML = translations[lang][key];
+    
+    document.querySelectorAll('[data-uk], [data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + lang);
+      if (text) el.textContent = text;
+    });
+    
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    
+    // Update placeholders
+    const placeholders = {
+      uk: { name: "Ім'я", email: 'email@example.com', password: 'Пароль' },
+      en: { name: 'Name', email: 'email@example.com', password: 'Password' }
+    };
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    if (nameInput) nameInput.placeholder = placeholders[lang].name;
+    if (emailInput) emailInput.placeholder = placeholders[lang].email;
+    if (passwordInput) passwordInput.placeholder = placeholders[lang].password;
+  }
+  
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+  
+  // Init language
+  setLanguage(currentLang);
+  
+  // ============================================================
+  // FAQ ACCORDION
+  // ============================================================
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+  
+  // ============================================================
+  // AUTH MODAL
+  // ============================================================
+  let authMode = 'login'; // 'login' | 'register'
+  let pendingPackage = null;
+  
+  function openModal(mode) {
+    authMode = mode || 'login';
+    pendingPackage = null;
+    updateModalUI();
+    document.getElementById('authModal').classList.add('active');
+    document.getElementById('emailInput').focus();
+  }
+  
+  function closeModal() {
+    document.getElementById('authModal').classList.remove('active');
+    document.getElementById('modalError').classList.remove('active');
+    document.getElementById('emailInput').value = '';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('nameInput').value = '';
+  }
+  
+  function toggleAuthMode() {
+    authMode = authMode === 'login' ? 'register' : 'login';
+    updateModalUI();
+  }
+  
+  function updateModalUI() {
+    const isRegister = authMode === 'register';
+    const t = currentLang === 'uk' ? {
+      title: isRegister ? 'Реєстрація' : 'Увійти',
+      subtitle: isRegister ? 'Створи акаунт та отримай 500 балів безкоштовно 🎁' : 'Увійди щоб купувати бали та керувати кампаніями',
+      submit: isRegister ? 'Створити акаунт' : 'Увійти',
+      toggle: isRegister ? 'Вже є акаунт?' : 'Немає акаунту?',
+      toggleAction: isRegister ? 'Увійти' : 'Зареєструватись',
+    } : {
+      title: isRegister ? 'Sign up' : 'Sign in',
+      subtitle: isRegister ? 'Create an account and get 500 points free 🎁' : 'Sign in to buy points and manage campaigns',
+      submit: isRegister ? 'Create account' : 'Sign in',
+      toggle: isRegister ? 'Already have an account?' : 'No account?',
+      toggleAction: isRegister ? 'Sign in' : 'Sign up',
+    };
+    
+    document.getElementById('modalTitle').textContent = t.title;
+    document.getElementById('modalSubtitle').textContent = t.subtitle;
+    document.getElementById('submitBtn').textContent = t.submit;
+    document.getElementById('nameInput').style.display = isRegister ? 'block' : 'none';
+    document.getElementById('modalToggle').innerHTML = `<span>${t.toggle}</span> <a onclick="toggleAuthMode()">${t.toggleAction}</a>`;
+  }
+  
+  document.getElementById('authModal').addEventListener('click', e => {
+    if (e.target.id === 'authModal') closeModal();
+  });
+  
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Enter' && document.getElementById('authModal').classList.contains('active')) submitAuth();
+  });
+  
+  function showError(msg) {
+    const el = document.getElementById('modalError');
+    el.textContent = msg;
+    el.classList.add('active');
+    setTimeout(() => el.classList.remove('active'), 6000);
+  }
+  
+  // ============================================================
+  // AUTH SUBMIT (login / register)
+  // ============================================================
+  async function submitAuth() {
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const name = document.getElementById('nameInput').value.trim();
+    const isRegister = authMode === 'register';
+    
+    if (!email || !password) {
+      showError(currentLang === 'uk' ? 'Заповніть email та пароль' : 'Fill in email and password');
+      return;
+    }
+    if (isRegister && !name) {
+      showError(currentLang === 'uk' ? "Введіть ім'я" : 'Enter your name');
+      return;
+    }
+    if (password.length < 6) {
+      showError(currentLang === 'uk' ? 'Пароль мінімум 6 символів' : 'Password min 6 characters');
+      return;
+    }
+    
+    const btn = document.getElementById('submitBtn');
+    const originalText = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+    
+    try {
+      const url = isRegister ? `${API_BASE}/auth/register` : `${API_BASE}/auth/login`;
+      const body = isRegister 
+        ? JSON.stringify({ email, password, displayName: name })
+        : JSON.stringify({ email, password });
+      
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.message || (currentLang === 'uk' ? 'Помилка входу' : 'Login failed'));
+      }
+      
+      if (data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+        closeModal();
+        
+        if (pendingPackage) {
+          await proceedToCheckout(pendingPackage);
+        } else {
+          // Just authenticated — show success and reload
+          showSuccessToast(currentLang === 'uk' ? 'Успішно! Перенаправляємо...' : 'Success! Redirecting...');
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      }
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  }
+  
+  // ============================================================
+  // GOOGLE LOGIN (simulated for now)
+  // ============================================================
+  async function loginGoogle() {
+    // TODO: Replace with real Google OAuth flow
+    try {
+      const res = await fetch(`${API_BASE}/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: 'volod@gmail.com', displayName: 'Volod' })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+        closeModal();
+        if (pendingPackage) await proceedToCheckout(pendingPackage);
+        else { showSuccessToast(currentLang === 'uk' ? 'Успішно!' : 'Success!'); setTimeout(() => window.location.reload(), 1000); }
+      }
+    } catch (err) {
+      showError(currentLang === 'uk' ? 'Помилка Google входу' : 'Google login failed');
+    }
+  }
+  
+  // ============================================================
+  // BUY POINTS PACK (Stripe Checkout)
+  // ============================================================
+  async function buyPack(packageId) {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      pendingPackage = packageId;
+      openModal('login');
+      return;
+    }
+    await proceedToCheckout(packageId);
+  }
+  
+  async function proceedToCheckout(packageId) {
+    showSuccessToast(currentLang === 'uk' ? 'Створюємо платіж...' : 'Creating payment...');
+    try {
+      const token = localStorage.getItem(TOKEN_KEY);
+      const res = await fetch(`${API_BASE}/payments/create-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ packageId })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.message || 'No checkout URL');
+      }
+    } catch (err) {
+      showSuccessToast((currentLang === 'uk' ? 'Помилка: ' : 'Error: ') + err.message, true);
+    }
+  }
+  
+  // ============================================================
+  // TOAST NOTIFICATIONS
+  // ============================================================
+  function showSuccessToast(msg, isError) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      padding: 14px 24px; border-radius: 14px;
+      background: ${isError ? 'rgba(244, 63, 94, 0.95)' : 'rgba(16, 185, 129, 0.95)'};
+      color: white; font-weight: 700; font-size: 14px; z-index: 9999;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      opacity: 0; transition: all 0.3s;
+    `;
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(-20px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+  
+  // ============================================================
+  // SMOOTH SCROLL OFFSET
+  // ============================================================
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const targetId = a.getAttribute('href').slice(1);
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        const navHeight = document.querySelector('nav').offsetHeight;
+        const top = target.offsetTop - navHeight - 20;
+        window.scrollTo({ top, behavior: 'smooth' });
       }
     });
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-    });
-  }
-
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => setLang(btn.getAttribute('data-lang')));
   });
-
-  // Detect language on load
-  const savedLang = localStorage.getItem('lang');
-  const browserLang = navigator.language.startsWith('uk') ? 'uk' : 'en';
-  setLang(savedLang || browserLang);
 </script>
 </body>
 </html>
