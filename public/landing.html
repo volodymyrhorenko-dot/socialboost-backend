@@ -244,7 +244,20 @@
   .modal-error { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); color: #F43F5E; padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px; display: none; }
   .modal-error.active { display: block; }
   
-  @media (max-width: 768px) {
+  .user-pill { display: flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; background: #0F0F18; border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 100px; cursor: pointer; transition: all 0.2s; }
+.user-pill:hover { border-color: #7C3AED; background: rgba(124, 58, 237, 0.1); }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #7C3AED, #EC4899); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 13px; }
+.user-name { color: #F1F0FF; font-weight: 600; font-size: 13px; }
+.user-balance { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 100px; color: #10B981; font-weight: 800; font-size: 12px; }
+.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: #0F0F18; border: 1px solid #2A2A3A; border-radius: 14px; padding: 8px; min-width: 220px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); display: none; z-index: 200; }
+.user-dropdown.active { display: block; }
+.user-dropdown-info { padding: 12px 14px; border-bottom: 1px solid #2A2A3A; margin-bottom: 6px; }
+.user-dropdown-email { color: #9B99BB; font-size: 12px; }
+.user-dropdown a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; color: #F1F0FF; text-decoration: none; border-radius: 10px; font-size: 14px; transition: background 0.15s; cursor: pointer; }
+.user-dropdown a:hover { background: rgba(124, 58, 237, 0.1); color: #A78BFA; }
+.user-dropdown a.danger:hover { background: rgba(244, 63, 94, 0.1); color: #F43F5E; }
+#authArea { position: relative; }
+@media (max-width: 768px) {
     .nav-links { display: none; }
     .hero { padding: 60px 0 40px; }
     .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
@@ -813,6 +826,97 @@
       setTimeout(() => toast.remove(), 300);
     }, 3000);
   }
+  
+  // ============================================================
+  // USER STATE — fetch profile and update UI
+  // ============================================================
+  let currentUser = null;
+  
+  async function fetchUserProfile() {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) { renderAuthArea(null); return; }
+    try {
+      const res = await fetch(`${API_BASE}/users/me`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        currentUser = await res.json();
+        renderAuthArea(currentUser);
+      } else {
+        // Invalid token
+        localStorage.removeItem(TOKEN_KEY);
+        renderAuthArea(null);
+      }
+    } catch (err) {
+      console.error('Failed to fetch user', err);
+      renderAuthArea(null);
+    }
+  }
+  
+  function renderAuthArea(user) {
+    const area = document.getElementById('authArea');
+    if (!user) {
+      const t = currentLang === 'uk' ? '??????' : 'Sign in';
+      area.innerHTML = `<a href="#" class="btn-primary" onclick="openModal('login'); return false;">${t}</a>`;
+      return;
+    }
+    const name = user.displayName || user.email.split('@')[0];
+    const initial = name.charAt(0).toUpperCase();
+    const balance = user.pointBalance || 0;
+    const t = currentLang === 'uk' 
+      ? { profile: '???????', history: '???????', logout: '?????', buy: '?????? ????' }
+      : { profile: 'Profile', history: 'History', logout: 'Sign out', buy: 'Buy points' };
+    area.innerHTML = `
+      <div class="user-pill" onclick="toggleDropdown(event)">
+        <div class="user-avatar">${initial}</div>
+        <div class="user-name">${name}</div>
+        <div class="user-balance">?? ${balance}</div>
+      </div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-info">
+          <div style="color:#F1F0FF;font-weight:700;font-size:14px;margin-bottom:2px">${name}</div>
+          <div class="user-dropdown-email">${user.email}</div>
+        </div>
+        <a onclick="scrollToPricing()">?? ${t.buy}</a>
+        <a class="danger" onclick="logout()">?? ${t.logout}</a>
+      </div>
+    `;
+  }
+  
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('userDropdown').classList.toggle('active');
+  }
+  
+  function scrollToPricing() {
+    document.getElementById('userDropdown').classList.remove('active');
+    const target = document.getElementById('pricing');
+    const navHeight = document.querySelector('nav').offsetHeight;
+    window.scrollTo({ top: target.offsetTop - navHeight - 20, behavior: 'smooth' });
+  }
+  
+  function logout() {
+    localStorage.removeItem(TOKEN_KEY);
+    currentUser = null;
+    renderAuthArea(null);
+    showSuccessToast(currentLang === 'uk' ? '?? ??????' : 'Signed out');
+  }
+  
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    const dropdown = document.getElementById('userDropdown');
+    if (dropdown && !e.target.closest('#authArea')) dropdown.classList.remove('active');
+  });
+  
+  // Re-render auth area when language changes
+  const originalSetLang = setLanguage;
+  setLanguage = function(lang) {
+    originalSetLang(lang);
+    if (currentUser !== undefined) renderAuthArea(currentUser);
+  };
+  
+  // Initial fetch
+  fetchUserProfile();
   
   // ============================================================
   // SMOOTH SCROLL OFFSET
