@@ -17,6 +17,7 @@ async function bootstrap() {
     }));
     app.setGlobalPrefix('api/v1', {
         exclude: [
+            { path: '/', method: 0 },
             { path: 'tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt', method: 0 },
             { path: 'terms', method: 0 },
             { path: 'privacy', method: 0 },

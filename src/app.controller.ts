@@ -1,8 +1,20 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Controller()
 export class AppController {
+  @Get()
+  landing(@Res() res: Response) {
+    const landingPath = path.join(process.cwd(), 'public', 'landing.html');
+    if (fs.existsSync(landingPath)) {
+      res.type('text/html').send(fs.readFileSync(landingPath, 'utf-8'));
+    } else {
+      res.type('text/html').send('<h1>SocialBoost</h1><p>Landing not found</p>');
+    }
+  }
+
   @Get('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt')
   tiktokVerification(@Res() res: Response) {
     res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
