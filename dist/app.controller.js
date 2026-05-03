@@ -8,28 +8,82 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
 let AppController = class AppController {
-    appService;
-    constructor(appService) {
-        this.appService = appService;
+    tiktokVerification(res) {
+        res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
     }
-    getHello() {
-        return this.appService.getHello();
+    terms(res) {
+        res.type('text/html').send(`
+      <html><head><meta charset="utf-8"><title>Terms of Service</title></head>
+      <body style="font-family:sans-serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.6;color:#333">
+        <h1>Terms of Service</h1>
+        <p>Last updated: ${new Date().toLocaleDateString()}</p>
+        <h2>1. Acceptance</h2>
+        <p>By using SocialBoost, you agree to these terms.</p>
+        <h2>2. Service Description</h2>
+        <p>SocialBoost is a mutual growth platform where users earn points by completing tasks (subscribing, liking) on TikTok and YouTube, and spend points to promote their own content.</p>
+        <h2>3. User Responsibilities</h2>
+        <p>You must comply with TikTok and YouTube Terms of Service. You are responsible for content you promote.</p>
+        <h2>4. Points System</h2>
+        <p>Points have no monetary value and cannot be exchanged for cash.</p>
+        <h2>5. Account Termination</h2>
+        <p>We reserve the right to terminate accounts that violate these terms.</p>
+        <h2>6. Contact</h2>
+        <p>For questions: support@socialboost.app</p>
+      </body></html>
+    `);
+    }
+    privacy(res) {
+        res.type('text/html').send(`
+      <html><head><meta charset="utf-8"><title>Privacy Policy</title></head>
+      <body style="font-family:sans-serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.6;color:#333">
+        <h1>Privacy Policy</h1>
+        <p>Last updated: ${new Date().toLocaleDateString()}</p>
+        <h2>1. Information We Collect</h2>
+        <p>We collect: email address, display name, YouTube/TikTok account info (when you connect them via OAuth).</p>
+        <h2>2. How We Use Information</h2>
+        <p>To provide our service: authenticate you, perform actions on your behalf (subscribing, liking with your explicit consent), track your points balance.</p>
+        <h2>3. Data Sharing</h2>
+        <p>We do not sell your data. We share data only with TikTok/YouTube APIs to perform actions you authorize.</p>
+        <h2>4. Data Storage</h2>
+        <p>Data is stored securely on Railway PostgreSQL servers. Passwords are hashed with bcrypt.</p>
+        <h2>5. Your Rights</h2>
+        <p>You can delete your account anytime. You can revoke YouTube/TikTok access via their account settings.</p>
+        <h2>6. Contact</h2>
+        <p>For privacy concerns: privacy@socialboost.app</p>
+      </body></html>
+    `);
     }
 };
 exports.AppController = AppController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt'),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getHello", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "tiktokVerification", null);
+__decorate([
+    (0, common_1.Get)('terms'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "terms", null);
+__decorate([
+    (0, common_1.Get)('privacy'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "privacy", null);
 exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    (0, common_1.Controller)()
 ], AppController);
 //# sourceMappingURL=app.controller.js.map
