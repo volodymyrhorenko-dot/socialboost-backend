@@ -17,4 +17,10 @@ export declare class YouTubeController {
     }, req: any): Promise<{
         success: boolean;
     }>;
+    comment(body: {
+        videoUrl: string;
+        commentText: string;
+    }, req: any): Promise<{
+        success: boolean;
+    }>;
 }

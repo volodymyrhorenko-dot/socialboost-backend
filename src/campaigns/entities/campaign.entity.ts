@@ -10,6 +10,7 @@ export enum CampaignType {
   SUBSCRIBE = 'subscribe',
   LIKE = 'like',
   WATCH = 'watch',
+  COMMENT = 'comment',
 }
 
 export enum CampaignStatus {

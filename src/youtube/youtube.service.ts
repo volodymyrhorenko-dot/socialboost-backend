@@ -135,6 +135,36 @@ export class YouTubeService {
     return { success: true };
   }
 
+  async comment(userId: string, videoUrl: string, commentText: string): Promise<{ success: boolean }> {
+    const accessToken = await this.getValidAccessToken(userId);
+    const videoId = this.extractVideoId(videoUrl);
+    if (!videoId) throw new BadRequestException('Невірне посилання на відео');
+    if (!commentText || commentText.trim().length < 5) throw new BadRequestException('Коментар занадто короткий');
+
+    const response = await fetch('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        snippet: {
+          videoId,
+          topLevelComment: {
+            snippet: { textOriginal: commentText.trim() },
+          },
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const error: any = await response.json();
+      throw new BadRequestException(`Comment failed: ${error.error?.message || 'unknown'}`);
+    }
+
+    return { success: true };
+  }
+
   async like(userId: string, videoUrl: string): Promise<{ success: boolean }> {
     const accessToken = await this.getValidAccessToken(userId);
     const videoId = this.extractVideoId(videoUrl);

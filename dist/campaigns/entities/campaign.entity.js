@@ -22,6 +22,7 @@ var CampaignType;
     CampaignType["SUBSCRIBE"] = "subscribe";
     CampaignType["LIKE"] = "like";
     CampaignType["WATCH"] = "watch";
+    CampaignType["COMMENT"] = "comment";
 })(CampaignType || (exports.CampaignType = CampaignType = {}));
 var CampaignStatus;
 (function (CampaignStatus) {

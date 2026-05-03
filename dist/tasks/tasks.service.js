@@ -17,19 +17,25 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const campaign_entity_1 = require("../campaigns/entities/campaign.entity");
+const task_completion_entity_1 = require("./task-completion.entity");
 const users_service_1 = require("../users/users.service");
 const transactions_service_1 = require("../transactions/transactions.service");
 const transaction_entity_1 = require("../transactions/transaction.entity");
 let TasksService = class TasksService {
     campaignRepo;
+    completionRepo;
     usersService;
     transactionsService;
-    constructor(campaignRepo, usersService, transactionsService) {
+    constructor(campaignRepo, completionRepo, usersService, transactionsService) {
         this.campaignRepo = campaignRepo;
+        this.completionRepo = completionRepo;
         this.usersService = usersService;
         this.transactionsService = transactionsService;
     }
-    async findAll(userId, platform, type) {
+    async findAll(userId, _platform, type) {
+        const completedIds = await this.completionRepo
+            .find({ where: { userId }, select: ['campaignId'] })
+            .then(rows => rows.map(r => r.campaignId));
         const query = this.campaignRepo.createQueryBuilder('campaign')
             .leftJoinAndSelect('campaign.owner', 'owner')
             .where('campaign.status = :status', { status: campaign_entity_1.CampaignStatus.ACTIVE })
@@ -38,6 +44,9 @@ let TasksService = class TasksService {
         query.andWhere('campaign.platform = :p', { p: 'youtube' });
         if (type)
             query.andWhere('campaign.type = :type', { type });
+        if (completedIds.length > 0) {
+            query.andWhere('campaign.id NOT IN (:...ids)', { ids: completedIds });
+        }
         const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
         return campaigns.map(c => ({
             id: c.id,
@@ -60,14 +69,18 @@ let TasksService = class TasksService {
             throw new common_1.BadRequestException('Campaign already completed');
         if (campaign.status !== campaign_entity_1.CampaignStatus.ACTIVE)
             throw new common_1.BadRequestException('Campaign not active');
+        const existing = await this.completionRepo.findOne({ where: { userId, campaignId } });
+        if (existing)
+            throw new common_1.BadRequestException('Завдання вже виконано');
         campaign.completedCount += 1;
         if (campaign.completedCount >= campaign.targetCount) {
             campaign.status = campaign_entity_1.CampaignStatus.COMPLETED;
         }
         await this.campaignRepo.save(campaign);
+        await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
         const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
         await this.usersService.incrementTasksCompleted(userId);
-        const typeLabel = campaign.type === 'subscribe' ? '????????' : campaign.type === 'like' ? '????' : '????????';
+        const typeLabel = campaign.type === campaign_entity_1.CampaignType.SUBSCRIBE ? '????????' : campaign.type === campaign_entity_1.CampaignType.LIKE ? '????' : campaign.type === campaign_entity_1.CampaignType.COMMENT ? '????' : '????????';
         const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
         await this.transactionsService.create({
             userId,
@@ -86,7 +99,9 @@ exports.TasksService = TasksService;
 exports.TasksService = TasksService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
+    __param(1, (0, typeorm_1.InjectRepository)(task_completion_entity_1.TaskCompletion)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         users_service_1.UsersService,
         transactions_service_1.TransactionsService])
 ], TasksService);

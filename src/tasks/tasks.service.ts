@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Campaign, CampaignStatus } from '../campaigns/entities/campaign.entity';
+import { Campaign, CampaignStatus, CampaignType } from '../campaigns/entities/campaign.entity';
+import { TaskCompletion } from './task-completion.entity';
 import { UsersService } from '../users/users.service';
 import { TransactionsService } from '../transactions/transactions.service';
 import { TransactionType } from '../transactions/transaction.entity';
@@ -11,11 +12,17 @@ export class TasksService {
   constructor(
     @InjectRepository(Campaign)
     private campaignRepo: Repository<Campaign>,
+    @InjectRepository(TaskCompletion)
+    private completionRepo: Repository<TaskCompletion>,
     private usersService: UsersService,
     private transactionsService: TransactionsService,
   ) {}
 
-  async findAll(userId: string, platform?: string, type?: string): Promise<any[]> {
+  async findAll(userId: string, _platform?: string, type?: string): Promise<any[]> {
+    const completedIds = await this.completionRepo
+      .find({ where: { userId }, select: ['campaignId'] })
+      .then(rows => rows.map(r => r.campaignId));
+
     const query = this.campaignRepo.createQueryBuilder('campaign')
       .leftJoinAndSelect('campaign.owner', 'owner')
       .where('campaign.status = :status', { status: CampaignStatus.ACTIVE })
@@ -24,6 +31,9 @@ export class TasksService {
 
     query.andWhere('campaign.platform = :p', { p: 'youtube' });
     if (type) query.andWhere('campaign.type = :type', { type });
+    if (completedIds.length > 0) {
+      query.andWhere('campaign.id NOT IN (:...ids)', { ids: completedIds });
+    }
 
     const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
 
@@ -46,16 +56,21 @@ export class TasksService {
     if (campaign.completedCount >= campaign.targetCount) throw new BadRequestException('Campaign already completed');
     if (campaign.status !== CampaignStatus.ACTIVE) throw new BadRequestException('Campaign not active');
 
+    const existing = await this.completionRepo.findOne({ where: { userId, campaignId } });
+    if (existing) throw new BadRequestException('Завдання вже виконано');
+
     campaign.completedCount += 1;
     if (campaign.completedCount >= campaign.targetCount) {
       campaign.status = CampaignStatus.COMPLETED;
     }
     await this.campaignRepo.save(campaign);
 
+    await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
+
     const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
     await this.usersService.incrementTasksCompleted(userId);
 
-    const typeLabel = campaign.type === 'subscribe' ? '????????' : campaign.type === 'like' ? '????' : '????????';
+    const typeLabel = campaign.type === CampaignType.SUBSCRIBE ? '????????' : campaign.type === CampaignType.LIKE ? '????' : campaign.type === CampaignType.COMMENT ? '????' : '????????';
     const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
     await this.transactionsService.create({
       userId,

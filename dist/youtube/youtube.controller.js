@@ -61,6 +61,9 @@ let YouTubeController = class YouTubeController {
     async like(body, req) {
         return this.youtubeService.like(req.user.id, body.videoUrl);
     }
+    async comment(body, req) {
+        return this.youtubeService.comment(req.user.id, body.videoUrl, body.commentText);
+    }
 };
 exports.YouTubeController = YouTubeController;
 __decorate([
@@ -98,6 +101,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], YouTubeController.prototype, "like", null);
+__decorate([
+    (0, common_1.Post)('comment'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], YouTubeController.prototype, "comment", null);
 exports.YouTubeController = YouTubeController = __decorate([
     (0, common_1.Controller)('youtube'),
     __metadata("design:paramtypes", [youtube_service_1.YouTubeService])

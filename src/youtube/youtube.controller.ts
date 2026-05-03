@@ -56,4 +56,10 @@ export class YouTubeController {
   async like(@Body() body: { videoUrl: string }, @Request() req) {
     return this.youtubeService.like(req.user.id, body.videoUrl);
   }
+
+  @Post('comment')
+  @UseGuards(JwtAuthGuard)
+  async comment(@Body() body: { videoUrl: string; commentText: string }, @Request() req) {
+    return this.youtubeService.comment(req.user.id, body.videoUrl, body.commentText);
+  }
 }

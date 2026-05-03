@@ -13,6 +13,9 @@ export declare class YouTubeService {
     subscribe(userId: string, channelUrl: string): Promise<{
         success: boolean;
     }>;
+    comment(userId: string, videoUrl: string, commentText: string): Promise<{
+        success: boolean;
+    }>;
     like(userId: string, videoUrl: string): Promise<{
         success: boolean;
     }>;

@@ -6,7 +6,8 @@ export declare enum CampaignPlatform {
 export declare enum CampaignType {
     SUBSCRIBE = "subscribe",
     LIKE = "like",
-    WATCH = "watch"
+    WATCH = "watch",
+    COMMENT = "comment"
 }
 export declare enum CampaignStatus {
     ACTIVE = "active",
