@@ -10,6 +10,7 @@ import { PointsModule } from './points/points.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { YouTubeModule } from './youtube/youtube.module';
+import { TikTokModule } from './tiktok/tiktok.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { YouTubeModule } from './youtube/youtube.module';
     PaymentsModule,
     TransactionsModule,
     YouTubeModule,
+    TikTokModule,
   ],
   controllers: [AppController],
 })

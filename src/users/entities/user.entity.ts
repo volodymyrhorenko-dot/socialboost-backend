@@ -50,6 +50,18 @@ export class User {
   @Column({ nullable: true })
   youtubeTokenExpiry: Date;
 
+  @Column({ nullable: true, type: 'text' })
+  tiktokAccessToken: string;
+
+  @Column({ nullable: true, type: 'text' })
+  tiktokRefreshToken: string;
+
+  @Column({ nullable: true })
+  tiktokTokenExpiry: Date;
+
+  @Column({ nullable: true })
+  tiktokOpenId: string;
+
   @Column({ default: false })
   isVip: boolean;
 

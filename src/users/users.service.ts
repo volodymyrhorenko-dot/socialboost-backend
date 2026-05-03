@@ -65,6 +65,18 @@ export class UsersService {
     return this.userRepo.save(user);
   }
 
+  async saveTikTokTokens(userId: string, data: { accessToken: string; refreshToken: string; expiry: Date; openId: string; handle: string; url: string }): Promise<User> {
+    const user = await this.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    user.tiktokAccessToken = data.accessToken;
+    user.tiktokRefreshToken = data.refreshToken;
+    user.tiktokTokenExpiry = data.expiry;
+    user.tiktokOpenId = data.openId;
+    if (data.handle) user.tiktokHandle = data.handle;
+    if (data.url) user.tiktokUrl = data.url;
+    return this.userRepo.save(user);
+  }
+
   async getStats(userId: string) {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');

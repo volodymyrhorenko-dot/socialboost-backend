@@ -17,6 +17,14 @@ export declare class UsersService {
         handle: string;
         url: string;
     }): Promise<User>;
+    saveTikTokTokens(userId: string, data: {
+        accessToken: string;
+        refreshToken: string;
+        expiry: Date;
+        openId: string;
+        handle: string;
+        url: string;
+    }): Promise<User>;
     getStats(userId: string): Promise<{
         pointBalance: number;
         tasksCompleted: number;

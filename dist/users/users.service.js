@@ -84,6 +84,20 @@ let UsersService = class UsersService {
             user.youtubeUrl = data.url;
         return this.userRepo.save(user);
     }
+    async saveTikTokTokens(userId, data) {
+        const user = await this.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        user.tiktokAccessToken = data.accessToken;
+        user.tiktokRefreshToken = data.refreshToken;
+        user.tiktokTokenExpiry = data.expiry;
+        user.tiktokOpenId = data.openId;
+        if (data.handle)
+            user.tiktokHandle = data.handle;
+        if (data.url)
+            user.tiktokUrl = data.url;
+        return this.userRepo.save(user);
+    }
     async getStats(userId) {
         const user = await this.findById(userId);
         if (!user)

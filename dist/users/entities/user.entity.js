@@ -32,6 +32,10 @@ let User = class User {
     youtubeAccessToken;
     youtubeRefreshToken;
     youtubeTokenExpiry;
+    tiktokAccessToken;
+    tiktokRefreshToken;
+    tiktokTokenExpiry;
+    tiktokOpenId;
     isVip;
     tasksCompleted;
     campaignsCreated;
@@ -97,6 +101,22 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
 ], User.prototype, "youtubeTokenExpiry", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'text' }),
+    __metadata("design:type", String)
+], User.prototype, "tiktokAccessToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'text' }),
+    __metadata("design:type", String)
+], User.prototype, "tiktokRefreshToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "tiktokTokenExpiry", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "tiktokOpenId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

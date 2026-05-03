@@ -18,6 +18,10 @@ export declare class User {
     youtubeAccessToken: string;
     youtubeRefreshToken: string;
     youtubeTokenExpiry: Date;
+    tiktokAccessToken: string;
+    tiktokRefreshToken: string;
+    tiktokTokenExpiry: Date;
+    tiktokOpenId: string;
     isVip: boolean;
     tasksCompleted: number;
     campaignsCreated: number;
