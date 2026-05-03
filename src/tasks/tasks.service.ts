@@ -1,4 +1,4 @@
-﻿import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Campaign, CampaignStatus } from '../campaigns/entities/campaign.entity';
@@ -22,7 +22,7 @@ export class TasksService {
       .andWhere('campaign.completedCount < campaign.targetCount')
       .andWhere('owner.id != :userId', { userId });
 
-    if (platform) query.andWhere('campaign.platform = :platform', { platform });
+    query.andWhere('campaign.platform = :p', { p: 'youtube' });
     if (type) query.andWhere('campaign.type = :type', { type });
 
     const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
@@ -55,7 +55,7 @@ export class TasksService {
     const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
     await this.usersService.incrementTasksCompleted(userId);
 
-    const typeLabel = campaign.type === 'subscribe' ? 'підписка' : campaign.type === 'like' ? 'лайк' : 'перегляд';
+    const typeLabel = campaign.type === 'subscribe' ? '????????' : campaign.type === 'like' ? '????' : '????????';
     const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
     await this.transactionsService.create({
       userId,

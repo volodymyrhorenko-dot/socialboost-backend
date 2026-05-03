@@ -35,8 +35,7 @@ let TasksService = class TasksService {
             .where('campaign.status = :status', { status: campaign_entity_1.CampaignStatus.ACTIVE })
             .andWhere('campaign.completedCount < campaign.targetCount')
             .andWhere('owner.id != :userId', { userId });
-        if (platform)
-            query.andWhere('campaign.platform = :platform', { platform });
+        query.andWhere('campaign.platform = :p', { p: 'youtube' });
         if (type)
             query.andWhere('campaign.type = :type', { type });
         const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
@@ -68,7 +67,7 @@ let TasksService = class TasksService {
         await this.campaignRepo.save(campaign);
         const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
         await this.usersService.incrementTasksCompleted(userId);
-        const typeLabel = campaign.type === 'subscribe' ? 'підписка' : campaign.type === 'like' ? 'лайк' : 'перегляд';
+        const typeLabel = campaign.type === 'subscribe' ? '????????' : campaign.type === 'like' ? '????' : '????????';
         const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
         await this.transactionsService.create({
             userId,
