@@ -30,6 +30,7 @@ export declare class UsersService {
     }): Promise<User>;
     activateVip(userId: string, months?: number): Promise<User>;
     checkAndUpdateVipStatus(userId: string): Promise<User>;
+    makeAdmin(userId: string): Promise<void>;
     getStats(userId: string): Promise<{
         pointBalance: number;
         tasksCompleted: number;

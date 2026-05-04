@@ -49,7 +49,21 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const users_service_1 = require("./users/users.service");
 let AppController = class AppController {
+    usersService;
+    constructor(usersService) {
+        this.usersService = usersService;
+    }
+    async makeAdmin(secret, body) {
+        if (secret !== 'surgeup-admin-2024')
+            return { error: 'forbidden' };
+        const user = await this.usersService.findByEmail(body.email);
+        if (!user)
+            return { error: 'user not found' };
+        await this.usersService.makeAdmin(user.id);
+        return { success: true, userId: user.id };
+    }
     serveStaticHtml(res, filename, fallbackTitle) {
         const filePath = path.join(process.cwd(), 'public', filename);
         if (fs.existsSync(filePath)) {
@@ -88,6 +102,14 @@ let AppController = class AppController {
     }
 };
 exports.AppController = AppController;
+__decorate([
+    (0, common_1.Post)('users/make-admin/:secret'),
+    __param(0, (0, common_1.Param)('secret')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "makeAdmin", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
@@ -132,6 +154,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "appStatic", null);
 exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)()
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [users_service_1.UsersService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

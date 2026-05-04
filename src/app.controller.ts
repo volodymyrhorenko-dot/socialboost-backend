@@ -1,10 +1,22 @@
-import { Controller, Get, Res, Param } from '@nestjs/common';
+import { Controller, Get, Post, Res, Param, Body } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
+  constructor(private usersService: UsersService) {}
+
+  @Post('users/make-admin/:secret')
+  async makeAdmin(@Param('secret') secret: string, @Body() body: { email: string }) {
+    if (secret !== 'surgeup-admin-2024') return { error: 'forbidden' };
+    const user = await this.usersService.findByEmail(body.email);
+    if (!user) return { error: 'user not found' };
+    await this.usersService.makeAdmin(user.id);
+    return { success: true, userId: user.id };
+  }
+
   private serveStaticHtml(res: Response, filename: string, fallbackTitle: string) {
     const filePath = path.join(process.cwd(), 'public', filename);
     if (fs.existsSync(filePath)) {

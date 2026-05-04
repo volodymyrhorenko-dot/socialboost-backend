@@ -34,7 +34,7 @@ let TikTokController = class TikTokController {
             <div>
               <div style="font-size:64px">✅</div>
               <h1 style="color:#10B981">TikTok підключено!</h1>
-              <p style="color:#9B99BB">Поверніться до додатку SocialBoost</p>
+              <p style="color:#9B99BB">Поверніться до додатку SurgeUp</p>
             </div>
           </body>
         </html>

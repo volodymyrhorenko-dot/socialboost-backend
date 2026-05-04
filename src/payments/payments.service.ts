@@ -30,7 +30,7 @@ export class PaymentsService {
     const user = await this.usersService.findById(userId);
     if (!user) throw new BadRequestException('User not found');
 
-    const baseUrl = 'https://socialboost-backend-production-6980.up.railway.app/api/v1/payments';
+    const baseUrl = 'https://surgeup.app/api/v1/payments';
 
     if (packageId === 'vip_monthly') {
       const session = await this.stripe.checkout.sessions.create({
@@ -81,7 +81,7 @@ export class PaymentsService {
           currency: 'usd',
           product_data: {
             name: pkg.name,
-            description: pkg.points + ' балів для SocialBoost',
+            description: pkg.points + ' балів для SurgeUp',
           },
           unit_amount: pkg.price,
         },

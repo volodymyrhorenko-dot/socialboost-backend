@@ -77,6 +77,9 @@ export class User {
   @Column({ default: false })
   isLifetimeVip!: boolean;
 
+  @Column({ default: false })
+  isAdmin!: boolean;
+
   @Column({ default: 0 })
   tasksCompleted: number;
 

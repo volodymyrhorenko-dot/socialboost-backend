@@ -37,7 +37,7 @@ let PaymentsController = class PaymentsController {
             <div style="font-size:64px">🎉</div>
             <h1 style="color:#10B981">Оплата успішна!</h1>
             <p style="color:#9B99BB">Бали зараховано на ваш рахунок</p>
-            <p style="color:#5B5980;font-size:13px">Поверніться до додатку SocialBoost</p>
+            <p style="color:#5B5980;font-size:13px">Поверніться до додатку SurgeUp</p>
           </div>
         </body>
       </html>

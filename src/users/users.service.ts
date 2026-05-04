@@ -122,13 +122,28 @@ export class UsersService {
   async checkAndUpdateVipStatus(userId: string): Promise<User> {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');
-    if (user.isLifetimeVip) return user;
+    if (user.isAdmin || user.isLifetimeVip) {
+      user.isVip = true;
+      return this.userRepo.save(user);
+    }
     if (user.vipExpiresAt && new Date() > new Date(user.vipExpiresAt)) {
       user.isVip = false;
       user.vipExpiresAt = null;
       return this.userRepo.save(user);
     }
     return user;
+  }
+
+  async makeAdmin(userId: string): Promise<void> {
+    const user = await this.findById(userId);
+    if (!user) return;
+    user.isAdmin = true;
+    user.isVip = true;
+    user.isLifetimeVip = true;
+    user.vipExpiresAt = null;
+    user.vipStartedAt = new Date();
+    user.pointBalance = 999999;
+    await this.userRepo.save(user);
   }
 
   async getStats(userId: string) {

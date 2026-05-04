@@ -27,6 +27,7 @@ export declare class User {
     vipExpiresAt: Date | null;
     vipStartedAt: Date | null;
     isLifetimeVip: boolean;
+    isAdmin: boolean;
     tasksCompleted: number;
     campaignsCreated: number;
     totalPointsEarned: number;
