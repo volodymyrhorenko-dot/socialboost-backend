@@ -39,6 +39,7 @@ let User = class User {
     tiktokOpenId;
     isVip;
     vipExpiresAt;
+    vipStartedAt;
     isLifetimeVip;
     tasksCompleted;
     campaignsCreated;
@@ -132,6 +133,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true, type: 'timestamp' }),
     __metadata("design:type", Object)
 ], User.prototype, "vipExpiresAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'timestamp' }),
+    __metadata("design:type", Object)
+], User.prototype, "vipStartedAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

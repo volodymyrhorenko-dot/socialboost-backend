@@ -71,6 +71,9 @@ export class User {
   @Column({ nullable: true, type: 'timestamp' })
   vipExpiresAt!: Date | null;
 
+  @Column({ nullable: true, type: 'timestamp' })
+  vipStartedAt!: Date | null;
+
   @Column({ default: false })
   isLifetimeVip!: boolean;
 

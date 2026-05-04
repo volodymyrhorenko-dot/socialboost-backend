@@ -25,6 +25,7 @@ export declare class User {
     tiktokOpenId: string;
     isVip: boolean;
     vipExpiresAt: Date | null;
+    vipStartedAt: Date | null;
     isLifetimeVip: boolean;
     tasksCompleted: number;
     campaignsCreated: number;

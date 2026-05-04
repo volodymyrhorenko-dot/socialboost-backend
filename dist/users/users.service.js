@@ -126,11 +126,13 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException('User not found');
         if (months) {
             const expiry = new Date();
-            expiry.setMonth(expiry.getMonth() + months);
+            expiry.setDate(expiry.getDate() + 30);
             user.vipExpiresAt = expiry;
+            user.vipStartedAt = new Date();
         }
         else {
             user.isLifetimeVip = true;
+            user.vipStartedAt = new Date();
         }
         user.isVip = true;
         return this.userRepo.save(user);
