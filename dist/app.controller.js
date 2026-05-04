@@ -75,6 +75,9 @@ let AppController = class AppController {
         this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
     }
     appStatic(filePath, res) {
+        if (!filePath) {
+            return this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+        }
         const fullPath = path.join(process.cwd(), 'public', 'app', filePath);
         if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
             res.sendFile(fullPath);
@@ -121,8 +124,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "appIndex", null);
 __decorate([
-    (0, common_1.Get)('app/*'),
-    __param(0, (0, common_1.Param)('0')),
+    (0, common_1.Get)('app/*path'),
+    __param(0, (0, common_1.Param)('path')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),

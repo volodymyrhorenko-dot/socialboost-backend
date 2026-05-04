@@ -39,8 +39,11 @@ export class AppController {
     this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
   }
 
-  @Get('app/*')
-  appStatic(@Param('0') filePath: string, @Res() res: Response) {
+  @Get('app/*path')
+  appStatic(@Param('path') filePath: string, @Res() res: Response) {
+    if (!filePath) {
+      return this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+    }
     const fullPath = path.join(process.cwd(), 'public', 'app', filePath);
     if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
       res.sendFile(fullPath);

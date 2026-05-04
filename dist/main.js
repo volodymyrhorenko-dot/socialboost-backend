@@ -59,7 +59,7 @@ async function bootstrap() {
             { path: 'terms', method: 0 },
             { path: 'privacy', method: 0 },
             { path: 'app', method: 0 },
-            { path: 'app/(.*)', method: 0 },
+            { path: 'app/*path', method: 0 },
         ],
     });
     const port = process.env.PORT || 3000;
