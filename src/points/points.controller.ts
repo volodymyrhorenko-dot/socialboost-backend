@@ -27,7 +27,8 @@ export class PointsController {
 
     await this.dailyBonusRepo.save(this.dailyBonusRepo.create({ userId, date: today, type: 'daily' }));
 
-    const points = 100;
+    const currentUser = await this.usersService.findById(userId);
+    const points = currentUser?.isVip ? 200 : 100;
     const user = await this.usersService.updatePoints(userId, points);
     await this.transactionsService.create({
       userId,

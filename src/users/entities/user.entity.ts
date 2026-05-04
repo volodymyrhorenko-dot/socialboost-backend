@@ -68,6 +68,12 @@ export class User {
   @Column({ default: false })
   isVip: boolean;
 
+  @Column({ nullable: true, type: 'timestamp' })
+  vipExpiresAt!: Date | null;
+
+  @Column({ default: false })
+  isLifetimeVip!: boolean;
+
   @Column({ default: 0 })
   tasksCompleted: number;
 

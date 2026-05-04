@@ -78,7 +78,11 @@ let TasksService = class TasksService {
         }
         await this.campaignRepo.save(campaign);
         await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
-        const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
+        const completingUser = await this.usersService.findById(userId);
+        const pointsToAdd = completingUser?.isVip
+            ? Math.round(campaign.pointsPerAction * 1.5)
+            : campaign.pointsPerAction;
+        const user = await this.usersService.updatePoints(userId, pointsToAdd);
         await this.usersService.incrementTasksCompleted(userId);
         const typeLabel = campaign.type === campaign_entity_1.CampaignType.SUBSCRIBE ? 'Підписка' :
             campaign.type === campaign_entity_1.CampaignType.LIKE ? 'Лайк' :
@@ -87,11 +91,11 @@ let TasksService = class TasksService {
         await this.transactionsService.create({
             userId,
             type: transaction_entity_1.TransactionType.EARN,
-            amount: campaign.pointsPerAction,
-            description: `YouTube • ${typeLabel} +${campaign.pointsPerAction} балів`,
+            amount: pointsToAdd,
+            description: `YouTube • ${typeLabel} +${pointsToAdd} балів${completingUser?.isVip ? ' 👑' : ''}`,
             balanceAfter: user.pointBalance,
         });
-        return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };
+        return { points: pointsToAdd, balanceAfter: user.pointBalance };
     }
     async seed() {
         return;

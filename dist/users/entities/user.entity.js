@@ -38,6 +38,8 @@ let User = class User {
     tiktokTokenExpiry;
     tiktokOpenId;
     isVip;
+    vipExpiresAt;
+    isLifetimeVip;
     tasksCompleted;
     campaignsCreated;
     totalPointsEarned;
@@ -126,6 +128,14 @@ __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isVip", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'timestamp' }),
+    __metadata("design:type", Object)
+], User.prototype, "vipExpiresAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "isLifetimeVip", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)

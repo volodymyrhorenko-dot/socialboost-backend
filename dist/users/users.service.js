@@ -120,6 +120,34 @@ let UsersService = class UsersService {
             user.tiktokUrl = data.url;
         return this.userRepo.save(user);
     }
+    async activateVip(userId, months) {
+        const user = await this.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        if (months) {
+            const expiry = new Date();
+            expiry.setMonth(expiry.getMonth() + months);
+            user.vipExpiresAt = expiry;
+        }
+        else {
+            user.isLifetimeVip = true;
+        }
+        user.isVip = true;
+        return this.userRepo.save(user);
+    }
+    async checkAndUpdateVipStatus(userId) {
+        const user = await this.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        if (user.isLifetimeVip)
+            return user;
+        if (user.vipExpiresAt && new Date() > new Date(user.vipExpiresAt)) {
+            user.isVip = false;
+            user.vipExpiresAt = null;
+            return this.userRepo.save(user);
+        }
+        return user;
+    }
     async getStats(userId) {
         const user = await this.findById(userId);
         if (!user)

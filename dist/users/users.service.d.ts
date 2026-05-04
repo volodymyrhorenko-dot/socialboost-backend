@@ -28,6 +28,8 @@ export declare class UsersService {
         handle: string;
         url: string;
     }): Promise<User>;
+    activateVip(userId: string, months?: number): Promise<User>;
+    checkAndUpdateVipStatus(userId: string): Promise<User>;
     getStats(userId: string): Promise<{
         pointBalance: number;
         tasksCompleted: number;

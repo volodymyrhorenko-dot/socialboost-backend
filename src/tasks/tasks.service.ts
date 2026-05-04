@@ -67,7 +67,12 @@ export class TasksService {
 
     await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
 
-    const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
+    const completingUser = await this.usersService.findById(userId);
+    const pointsToAdd = completingUser?.isVip
+      ? Math.round(campaign.pointsPerAction * 1.5)
+      : campaign.pointsPerAction;
+
+    const user = await this.usersService.updatePoints(userId, pointsToAdd);
     await this.usersService.incrementTasksCompleted(userId);
 
     const typeLabel =
@@ -79,12 +84,12 @@ export class TasksService {
     await this.transactionsService.create({
       userId,
       type: TransactionType.EARN,
-      amount: campaign.pointsPerAction,
-      description: `YouTube • ${typeLabel} +${campaign.pointsPerAction} балів`,
+      amount: pointsToAdd,
+      description: `YouTube • ${typeLabel} +${pointsToAdd} балів${completingUser?.isVip ? ' 👑' : ''}`,
       balanceAfter: user.pointBalance,
     });
 
-    return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };
+    return { points: pointsToAdd, balanceAfter: user.pointBalance };
   }
 
   async seed(): Promise<void> {

@@ -27,11 +27,52 @@ export class PaymentsService {
   }
 
   async createCheckoutSession(userId: string, packageId: string) {
-    const pkg = PACKAGES[packageId];
-    if (!pkg) throw new BadRequestException('Invalid package');
-
     const user = await this.usersService.findById(userId);
     if (!user) throw new BadRequestException('User not found');
+
+    const baseUrl = 'https://socialboost-backend-production-6980.up.railway.app/api/v1/payments';
+
+    if (packageId === 'vip_monthly') {
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price_data: {
+            currency: 'usd',
+            product_data: { name: 'VIP Місячна підписка', description: '+50% балів, 200 щоденний бонус' },
+            unit_amount: 499,
+            recurring: { interval: 'month' },
+          },
+          quantity: 1,
+        }],
+        mode: 'subscription',
+        success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/cancel`,
+        metadata: { userId, packageId },
+      });
+      return { url: session.url, sessionId: session.id };
+    }
+
+    if (packageId === 'vip_lifetime') {
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price_data: {
+            currency: 'usd',
+            product_data: { name: 'VIP Назавжди', description: '+50% балів назавжди, 200 щоденний бонус' },
+            unit_amount: 1999,
+          },
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/cancel`,
+        metadata: { userId, packageId },
+      });
+      return { url: session.url, sessionId: session.id };
+    }
+
+    const pkg = PACKAGES[packageId];
+    if (!pkg) throw new BadRequestException('Invalid package');
 
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -47,8 +88,8 @@ export class PaymentsService {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: 'https://socialboost-backend-production-6980.up.railway.app/api/v1/payments/success?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'https://socialboost-backend-production-6980.up.railway.app/api/v1/payments/cancel',
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cancel`,
       metadata: {
         userId,
         packageId,
@@ -63,8 +104,14 @@ export class PaymentsService {
     const event = payload;
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      const { userId, points } = session.metadata;
-      await this.creditPurchase(userId, parseInt(points));
+      const { userId, packageId, points } = session.metadata;
+      if (packageId === 'vip_monthly') {
+        await this.usersService.activateVip(userId, 1);
+      } else if (packageId === 'vip_lifetime') {
+        await this.usersService.activateVip(userId);
+      } else if (points) {
+        await this.creditPurchase(userId, parseInt(points));
+      }
     }
     return { received: true };
   }
@@ -73,8 +120,14 @@ export class PaymentsService {
     try {
       const session = await this.stripe.checkout.sessions.retrieve(sessionId);
       if (session.payment_status === 'paid') {
-        const { userId, points } = session.metadata;
-        await this.creditPurchase(userId, parseInt(points));
+        const { userId, packageId, points } = session.metadata;
+        if (packageId === 'vip_monthly') {
+          await this.usersService.activateVip(userId, 1);
+        } else if (packageId === 'vip_lifetime') {
+          await this.usersService.activateVip(userId);
+        } else if (points) {
+          await this.creditPurchase(userId, parseInt(points));
+        }
       }
     } catch (e) {
       console.error('Handle success error:', e);
