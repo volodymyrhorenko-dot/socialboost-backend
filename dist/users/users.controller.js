@@ -22,7 +22,13 @@ let UsersController = class UsersController {
         this.usersService = usersService;
     }
     getMe(req) {
-        return req.user;
+        const user = req.user;
+        console.log('getMe response:', JSON.stringify({
+            isVip: user.isVip,
+            vipExpiresAt: user.vipExpiresAt,
+            vipStartedAt: user.vipStartedAt,
+        }));
+        return user;
     }
     getStats(req) {
         return this.usersService.getStats(req.user.id);

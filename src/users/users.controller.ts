@@ -9,7 +9,13 @@ export class UsersController {
 
   @Get('me')
   getMe(@Request() req) {
-    return req.user;
+    const user = req.user;
+    console.log('getMe response:', JSON.stringify({
+      isVip: user.isVip,
+      vipExpiresAt: user.vipExpiresAt,
+      vipStartedAt: user.vipStartedAt,
+    }));
+    return user;
   }
 
   @Get('me/stats')
