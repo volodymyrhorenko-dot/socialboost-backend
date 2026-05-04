@@ -41,6 +41,9 @@ export class User {
   @Column({ nullable: true })
   youtubeHandle: string;
 
+  @Column({ nullable: true, unique: true })
+  youtubeChannelId: string;
+
   @Column({ nullable: true, type: 'text' })
   youtubeAccessToken: string;
 

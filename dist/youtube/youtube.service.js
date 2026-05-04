@@ -62,13 +62,25 @@ let YouTubeService = class YouTubeService {
         });
         const channelData = await channelResponse.json();
         const channel = channelData.items?.[0];
+        if (!channel) {
+            throw new common_1.BadRequestException('Не вдалося отримати дані вашого YouTube каналу');
+        }
+        const existingUser = await this.usersService.findByYouTubeChannelId(channel.id);
+        if (existingUser && existingUser.id !== userId) {
+            throw new common_1.ConflictException('Цей YouTube канал вже підключено до іншого акаунту SurgeUp. Спочатку відв\'яжіть його там.');
+        }
         await this.usersService.saveYouTubeTokens(userId, {
             accessToken: tokens.access_token,
             refreshToken: tokens.refresh_token,
             expiry,
             handle: channel?.snippet?.customUrl || channel?.snippet?.title || '',
-            url: channel ? `https://youtube.com/channel/${channel.id}` : '',
+            url: `https://youtube.com/channel/${channel.id}`,
+            channelId: channel.id,
         });
+    }
+    async disconnect(userId) {
+        await this.usersService.disconnectYouTube(userId);
+        return { success: true };
     }
     async getValidAccessToken(userId) {
         const user = await this.usersService.findById(userId);
@@ -89,7 +101,7 @@ let YouTubeService = class YouTubeService {
             }).toString(),
         });
         if (!refreshResponse.ok) {
-            throw new common_1.BadRequestException('Не вдалось оновити токен YouTube');
+            throw new common_1.BadRequestException('Не вдалося оновити токен YouTube');
         }
         const tokens = await refreshResponse.json();
         const expiry = new Date(Date.now() + (tokens.expires_in * 1000));
@@ -106,7 +118,7 @@ let YouTubeService = class YouTubeService {
         const accessToken = await this.getValidAccessToken(userId);
         const channelId = await this.extractChannelId(channelUrl, accessToken);
         if (!channelId)
-            throw new common_1.BadRequestException('Не вдалось знайти канал');
+            throw new common_1.BadRequestException('Не вдалося знайти канал');
         const response = await fetch('https://www.googleapis.com/youtube/v3/subscriptions?part=snippet', {
             method: 'POST',
             headers: {

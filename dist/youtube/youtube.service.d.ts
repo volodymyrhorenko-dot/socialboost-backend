@@ -9,6 +9,9 @@ export declare class YouTubeService {
     constructor(configService: ConfigService, usersService: UsersService);
     getAuthUrl(userId: string): string;
     handleCallback(code: string, userId: string): Promise<void>;
+    disconnect(userId: string): Promise<{
+        success: boolean;
+    }>;
     private getValidAccessToken;
     subscribe(userId: string, channelUrl: string): Promise<{
         success: boolean;

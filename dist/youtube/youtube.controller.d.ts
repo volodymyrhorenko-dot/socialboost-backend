@@ -23,4 +23,7 @@ export declare class YouTubeController {
     }, req: any): Promise<{
         success: boolean;
     }>;
+    disconnect(req: any): Promise<{
+        success: boolean;
+    }>;
 }

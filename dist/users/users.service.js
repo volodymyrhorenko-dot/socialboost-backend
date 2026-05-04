@@ -28,6 +28,9 @@ let UsersService = class UsersService {
     async findById(id) {
         return this.userRepo.findOne({ where: { id } });
     }
+    async findByYouTubeChannelId(channelId) {
+        return this.userRepo.findOne({ where: { youtubeChannelId: channelId } });
+    }
     async create(data) {
         const user = this.userRepo.create(data);
         return this.userRepo.save(user);
@@ -75,6 +78,13 @@ let UsersService = class UsersService {
         const user = await this.findById(userId);
         if (!user)
             throw new common_1.NotFoundException('User not found');
+        if (data.channelId) {
+            const existingUser = await this.findByYouTubeChannelId(data.channelId);
+            if (existingUser && existingUser.id !== userId) {
+                throw new common_1.ConflictException('Цей YouTube канал вже підключено до іншого акаунту SurgeUp');
+            }
+            user.youtubeChannelId = data.channelId;
+        }
         user.youtubeAccessToken = data.accessToken;
         user.youtubeRefreshToken = data.refreshToken;
         user.youtubeTokenExpiry = data.expiry;
@@ -82,6 +92,18 @@ let UsersService = class UsersService {
             user.youtubeHandle = data.handle;
         if (data.url)
             user.youtubeUrl = data.url;
+        return this.userRepo.save(user);
+    }
+    async disconnectYouTube(userId) {
+        const user = await this.findById(userId);
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        user.youtubeAccessToken = null;
+        user.youtubeRefreshToken = null;
+        user.youtubeTokenExpiry = null;
+        user.youtubeChannelId = null;
+        user.youtubeHandle = null;
+        user.youtubeUrl = null;
         return this.userRepo.save(user);
     }
     async saveTikTokTokens(userId, data) {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -16,6 +16,10 @@ export class UsersService {
 
   async findById(id: string): Promise<User | null> {
     return this.userRepo.findOne({ where: { id } });
+  }
+
+  async findByYouTubeChannelId(channelId: string): Promise<User | null> {
+    return this.userRepo.findOne({ where: { youtubeChannelId: channelId } });
   }
 
   async create(data: Partial<User>): Promise<User> {
@@ -54,14 +58,36 @@ export class UsersService {
     return this.userRepo.save(user);
   }
 
-  async saveYouTubeTokens(userId: string, data: { accessToken: string; refreshToken: string; expiry: Date; handle: string; url: string }): Promise<User> {
+  async saveYouTubeTokens(userId: string, data: { accessToken: string; refreshToken: string; expiry: Date; handle: string; url: string; channelId?: string }): Promise<User> {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');
+
+    // Check uniqueness only when channelId is provided (initial connection)
+    if (data.channelId) {
+      const existingUser = await this.findByYouTubeChannelId(data.channelId);
+      if (existingUser && existingUser.id !== userId) {
+        throw new ConflictException('Цей YouTube канал вже підключено до іншого акаунту SurgeUp');
+      }
+      user.youtubeChannelId = data.channelId;
+    }
+
     user.youtubeAccessToken = data.accessToken;
     user.youtubeRefreshToken = data.refreshToken;
     user.youtubeTokenExpiry = data.expiry;
     if (data.handle) user.youtubeHandle = data.handle;
     if (data.url) user.youtubeUrl = data.url;
+    return this.userRepo.save(user);
+  }
+
+  async disconnectYouTube(userId: string): Promise<User> {
+    const user = await this.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    user.youtubeAccessToken = null;
+    user.youtubeRefreshToken = null;
+    user.youtubeTokenExpiry = null;
+    user.youtubeChannelId = null;
+    user.youtubeHandle = null;
+    user.youtubeUrl = null;
     return this.userRepo.save(user);
   }
 

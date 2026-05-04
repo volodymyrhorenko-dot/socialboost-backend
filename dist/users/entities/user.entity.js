@@ -29,6 +29,7 @@ let User = class User {
     youtubeUrl;
     tiktokHandle;
     youtubeHandle;
+    youtubeChannelId;
     youtubeAccessToken;
     youtubeRefreshToken;
     youtubeTokenExpiry;
@@ -89,6 +90,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "youtubeHandle", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "youtubeChannelId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, type: 'text' }),
     __metadata("design:type", String)

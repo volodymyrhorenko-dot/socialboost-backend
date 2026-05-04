@@ -15,6 +15,7 @@ export declare class User {
     youtubeUrl: string;
     tiktokHandle: string;
     youtubeHandle: string;
+    youtubeChannelId: string;
     youtubeAccessToken: string;
     youtubeRefreshToken: string;
     youtubeTokenExpiry: Date;

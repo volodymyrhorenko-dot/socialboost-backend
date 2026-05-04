@@ -5,6 +5,7 @@ export declare class UsersService {
     constructor(userRepo: Repository<User>);
     findByEmail(email: string): Promise<User | null>;
     findById(id: string): Promise<User | null>;
+    findByYouTubeChannelId(channelId: string): Promise<User | null>;
     create(data: Partial<User>): Promise<User>;
     updatePoints(userId: string, points: number): Promise<User>;
     incrementTasksCompleted(userId: string): Promise<void>;
@@ -16,7 +17,9 @@ export declare class UsersService {
         expiry: Date;
         handle: string;
         url: string;
+        channelId?: string;
     }): Promise<User>;
+    disconnectYouTube(userId: string): Promise<User>;
     saveTikTokTokens(userId: string, data: {
         accessToken: string;
         refreshToken: string;

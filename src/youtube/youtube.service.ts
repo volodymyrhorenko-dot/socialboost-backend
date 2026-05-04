@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 
@@ -58,13 +58,29 @@ export class YouTubeService {
     const channelData: any = await channelResponse.json();
     const channel = channelData.items?.[0];
 
+    if (!channel) {
+      throw new BadRequestException('Не вдалося отримати дані вашого YouTube каналу');
+    }
+
+    // Check uniqueness — one YouTube channel can only be linked to one SurgeUp account
+    const existingUser = await this.usersService.findByYouTubeChannelId(channel.id);
+    if (existingUser && existingUser.id !== userId) {
+      throw new ConflictException('Цей YouTube канал вже підключено до іншого акаунту SurgeUp. Спочатку відв\'яжіть його там.');
+    }
+
     await this.usersService.saveYouTubeTokens(userId, {
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token,
       expiry,
       handle: channel?.snippet?.customUrl || channel?.snippet?.title || '',
-      url: channel ? `https://youtube.com/channel/${channel.id}` : '',
+      url: `https://youtube.com/channel/${channel.id}`,
+      channelId: channel.id,
     });
+  }
+
+  async disconnect(userId: string): Promise<{ success: boolean }> {
+    await this.usersService.disconnectYouTube(userId);
+    return { success: true };
   }
 
   private async getValidAccessToken(userId: string): Promise<string> {
@@ -89,7 +105,7 @@ export class YouTubeService {
     });
 
     if (!refreshResponse.ok) {
-      throw new BadRequestException('Не вдалось оновити токен YouTube');
+      throw new BadRequestException('Не вдалося оновити токен YouTube');
     }
 
     const tokens: any = await refreshResponse.json();
@@ -109,7 +125,7 @@ export class YouTubeService {
   async subscribe(userId: string, channelUrl: string): Promise<{ success: boolean }> {
     const accessToken = await this.getValidAccessToken(userId);
     const channelId = await this.extractChannelId(channelUrl, accessToken);
-    if (!channelId) throw new BadRequestException('Не вдалось знайти канал');
+    if (!channelId) throw new BadRequestException('Не вдалося знайти канал');
 
     const response = await fetch('https://www.googleapis.com/youtube/v3/subscriptions?part=snippet', {
       method: 'POST',
