@@ -18,7 +18,7 @@ export class YouTubeService {
   }
 
   getAuthUrl(userId: string): string {
-    const scope = 'https://www.googleapis.com/auth/youtube';
+    const scope = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl';
     const params = new URLSearchParams({
       client_id: this.clientId,
       redirect_uri: this.redirectUri,
