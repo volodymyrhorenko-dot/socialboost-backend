@@ -80,7 +80,7 @@ let TasksService = class TasksService {
         await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
         const completingUser = await this.usersService.findById(userId);
         const pointsToAdd = completingUser?.isVip
-            ? Math.round(campaign.pointsPerAction * 1.5)
+            ? Math.round(campaign.pointsPerAction * 1.25)
             : campaign.pointsPerAction;
         const user = await this.usersService.updatePoints(userId, pointsToAdd);
         await this.usersService.incrementTasksCompleted(userId);
