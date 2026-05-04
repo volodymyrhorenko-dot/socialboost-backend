@@ -37,6 +37,6 @@ _flutter.buildConfig = {"engineRevision":"31796c1f2d5c98aae266267c682434f3ac3da6
 
 _flutter.loader.load({
   serviceWorkerSettings: {
-    serviceWorkerVersion: "3927697164" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */
+    serviceWorkerVersion: "406445033" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */
   }
 });
