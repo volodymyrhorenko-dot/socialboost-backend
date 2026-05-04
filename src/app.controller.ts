@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Res, Param } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -32,5 +32,20 @@ export class AppController {
   @Get('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt')
   tiktokVerification(@Res() res: Response) {
     res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
+  }
+
+  @Get('app')
+  appIndex(@Res() res: Response) {
+    this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+  }
+
+  @Get('app/*')
+  appStatic(@Param('0') filePath: string, @Res() res: Response) {
+    const fullPath = path.join(process.cwd(), 'public', 'app', filePath);
+    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+      res.sendFile(fullPath);
+    } else {
+      this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+    }
   }
 }

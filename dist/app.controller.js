@@ -71,6 +71,18 @@ let AppController = class AppController {
     tiktokVerification(res) {
         res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
     }
+    appIndex(res) {
+        this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+    }
+    appStatic(filePath, res) {
+        const fullPath = path.join(process.cwd(), 'public', 'app', filePath);
+        if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+            res.sendFile(fullPath);
+        }
+        else {
+            this.serveStaticHtml(res, 'app/index.html', 'SurgeUp App');
+        }
+    }
 };
 exports.AppController = AppController;
 __decorate([
@@ -101,6 +113,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "tiktokVerification", null);
+__decorate([
+    (0, common_1.Get)('app'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "appIndex", null);
+__decorate([
+    (0, common_1.Get)('app/*'),
+    __param(0, (0, common_1.Param)('0')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "appStatic", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)()
 ], AppController);

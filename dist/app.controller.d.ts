@@ -5,4 +5,6 @@ export declare class AppController {
     privacy(res: Response): void;
     terms(res: Response): void;
     tiktokVerification(res: Response): void;
+    appIndex(res: Response): void;
+    appStatic(filePath: string, res: Response): void;
 }
