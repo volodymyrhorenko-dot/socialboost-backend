@@ -80,13 +80,15 @@ let TasksService = class TasksService {
         await this.completionRepo.save(this.completionRepo.create({ userId, campaignId }));
         const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
         await this.usersService.incrementTasksCompleted(userId);
-        const typeLabel = campaign.type === campaign_entity_1.CampaignType.SUBSCRIBE ? '????????' : campaign.type === campaign_entity_1.CampaignType.LIKE ? '????' : campaign.type === campaign_entity_1.CampaignType.COMMENT ? '????' : '????????';
-        const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
+        const typeLabel = campaign.type === campaign_entity_1.CampaignType.SUBSCRIBE ? 'Підписка' :
+            campaign.type === campaign_entity_1.CampaignType.LIKE ? 'Лайк' :
+                campaign.type === campaign_entity_1.CampaignType.COMMENT ? 'Коментар' :
+                    'Перегляд';
         await this.transactionsService.create({
             userId,
             type: transaction_entity_1.TransactionType.EARN,
             amount: campaign.pointsPerAction,
-            description: `${platformLabel} ${typeLabel}`,
+            description: `YouTube • ${typeLabel} +${campaign.pointsPerAction} балів`,
             balanceAfter: user.pointBalance,
         });
         return { points: campaign.pointsPerAction, balanceAfter: user.pointBalance };

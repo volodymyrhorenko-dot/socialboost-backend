@@ -70,13 +70,17 @@ export class TasksService {
     const user = await this.usersService.updatePoints(userId, campaign.pointsPerAction);
     await this.usersService.incrementTasksCompleted(userId);
 
-    const typeLabel = campaign.type === CampaignType.SUBSCRIBE ? '????????' : campaign.type === CampaignType.LIKE ? '????' : campaign.type === CampaignType.COMMENT ? '????' : '????????';
-    const platformLabel = campaign.platform === 'tiktok' ? 'TikTok' : 'YouTube';
+    const typeLabel =
+      campaign.type === CampaignType.SUBSCRIBE ? 'Підписка' :
+      campaign.type === CampaignType.LIKE ? 'Лайк' :
+      campaign.type === CampaignType.COMMENT ? 'Коментар' :
+      'Перегляд';
+
     await this.transactionsService.create({
       userId,
       type: TransactionType.EARN,
       amount: campaign.pointsPerAction,
-      description: `${platformLabel} ${typeLabel}`,
+      description: `YouTube • ${typeLabel} +${campaign.pointsPerAction} балів`,
       balanceAfter: user.pointBalance,
     });
 
