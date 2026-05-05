@@ -19,6 +19,16 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
   }));
 
+  // Serve public/ root (favicons, brand logos, og-image, etc.)
+  app.useStaticAssets(path.join(process.cwd(), 'public'), {
+    index: false,
+    setHeaders: (res, filePath) => {
+      if (/\.(png|jpg|jpeg|webp|svg|ico|woff2?|ttf)$/.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+      }
+    },
+  });
+
   // Serve Flutter web app as static files from /app
   app.useStaticAssets(path.join(process.cwd(), 'public', 'app'), {
     prefix: '/app',

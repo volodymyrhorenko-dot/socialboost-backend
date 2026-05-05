@@ -49,6 +49,14 @@ async function bootstrap() {
         transform: true,
         forbidNonWhitelisted: true,
     }));
+    app.useStaticAssets(path.join(process.cwd(), 'public'), {
+        index: false,
+        setHeaders: (res, filePath) => {
+            if (/\.(png|jpg|jpeg|webp|svg|ico|woff2?|ttf)$/.test(filePath)) {
+                res.setHeader('Cache-Control', 'public, max-age=86400');
+            }
+        },
+    });
     app.useStaticAssets(path.join(process.cwd(), 'public', 'app'), {
         prefix: '/app',
     });
