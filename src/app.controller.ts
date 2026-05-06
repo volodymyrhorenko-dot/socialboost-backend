@@ -41,6 +41,23 @@ export class AppController {
     this.serveStaticHtml(res, 'terms.html', 'Terms of Service');
   }
 
+  @Get('about')
+  about(@Res() res: Response) {
+    this.serveStaticHtml(res, 'about.html', 'Про SurgeUp');
+  }
+
+  @Get('sitemap.xml')
+  sitemap(@Res() res: Response) {
+    res.type('application/xml');
+    return res.sendFile(path.join(process.cwd(), 'public', 'sitemap.xml'));
+  }
+
+  @Get('robots.txt')
+  robots(@Res() res: Response) {
+    res.type('text/plain');
+    return res.sendFile(path.join(process.cwd(), 'public', 'robots.txt'));
+  }
+
   @Get('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt')
   tiktokVerification(@Res() res: Response) {
     res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');

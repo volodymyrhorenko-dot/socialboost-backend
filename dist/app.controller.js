@@ -82,6 +82,17 @@ let AppController = class AppController {
     terms(res) {
         this.serveStaticHtml(res, 'terms.html', 'Terms of Service');
     }
+    about(res) {
+        this.serveStaticHtml(res, 'about.html', 'Про SurgeUp');
+    }
+    sitemap(res) {
+        res.type('application/xml');
+        return res.sendFile(path.join(process.cwd(), 'public', 'sitemap.xml'));
+    }
+    robots(res) {
+        res.type('text/plain');
+        return res.sendFile(path.join(process.cwd(), 'public', 'robots.txt'));
+    }
     tiktokVerification(res) {
         res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
     }
@@ -131,6 +142,27 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "terms", null);
+__decorate([
+    (0, common_1.Get)('about'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "about", null);
+__decorate([
+    (0, common_1.Get)('sitemap.xml'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "sitemap", null);
+__decorate([
+    (0, common_1.Get)('robots.txt'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "robots", null);
 __decorate([
     (0, common_1.Get)('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt'),
     __param(0, (0, common_1.Res)()),

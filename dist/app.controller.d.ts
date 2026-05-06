@@ -18,6 +18,9 @@ export declare class AppController {
     landing(res: Response): void;
     privacy(res: Response): void;
     terms(res: Response): void;
+    about(res: Response): void;
+    sitemap(res: Response): void;
+    robots(res: Response): void;
     tiktokVerification(res: Response): void;
     appIndex(res: Response): void;
     appStatic(filePath: string, res: Response): void;

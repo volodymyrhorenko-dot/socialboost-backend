@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Політика конфіденційності — SurgeUp</title>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G0QZMKM8HN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G0QZMKM8HN', {
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -44,6 +55,7 @@ a:hover { text-decoration: underline; }
 <nav>
   <div class="nav-inner">
     <a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a>
+    <a href="/about" style="color:#9B99BB;font-size:14px;font-weight:500;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#F1F0FF'" onmouseout="this.style.color='#9B99BB'">Про нас</a>
     <div class="lang-switch">
       <button class="lang-btn active" data-lang="uk">UA</button>
       <button class="lang-btn" data-lang="en">EN</button>

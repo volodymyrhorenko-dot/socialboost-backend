@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Про SurgeUp — українська платформа взаємного зростання для YouTube-творців">
+<title>Про SurgeUp — Платформа зростання YouTube-творців</title>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G0QZMKM8HN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G0QZMKM8HN', {
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<meta name="theme-color" content="#81FC10"/>
+<meta property="og:title" content="Про SurgeUp — YouTube Growth Platform"/>
+<meta property="og:description" content="Платформа взаємного зростання для YouTube-творців. Без ботів, тільки справжня взаємодія."/>
+<meta property="og:image" content="https://surgeup.app/brand/og-image.jpg"/>
+<meta property="og:url" content="https://surgeup.app/about"/>
+<meta property="og:type" content="website"/>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #06060B; color: #F1F0FF; overflow-x: hidden; line-height: 1.6; min-height: 100vh; }
+.bg-gradient { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 20% 10%, rgba(124, 58, 237, 0.25) 0%, transparent 50%), radial-gradient(ellipse at 80% 60%, rgba(236, 72, 153, 0.18) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(124, 58, 237, 0.15) 0%, transparent 60%); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(6, 6, 11, 0.7); border-bottom: 1px solid rgba(124, 58, 237, 0.15); padding: 14px 0; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { height: 40px; width: auto; display: block; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: #9B99BB; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: #F1F0FF; }
+.lang-switch { display: flex; gap: 4px; background: #0F0F18; border-radius: 10px; padding: 4px; border: 1px solid #2A2A3A; }
+.lang-btn { padding: 6px 12px; background: none; border: none; color: #9B99BB; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 7px; transition: all 0.2s; }
+.lang-btn.active { background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; text-decoration: none; border: none; cursor: pointer; border-radius: 12px; font-weight: 700; font-size: 14px; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); transition: transform 0.2s, box-shadow 0.2s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(124, 58, 237, 0.5); }
+.hero { padding: 80px 0 60px; text-align: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.3); color: #A78BFA; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+.hero h1 { font-size: clamp(38px, 7vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+.hero h1 .gradient { background: linear-gradient(135deg, #7C3AED, #EC4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p { font-size: clamp(16px, 2.5vw, 20px); color: #9B99BB; max-width: 600px; margin: 0 auto 40px; }
+section { padding: 80px 0; position: relative; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-tag { display: inline-block; padding: 6px 14px; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.3); color: #A78BFA; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; border-radius: 100px; text-transform: uppercase; margin-bottom: 16px; }
+.section-header h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.section-header p { color: #9B99BB; font-size: 17px; max-width: 680px; margin: 0 auto; }
+.mission-box { max-width: 800px; margin: 0 auto; padding: 48px; background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5)); border: 1px solid rgba(124, 58, 237, 0.25); border-radius: 28px; backdrop-filter: blur(10px); text-align: center; position: relative; overflow: hidden; }
+.mission-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.5), transparent); }
+.mission-box p { font-size: 18px; color: #C4C2DD; line-height: 1.8; }
+.mission-icon { font-size: 52px; margin-bottom: 24px; display: block; }
+.values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.value-card { padding: 32px; background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5)); border: 1px solid #2A2A3A; border-radius: 20px; transition: all 0.3s; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+.value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); }
+.value-card:hover { transform: translateY(-6px); border-color: rgba(124, 58, 237, 0.4); box-shadow: 0 20px 40px rgba(124, 58, 237, 0.12); }
+.value-icon { width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(124, 58, 237, 0.3); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 18px; }
+.value-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #F1F0FF; }
+.value-card p { color: #9B99BB; font-size: 14px; line-height: 1.65; }
+.team-box { max-width: 800px; margin: 0 auto; padding: 48px; background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5)); border: 1px solid #2A2A3A; border-radius: 28px; backdrop-filter: blur(10px); text-align: center; }
+.team-icon { margin-bottom: 24px; }
+.team-box p { font-size: 17px; color: #9B99BB; line-height: 1.8; max-width: 600px; margin: 0 auto; }
+.ukraine-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 10px 20px; background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 100px; color: #F1F0FF; font-weight: 600; font-size: 14px; }
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 600px; margin: 0 auto; }
+.contact-card { padding: 32px 24px; background: linear-gradient(135deg, rgba(20, 20, 31, 0.8), rgba(11, 11, 18, 0.5)); border: 1px solid #2A2A3A; border-radius: 20px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s; }
+.contact-card:hover { border-color: rgba(124, 58, 237, 0.4); transform: translateY(-4px); }
+.contact-card .contact-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.contact-card h3 { font-size: 13px; font-weight: 700; color: #5B5980; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.contact-card a { color: #A78BFA; text-decoration: none; font-size: 15px; font-weight: 500; }
+.contact-card a:hover { text-decoration: underline; }
+.stat-row { display: flex; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap; padding: 32px 24px; background: linear-gradient(135deg, rgba(15, 15, 24, 0.8), rgba(11, 11, 18, 0.5)); border-radius: 24px; border: 1px solid rgba(124, 58, 237, 0.15); backdrop-filter: blur(20px); margin-bottom: 60px; }
+.stat-item { text-align: center; }
+.stat-num { font-size: clamp(28px, 4vw, 40px); font-weight: 800; background: linear-gradient(135deg, #7C3AED, #EC4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-label { font-size: 12px; color: #5B5980; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand p { color: #9B99BB; font-size: 14px; margin-top: 14px; max-width: 320px; }
+.footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: #5B5980; margin-bottom: 14px; text-transform: uppercase; }
+.footer-col a { display: block; color: #9B99BB; text-decoration: none; font-size: 14px; padding: 6px 0; transition: color 0.2s; }
+.footer-col a:hover { color: #A78BFA; }
+.footer-bottom { padding-top: 24px; border-top: 1px solid #2A2A3A; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; color: #5B5980; font-size: 13px; }
+@media (max-width: 768px) { .nav-links { display: none; } .hero { padding: 60px 0 40px; } .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; } .footer-col a { display: inline-block; margin: 0 12px; } .mission-box, .team-box { padding: 32px 24px; } }
+</style>
+<style>
+/* === SurgeUp Animations === */
+.hero {
+  position: relative; min-height: 80vh; padding: 100px 0;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.hero-bg-gradient {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(129,252,16,.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(124,58,237,.18), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(236,72,153,.10), transparent 50%);
+  filter: blur(60px);
+  animation: gradientShift 20s ease-in-out infinite;
+}
+@keyframes gradientShift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33%       { transform: translate(-5%,3%) scale(1.05); }
+  66%       { transform: translate(4%,-3%) scale(.95); }
+}
+.hero-3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.7; }
+.hero .container { position: relative; z-index: 3; text-align: center; }
+.hero .container::before {
+  content: ''; position: absolute; inset: -40px; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(15,23,32,.7) 0%, rgba(15,23,32,.4) 50%, transparent 80%);
+  filter: blur(20px);
+}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.gradient-heading {
+  background: linear-gradient(135deg, #81FC10 0%, #7C3AED 50%, #EC4899 100%);
+  background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: gradientFlow 8s ease infinite;
+}
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+.value-card { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(129,252,16,.08);
+  border-color: rgba(129,252,16,.4);
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+  background: #81FC10; transition: width .3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+.logo img { transition: transform .2s ease; }
+.logo:hover img { transform: scale(1.05); }
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  transition: left .6s ease;
+}
+.btn-primary:hover::before { left: 100%; }
+@media (max-width: 768px) {
+  .hero { min-height: 60vh; padding: 60px 0; }
+  .hero .container::before { inset: -20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a>
+    <div class="nav-links">
+      <a href="/#features">Можливості</a>
+      <a href="/#how">Як це працює</a>
+      <a href="/#pricing">Ціни</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/about" class="active">Про нас</a>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="uk">UA</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="/app" class="btn-primary">Відкрити додаток</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-gradient"></div>
+  <canvas id="hero-3d" class="hero-3d-canvas"></canvas>
+  <div class="container">
+    <div class="hero-badge"><span>🇺🇦</span><span>Український продукт</span></div>
+    <h1 class="gradient-heading">Про <span class="gradient">SurgeUp</span></h1>
+    <p>Платформа взаємного зростання для YouTube-творців</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding: 0 0 80px;">
+  <div class="container">
+    <div class="stat-row">
+      <div class="stat-item"><div class="stat-num" id="about-creators">—</div><div class="stat-label">Творців</div></div>
+      <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Ботів</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Google OAuth</div></div>
+      <div class="stat-item"><div class="stat-num">2026</div><div class="stat-label">Рік заснування</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- МІСІЯ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Місія</div>
+      <h2>Наша місія</h2>
+    </div>
+    <div class="mission-box reveal">
+      <span class="mission-icon">🎯</span>
+      <p>SurgeUp створено для творців, які прагнуть рости разом. Ми будуємо чесне середовище де реальні люди обмінюються переглядами, лайками і коментарями — без ботів, без накруток, тільки справжня взаємодія.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ЯК МИ ПРАЦЮЄМО -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Принципи</div>
+      <h2>Як ми працюємо</h2>
+      <p>Чотири стовпи, на яких тримається SurgeUp</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="value-icon">🔍</div>
+        <h3>Прозорість</h3>
+        <p>Кожна дія в SurgeUp ініціюється живим користувачем. Ніяких автоматичних скриптів, ніяких прихованих механізмів.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🔐</div>
+        <h3>Безпека</h3>
+        <p>Google OAuth, без зберігання паролів YouTube. Ваш канал залишається під вашим повним контролем.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">⚖️</div>
+        <h3>Чесна економіка</h3>
+        <p>Система балів забезпечує баланс між тими, хто допомагає, і тими, хто отримує допомогу. Жодних привілеїв без участі.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🤝</div>
+        <h3>Спільнота</h3>
+        <p>50,000+ творців довірились SurgeUp. Разом ми будуємо екосистему підтримки де кожен виграє.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КОМАНДА -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Команда</div>
+      <h2>Хто ми</h2>
+    </div>
+    <div class="team-box reveal">
+      <div class="team-icon">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="url(#grad1)" fill-opacity="0.15"/>
+          <circle cx="40" cy="32" r="14" fill="url(#grad1)" fill-opacity="0.6"/>
+          <ellipse cx="40" cy="62" rx="22" ry="12" fill="url(#grad1)" fill-opacity="0.4"/>
+          <defs>
+            <linearGradient id="grad1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7C3AED"/>
+              <stop offset="1" stop-color="#EC4899"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <p>SurgeUp — український продукт, створений командою з пристрастю до контенту і технологій. Ми самі — творці, тому розуміємо що потрібно для зростання каналу.</p>
+      <div class="ukraine-badge">🇺🇦 Зроблено з любов'ю в Україні</div>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТИ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Контакти</div>
+      <h2>Зв'яжіться з нами</h2>
+      <p>Маєте питання або пропозиції? Ми завжди раді почути від вас.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <span class="contact-icon">✉️</span>
+        <h3>Email</h3>
+        <a href="mailto:volodymyr.horenko@gmail.com">volodymyr.horenko@gmail.com</a>
+      </div>
+      <div class="contact-card reveal">
+        <span class="contact-icon">🌐</span>
+        <h3>Сайт</h3>
+        <a href="https://surgeup.app">surgeup.app</a>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="/app" class="btn-primary" style="font-size:16px;padding:16px 32px;">🚀 Спробувати SurgeUp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a><p>Платформа взаємного росту YouTube каналів.</p></div>
+      <div class="footer-col"><h4>Продукт</h4><a href="/about">Про нас</a><a href="/#features">Можливості</a><a href="/#how">Як це працює</a><a href="/#pricing">Ціни</a><a href="/#faq">FAQ</a></div>
+      <div class="footer-col"><h4>Юридичне</h4><a href="/privacy">Конфіденційність</a><a href="/terms">Умови</a><a href="mailto:support@surgeup.app">Підтримка</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SurgeUp. Всі права захищено.</span>
+      <span>Зроблено з 💜 в Україні</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const currentLang = localStorage.getItem('surgeup_lang') || 'uk';
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  btn.addEventListener('click', () => {
+    localStorage.setItem('surgeup_lang', btn.dataset.lang);
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
+  });
+});
+</script>
+
+<!-- Live platform stats -->
+<script>
+(async () => {
+  const set = (id, v) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.dataset.countTo = String(v);
+    el.textContent = '0';
+  };
+  try {
+    const r = await fetch('/api/v1/public/stats');
+    if (!r.ok) throw new Error('stats ' + r.status);
+    const s = await r.json();
+    set('about-creators', s.creators);
+  } catch (e) {
+    console.warn('Stats fetch failed:', e);
+  }
+})();
+</script>
+
+<!-- Scroll reveal -->
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+<!-- Mouse-glow tracking -->
+<script>
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+</script>
+
+<!-- VanillaTilt 3D card tilt -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<script>
+  if (window.innerWidth >= 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    VanillaTilt.init(document.querySelectorAll('.value-card'), {
+      max: 8, speed: 400, glare: true, 'max-glare': 0.15, scale: 1.02
+    });
+  }
+</script>
+
+<!-- Magnetic CTA buttons -->
+<script>
+  if (window.innerWidth >= 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+  }
+</script>
+
+<!-- Three.js 3D Hero Scene -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  (() => {
+    if (window.innerWidth < 768) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const canvas = document.getElementById('hero-3d');
+    if (!canvas) return;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+    dir.position.set(5, 5, 5);
+    scene.add(dir);
+    const objects = [];
+    const colors = [0x81FC10, 0x7C3AED, 0xEC4899, 0x81FC10];
+    const geometries = [
+      new THREE.IcosahedronGeometry(0.6, 0),
+      new THREE.TorusGeometry(0.4, 0.18, 16, 32),
+      new THREE.OctahedronGeometry(0.55, 0),
+      new THREE.BoxGeometry(0.7, 0.5, 0.1)
+    ];
+    const positions = [
+      { x: -5, y: 1.5, z: 0 },
+      { x: 5, y: 2, z: -1 },
+      { x: -4.5, y: -2, z: 1 },
+      { x: 4.5, y: -1.8, z: 0 }
+    ];
+    geometries.forEach((g, i) => {
+      const m = new THREE.MeshStandardMaterial({
+        color: colors[i], metalness: 0.3, roughness: 0.4, transparent: true, opacity: 0.7
+      });
+      const mesh = new THREE.Mesh(g, m);
+      mesh.position.set(positions[i].x, positions[i].y, positions[i].z);
+      mesh.userData.baseY = positions[i].y;
+      mesh.userData.phase = i * 1.5;
+      scene.add(mesh);
+      objects.push(mesh);
+    });
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+    window.addEventListener('resize', () => {
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    });
+    const clock = new THREE.Clock();
+    const animate = () => {
+      const t = clock.getElapsedTime();
+      objects.forEach((o, i) => {
+        o.rotation.x = t * 0.3 + i;
+        o.rotation.y = t * 0.4 + i;
+        o.position.y = o.userData.baseY + Math.sin(t + o.userData.phase) * 0.3;
+      });
+      camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.05;
+      camera.position.y += (mouseY * 1 - camera.position.y) * 0.05;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    };
+    animate();
+  })();
+</script>
+</body>
+</html>
