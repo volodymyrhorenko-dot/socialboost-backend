@@ -566,27 +566,46 @@ fetchUserProfile();
 <!-- Live platform stats -->
 <script>
 (async () => {
-  const set = (id, v) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.dataset.countTo = String(v);
-    el.textContent = '0';
+  const startCounter = (el) => {
+    const to = parseInt(el.dataset.countTo) || 0;
+    const dur = 2000;
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * to).toLocaleString('uk-UA');
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   };
+
   try {
     const r = await fetch('/api/v1/public/stats');
     if (!r.ok) throw new Error('stats ' + r.status);
     const s = await r.json();
-    set('stat-creators',    s.creators);
-    set('stat-creators-2',  s.creators);
-    set('about-creators',   s.creators);
-    set('stat-tasks-total', s.tasksTotal);
+
+    const set = (id, v) => {
+      const el = document.getElementById(id);
+      if (el) el.dataset.countTo = String(v);
+    };
+
+    set('stat-creators',      s.creators);
+    set('stat-creators-2',    s.creators);
+    set('about-creators',     s.creators);
+    set('stat-tasks-total',   s.tasksTotal);
     set('stat-tasks-total-2', s.tasksTotal);
-    set('stat-tasks-done',  s.tasksCompleted);
-    set('stat-tasks-done-2', s.tasksCompleted);
-    set('stat-channels',    s.channelsConnected);
-    set('stat-channels-2',  s.channelsConnected);
+    set('stat-tasks-done',    s.tasksCompleted);
+    set('stat-tasks-done-2',  s.tasksCompleted);
+    set('stat-channels',      s.channelsConnected);
+    set('stat-channels-2',    s.channelsConnected);
+
+    document.querySelectorAll('[data-count-to]').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) startCounter(el);
+    });
   } catch (e) {
     console.warn('Stats fetch failed:', e);
+    document.querySelectorAll('[data-count-to]').forEach(el => { el.textContent = '—'; });
   }
 })();
 </script>
