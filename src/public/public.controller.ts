@@ -5,7 +5,7 @@ import { User } from '../users/entities/user.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { Campaign, CampaignStatus } from '../campaigns/entities/campaign.entity';
 
-@Controller('api/v1/public')
+@Controller('public')
 export class PublicController {
   constructor(
     @InjectRepository(User) private usersRepo: Repository<User>,

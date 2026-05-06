@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PublicController.prototype, "getStats", null);
 exports.PublicController = PublicController = __decorate([
-    (0, common_1.Controller)('api/v1/public'),
+    (0, common_1.Controller)('public'),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __param(1, (0, typeorm_1.InjectRepository)(task_entity_1.Task)),
     __param(2, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
