@@ -132,9 +132,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 .modal input { width: 100%; padding: 14px 16px; background: #1A1A24; border: 1px solid #2A2A3A; border-radius: 12px; color: #F1F0FF; font-size: 14px; margin-bottom: 12px; transition: border-color 0.2s; outline: none; }
 .modal input:focus { border-color: #7C3AED; }
 .modal .btn-primary { width: 100%; justify-content: center; padding: 14px; margin-top: 8px; }
-.modal-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #5B5980; font-size: 12px; }
-.modal-divider::before, .modal-divider::after { content: ''; flex: 1; height: 1px; background: #2A2A3A; }
-.modal-google { width: 100%; justify-content: center; padding: 14px; }
+
 .modal-toggle { text-align: center; margin-top: 18px; color: #9B99BB; font-size: 14px; }
 .modal-toggle a { color: #A78BFA; text-decoration: none; font-weight: 700; cursor: pointer; }
 .modal-error { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); color: #F43F5E; padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px; display: none; }
@@ -368,8 +366,6 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
     <input type="email" id="emailInput" placeholder="email@example.com">
     <input type="password" id="passwordInput" placeholder="Пароль">
     <button class="btn-primary" id="submitBtn" onclick="submitAuth()">Увійти</button>
-    <div class="modal-divider">або</div>
-    <button class="btn-secondary modal-google" onclick="loginGoogle()"><span style="color:#4285F4;font-size:18px;font-weight:800">G</span><span data-uk="Увійти через Google" data-en="Sign in with Google">Увійти через Google</span></button>
     <div class="modal-toggle" id="modalToggle"></div>
   </div>
 </div>
@@ -510,19 +506,6 @@ async function submitAuth() {
   finally { btn.textContent = originalText; btn.disabled = false; }
 }
 
-async function loginGoogle() {
-  try {
-    const res = await fetch(`${API_BASE}/auth/google`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'volod@gmail.com', displayName: 'Volod' }) });
-    const data = await res.json();
-    if (data.token) {
-      localStorage.setItem(TOKEN_KEY, data.token);
-      closeModal();
-      await fetchUserProfile();
-      showToast(currentLang === 'uk' ? 'Успішно! 🎉' : 'Success! 🎉');
-      if (pendingPackage) { const pkg = pendingPackage; pendingPackage = null; await proceedToCheckout(pkg); }
-    }
-  } catch (err) { showError(currentLang === 'uk' ? 'Помилка Google входу' : 'Google login failed'); }
-}
 
 async function buyPack(packageId) {
   const token = localStorage.getItem(TOKEN_KEY);
