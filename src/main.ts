@@ -46,6 +46,7 @@ async function bootstrap() {
       { path: 'sitemap.xml', method: 0 },
       { path: 'robots.txt', method: 0 },
       { path: 'delete-account', method: 0 },
+      { path: 'child-safety', method: 0 },
     ],
   });
 

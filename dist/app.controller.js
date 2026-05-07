@@ -96,6 +96,9 @@ let AppController = class AppController {
     deleteAccount(res) {
         this.serveStaticHtml(res, 'delete-account.html', 'Видалення облікового запису');
     }
+    childSafety(res) {
+        this.serveStaticHtml(res, 'child-safety.html', 'Стандарти безпеки дітей');
+    }
     tiktokVerification(res) {
         res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
     }
@@ -173,6 +176,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "deleteAccount", null);
+__decorate([
+    (0, common_1.Get)('child-safety'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "childSafety", null);
 __decorate([
     (0, common_1.Get)('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt'),
     __param(0, (0, common_1.Res)()),

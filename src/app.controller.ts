@@ -63,6 +63,11 @@ export class AppController {
     this.serveStaticHtml(res, 'delete-account.html', 'Видалення облікового запису');
   }
 
+  @Get('child-safety')
+  childSafety(@Res() res: Response) {
+    this.serveStaticHtml(res, 'child-safety.html', 'Стандарти безпеки дітей');
+  }
+
   @Get('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt')
   tiktokVerification(@Res() res: Response) {
     res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');
