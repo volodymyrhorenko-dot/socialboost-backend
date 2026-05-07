@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Як видалити свій акаунт у SurgeUp та пов'язані з ним дані">
+<title>Видалення облікового запису — SurgeUp</title>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G0QZMKM8HN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G0QZMKM8HN', {
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<meta name="theme-color" content="#81FC10"/>
+<meta property="og:title" content="Видалення облікового запису — SurgeUp"/>
+<meta property="og:description" content="Як видалити свій акаунт у SurgeUp та пов'язані з ним дані"/>
+<meta property="og:image" content="https://surgeup.app/brand/og-image.jpg"/>
+<meta property="og:url" content="https://surgeup.app/delete-account"/>
+<meta property="og:type" content="website"/>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #06060B; color: #F1F0FF; overflow-x: hidden; line-height: 1.6; min-height: 100vh; }
+.bg-gradient { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 20% 10%, rgba(124, 58, 237, 0.25) 0%, transparent 50%), radial-gradient(ellipse at 80% 60%, rgba(236, 72, 153, 0.18) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(124, 58, 237, 0.15) 0%, transparent 60%); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(6, 6, 11, 0.7); border-bottom: 1px solid rgba(124, 58, 237, 0.15); padding: 14px 0; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { height: 40px; width: auto; display: block; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: #9B99BB; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: #F1F0FF; }
+.lang-switch { display: flex; gap: 4px; background: #0F0F18; border-radius: 10px; padding: 4px; border: 1px solid #2A2A3A; }
+.lang-btn { padding: 6px 12px; background: none; border: none; color: #9B99BB; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 7px; transition: all 0.2s; }
+.lang-btn.active { background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; text-decoration: none; border: none; cursor: pointer; border-radius: 12px; font-weight: 700; font-size: 14px; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); transition: transform 0.2s, box-shadow 0.2s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(124, 58, 237, 0.5); }
+.hero { padding: 80px 0; text-align: center; position: relative; min-height: 60vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero-bg-gradient { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(circle at 20% 30%, rgba(129,252,16,.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(124,58,237,.18), transparent 40%), radial-gradient(circle at 50% 50%, rgba(236,72,153,.10), transparent 50%); filter: blur(60px); animation: gradientShift 20s ease-in-out infinite; }
+@keyframes gradientShift { 0%, 100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-5%,3%) scale(1.05); } 66% { transform: translate(4%,-3%) scale(.95); } }
+.hero .container { position: relative; z-index: 3; }
+.gradient-heading { background: linear-gradient(135deg, #81FC10 0%, #7C3AED 50%, #EC4899 100%); background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gradientFlow 8s ease infinite; font-size: clamp(38px, 7vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+@keyframes gradientFlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.hero-subtitle { font-size: clamp(16px, 2.5vw, 20px); color: #9B99BB; max-width: 600px; margin: 0 auto; }
+.content-section { padding: 40px 0 80px; position: relative; }
+.content-section h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 700; letter-spacing: -0.5px; margin: 48px 0 16px; color: #F1F0FF; }
+.content-section h2:first-child { margin-top: 0; }
+.content-section p { color: #C4C2DD; font-size: 16px; line-height: 1.75; margin-bottom: 16px; }
+.content-section ul { color: #C4C2DD; font-size: 16px; line-height: 1.75; padding-left: 24px; margin-bottom: 16px; }
+.content-section ul li { margin-bottom: 8px; }
+.content-section a { color: #A78BFA; text-decoration: none; }
+.content-section a:hover { text-decoration: underline; }
+.content-section strong { color: #F1F0FF; }
+.email-card { text-align: center; padding: 32px; margin: 24px 0; background: rgba(255,255,255,.03); border-radius: 16px; border: 1px solid rgba(255,255,255,.08); transition: border-color 0.2s; }
+.email-card:hover { border-color: rgba(129,252,16,.25); }
+.email-card a { font-size: 24px; color: #81FC10; text-decoration: none; font-weight: 600; }
+.email-card a:hover { text-decoration: underline; }
+footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand p { color: #9B99BB; font-size: 14px; margin-top: 14px; max-width: 320px; }
+.footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: #5B5980; margin-bottom: 14px; text-transform: uppercase; }
+.footer-col a { display: block; color: #9B99BB; text-decoration: none; font-size: 14px; padding: 6px 0; transition: color 0.2s; }
+.footer-col a:hover { color: #A78BFA; }
+.footer-bottom { padding-top: 24px; border-top: 1px solid #2A2A3A; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; color: #5B5980; font-size: 13px; }
+@media (max-width: 768px) { .nav-links { display: none; } .hero { min-height: 40vh; padding: 60px 0; } .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; } .footer-col a { display: inline-block; margin: 0 12px; } }
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a>
+    <div class="nav-links">
+      <a href="/#features">Можливості</a>
+      <a href="/#how">Як це працює</a>
+      <a href="/#pricing">Ціни</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/about">Про нас</a>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="uk">UA</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="/app" class="btn-primary">Відкрити додаток</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-gradient"></div>
+  <div class="container" style="max-width: 720px;">
+    <h1 class="gradient-heading">Видалення облікового запису</h1>
+    <p class="hero-subtitle">Як видалити свій акаунт у SurgeUp та пов'язані з ним дані</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="container" style="max-width: 720px;">
+    <h2>Як надіслати запит на видалення</h2>
+    <p>Щоб видалити свій обліковий запис у SurgeUp та пов'язані дані, надішліть листа на:</p>
+
+    <div class="email-card">
+      <a href="mailto:support@surgeup.app?subject=Account%20Deletion%20Request">
+        support@surgeup.app
+      </a>
+    </div>
+
+    <p>У листі вкажіть:</p>
+    <ul>
+      <li>Email, з яким зареєстровано обліковий запис у SurgeUp</li>
+      <li>Підтвердження того, що ви бажаєте видалити обліковий запис</li>
+    </ul>
+
+    <h2>Які дані буде видалено</h2>
+    <p>При видаленні облікового запису ми безповоротно видаляємо такі дані:</p>
+    <ul>
+      <li>Email-адреса та ім'я користувача</li>
+      <li>Хешований пароль</li>
+      <li>Підключений YouTube канал (handle, channel ID, OAuth токени)</li>
+      <li>Історія балів і транзакцій</li>
+      <li>Кампанії, створені користувачем</li>
+      <li>Виконані завдання</li>
+    </ul>
+
+    <h2>Які дані можуть зберігатися</h2>
+    <p>З причин відповідності законодавству (наприклад, фінансове законодавство Польщі, GDPR-вимоги щодо аудиту), ми можемо зберігати протягом 5 років:</p>
+    <ul>
+      <li>Записи фінансових транзакцій (для бухгалтерського обліку та податків)</li>
+      <li>Логи безпеки (anonymized, без можливості ідентифікації)</li>
+    </ul>
+
+    <h2>Термін обробки</h2>
+    <p>Запит обробляється протягом <strong>30 днів</strong> з моменту отримання листа. Ви отримаєте підтвердження на email після завершення видалення.</p>
+
+    <h2>Контакти</h2>
+    <p>Питання щодо обробки даних: <a href="mailto:support@surgeup.app">support@surgeup.app</a></p>
+    <p>Політика конфіденційності: <a href="/privacy">surgeup.app/privacy</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a><p>Платформа взаємного росту YouTube каналів.</p></div>
+      <div class="footer-col"><h4>Продукт</h4><a href="/about">Про нас</a><a href="/#features">Можливості</a><a href="/#how">Як це працює</a><a href="/#pricing">Ціни</a><a href="/#faq">FAQ</a></div>
+      <div class="footer-col"><h4>Юридичне</h4><a href="/privacy">Конфіденційність</a><a href="/terms">Умови</a><a href="/delete-account">Видалити акаунт</a><a href="mailto:support@surgeup.app">Підтримка</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SurgeUp. Всі права захищено.</span>
+      <span>Зроблено з 💜 в Україні</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const currentLang = localStorage.getItem('surgeup_lang') || 'uk';
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  btn.addEventListener('click', () => {
+    localStorage.setItem('surgeup_lang', btn.dataset.lang);
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
+  });
+});
+</script>
+</body>
+</html>

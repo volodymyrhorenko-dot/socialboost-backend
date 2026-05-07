@@ -58,6 +58,11 @@ export class AppController {
     return res.sendFile(path.join(process.cwd(), 'public', 'robots.txt'));
   }
 
+  @Get('delete-account')
+  deleteAccount(@Res() res: Response) {
+    this.serveStaticHtml(res, 'delete-account.html', 'Видалення облікового запису');
+  }
+
   @Get('tiktokq4zO2CARHHYwqXYe65LyytYI4HjhO5I7.txt')
   tiktokVerification(@Res() res: Response) {
     res.type('text/plain').send('tiktok-developers-site-verification=q4zO2CARHHYwqXYe65LyytYI4HjhO5I7');

@@ -71,6 +71,7 @@ async function bootstrap() {
             { path: 'about', method: 0 },
             { path: 'sitemap.xml', method: 0 },
             { path: 'robots.txt', method: 0 },
+            { path: 'delete-account', method: 0 },
         ],
     });
     const port = process.env.PORT || 3000;
