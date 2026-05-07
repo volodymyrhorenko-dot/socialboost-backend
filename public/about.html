@@ -117,6 +117,11 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   background: radial-gradient(ellipse at center, rgba(15,23,32,.7) 0%, rgba(15,23,32,.4) 50%, transparent 80%);
   filter: blur(20px);
 }
+.hero::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, #06060B 100%);
+  pointer-events: none; z-index: 4;
+}
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .gradient-heading {
@@ -189,18 +194,6 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
     <div class="hero-badge"><span>🇺🇦</span><span>Український продукт</span></div>
     <h1 class="gradient-heading">Про <span class="gradient">SurgeUp</span></h1>
     <p>Платформа взаємного зростання для YouTube-творців</p>
-  </div>
-</section>
-
-<!-- STATS -->
-<section style="padding: 0 0 80px;">
-  <div class="container">
-    <div class="stat-row reveal">
-      <div class="stat-item"><div class="stat-num" id="about-creators">—</div><div class="stat-label">Творців</div></div>
-      <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Ботів</div></div>
-      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Google OAuth</div></div>
-      <div class="stat-item"><div class="stat-num">2026</div><div class="stat-label">Рік заснування</div></div>
-    </div>
   </div>
 </section>
 
@@ -327,45 +320,6 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
   });
 });
-</script>
-
-<!-- Live platform stats -->
-<script>
-(async () => {
-  const startCounter = (el) => {
-    const to = parseInt(el.dataset.countTo) || 0;
-    const dur = 2000;
-    const start = performance.now();
-    const tick = (now) => {
-      const p = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.floor(eased * to).toLocaleString('uk-UA');
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-
-  try {
-    const r = await fetch('/api/v1/public/stats');
-    if (!r.ok) throw new Error('stats ' + r.status);
-    const s = await r.json();
-
-    const set = (id, v) => {
-      const el = document.getElementById(id);
-      if (el) el.dataset.countTo = String(v);
-    };
-
-    set('about-creators', s.creators);
-
-    document.querySelectorAll('[data-count-to]').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) startCounter(el);
-    });
-  } catch (e) {
-    console.warn('Stats fetch failed:', e);
-    document.querySelectorAll('[data-count-to]').forEach(el => { el.textContent = '—'; });
-  }
-})();
 </script>
 
 <!-- Scroll reveal -->
