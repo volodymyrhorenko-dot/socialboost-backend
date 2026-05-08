@@ -12,6 +12,7 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { YouTubeModule } from './youtube/youtube.module';
 import { TikTokModule } from './tiktok/tiktok.module';
 import { PublicModule } from './public/public.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { PublicModule } from './public/public.module';
     YouTubeModule,
     TikTokModule,
     PublicModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
 })

@@ -21,6 +21,7 @@ const transactions_module_1 = require("./transactions/transactions.module");
 const youtube_module_1 = require("./youtube/youtube.module");
 const tiktok_module_1 = require("./tiktok/tiktok.module");
 const public_module_1 = require("./public/public.module");
+const notifications_module_1 = require("./notifications/notifications.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             youtube_module_1.YouTubeModule,
             tiktok_module_1.TikTokModule,
             public_module_1.PublicModule,
+            notifications_module_1.NotificationsModule,
         ],
         controllers: [app_controller_1.AppController],
     })
