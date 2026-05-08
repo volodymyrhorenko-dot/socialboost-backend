@@ -95,6 +95,8 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 .hero {
   position: relative; min-height: 80vh; padding: 100px 0;
   display: flex; align-items: center; justify-content: center; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
 }
 .hero-bg-gradient {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -116,11 +118,6 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   content: ''; position: absolute; inset: -40px; z-index: -1; pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(15,23,32,.7) 0%, rgba(15,23,32,.4) 50%, transparent 80%);
   filter: blur(20px);
-}
-.hero::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 200px;
-  background: linear-gradient(to bottom, transparent 0%, #06060B 100%);
-  pointer-events: none; z-index: 4;
 }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -170,18 +167,18 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   <div class="container nav-inner">
     <a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a>
     <div class="nav-links">
-      <a href="/#features">Можливості</a>
-      <a href="/#how">Як це працює</a>
-      <a href="/#pricing">Ціни</a>
+      <a href="/#features" data-uk="Можливості" data-en="Features">Можливості</a>
+      <a href="/#how" data-uk="Як це працює" data-en="How it works">Як це працює</a>
+      <a href="/#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a>
       <a href="/#faq">FAQ</a>
-      <a href="/about" class="active">Про нас</a>
+      <a href="/about" class="active" data-uk="Про нас" data-en="About us">Про нас</a>
     </div>
     <div style="display:flex;gap:12px;align-items:center;">
       <div class="lang-switch">
         <button class="lang-btn active" data-lang="uk">UA</button>
         <button class="lang-btn" data-lang="en">EN</button>
       </div>
-      <a href="/app" class="btn-primary">Відкрити додаток</a>
+      <a href="/app" class="btn-primary" data-uk="Відкрити додаток" data-en="Open app">Відкрити додаток</a>
     </div>
   </div>
 </nav>
@@ -191,9 +188,9 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   <div class="hero-bg-gradient"></div>
   <canvas id="hero-3d" class="hero-3d-canvas"></canvas>
   <div class="container">
-    <div class="hero-badge"><span>🇺🇦</span><span>Український продукт</span></div>
+    <div class="hero-badge"><span>🇺🇦</span><span data-uk="Український продукт" data-en="Ukrainian product">Український продукт</span></div>
     <h1 class="gradient-heading">Про <span class="gradient">SurgeUp</span></h1>
-    <p>Платформа взаємного зростання для YouTube-творців</p>
+    <p data-uk="Платформа взаємного зростання для YouTube-творців" data-en="The mutual growth platform for YouTube creators">Платформа взаємного зростання для YouTube-творців</p>
   </div>
 </section>
 
@@ -201,12 +198,12 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <section>
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-tag">Місія</div>
-      <h2>Наша місія</h2>
+      <div class="section-tag" data-uk="Місія" data-en="Mission">Місія</div>
+      <h2 data-uk="Наша місія" data-en="Our mission">Наша місія</h2>
     </div>
     <div class="mission-box reveal">
       <span class="mission-icon">🎯</span>
-      <p>SurgeUp створено для творців, які прагнуть рости разом. Ми будуємо чесне середовище де реальні люди обмінюються переглядами, лайками і коментарями — без ботів, без накруток, тільки справжня взаємодія.</p>
+      <p data-uk="SurgeUp створено для творців, які прагнуть рости разом. Ми будуємо чесне середовище де реальні люди обмінюються переглядами, лайками і коментарями — без ботів, без накруток, тільки справжня взаємодія." data-en="SurgeUp was built for creators who want to grow together. We build an honest environment where real people exchange views, likes and comments — no bots, no fake numbers, just genuine interaction.">SurgeUp створено для творців, які прагнуть рости разом. Ми будуємо чесне середовище де реальні люди обмінюються переглядами, лайками і коментарями — без ботів, без накруток, тільки справжня взаємодія.</p>
     </div>
   </div>
 </section>
@@ -215,30 +212,30 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <section>
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-tag">Принципи</div>
-      <h2>Як ми працюємо</h2>
-      <p>Чотири стовпи, на яких тримається SurgeUp</p>
+      <div class="section-tag" data-uk="Принципи" data-en="Principles">Принципи</div>
+      <h2 data-uk="Як ми працюємо" data-en="How we work">Як ми працюємо</h2>
+      <p data-uk="Чотири стовпи, на яких тримається SurgeUp" data-en="Four pillars that SurgeUp is built on">Чотири стовпи, на яких тримається SurgeUp</p>
     </div>
     <div class="values-grid">
       <div class="value-card reveal">
         <div class="value-icon">🔍</div>
-        <h3>Прозорість</h3>
-        <p>Кожна дія в SurgeUp ініціюється живим користувачем. Ніяких автоматичних скриптів, ніяких прихованих механізмів.</p>
+        <h3 data-uk="Прозорість" data-en="Transparency">Прозорість</h3>
+        <p data-uk="Кожна дія в SurgeUp ініціюється живим користувачем. Ніяких автоматичних скриптів, ніяких прихованих механізмів." data-en="Every action in SurgeUp is initiated by a real user. No automated scripts, no hidden mechanisms.">Кожна дія в SurgeUp ініціюється живим користувачем. Ніяких автоматичних скриптів, ніяких прихованих механізмів.</p>
       </div>
       <div class="value-card reveal">
         <div class="value-icon">🔐</div>
-        <h3>Безпека</h3>
-        <p>Google OAuth, без зберігання паролів YouTube. Ваш канал залишається під вашим повним контролем.</p>
+        <h3 data-uk="Безпека" data-en="Security">Безпека</h3>
+        <p data-uk="Google OAuth, без зберігання паролів YouTube. Ваш канал залишається під вашим повним контролем." data-en="Google OAuth, no stored YouTube passwords. Your channel stays under your full control.">Google OAuth, без зберігання паролів YouTube. Ваш канал залишається під вашим повним контролем.</p>
       </div>
       <div class="value-card reveal">
         <div class="value-icon">⚖️</div>
-        <h3>Чесна економіка</h3>
-        <p>Система балів забезпечує баланс між тими, хто допомагає, і тими, хто отримує допомогу. Жодних привілеїв без участі.</p>
+        <h3 data-uk="Чесна економіка" data-en="Fair economy">Чесна економіка</h3>
+        <p data-uk="Система балів забезпечує баланс між тими, хто допомагає, і тими, хто отримує допомогу. Жодних привілеїв без участі." data-en="The points system ensures balance between those who help and those who receive help. No privileges without participation.">Система балів забезпечує баланс між тими, хто допомагає, і тими, хто отримує допомогу. Жодних привілеїв без участі.</p>
       </div>
       <div class="value-card reveal">
         <div class="value-icon">🤝</div>
-        <h3>Спільнота</h3>
-        <p>50,000+ творців довірились SurgeUp. Разом ми будуємо екосистему підтримки де кожен виграє.</p>
+        <h3 data-uk="Спільнота" data-en="Community">Спільнота</h3>
+        <p data-uk="50,000+ творців довірились SurgeUp. Разом ми будуємо екосистему підтримки де кожен виграє." data-en="50,000+ creators have trusted SurgeUp. Together we build a support ecosystem where everyone wins.">50,000+ творців довірились SurgeUp. Разом ми будуємо екосистему підтримки де кожен виграє.</p>
       </div>
     </div>
   </div>
@@ -248,8 +245,8 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <section>
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-tag">Команда</div>
-      <h2>Хто ми</h2>
+      <div class="section-tag" data-uk="Команда" data-en="Team">Команда</div>
+      <h2 data-uk="Хто ми" data-en="Who we are">Хто ми</h2>
     </div>
     <div class="team-box reveal">
       <div class="team-icon">
@@ -265,8 +262,8 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
           </defs>
         </svg>
       </div>
-      <p>SurgeUp — український продукт, створений командою з пристрастю до контенту і технологій. Ми самі — творці, тому розуміємо що потрібно для зростання каналу.</p>
-      <div class="ukraine-badge">🇺🇦 Зроблено з любов'ю в Україні</div>
+      <p data-uk="SurgeUp — український продукт, створений командою з пристрастю до контенту і технологій. Ми самі — творці, тому розуміємо що потрібно для зростання каналу." data-en="SurgeUp is a Ukrainian startup built by a team with a passion for content and technology. We are creators ourselves, so we understand what it takes to grow a channel.">SurgeUp — український продукт, створений командою з пристрастю до контенту і технологій. Ми самі — творці, тому розуміємо що потрібно для зростання каналу.</p>
+      <div class="ukraine-badge"><span data-uk="🇺🇦 Зроблено з любов'ю в Україні" data-en="🇺🇦 Made with love in Ukraine">🇺🇦 Зроблено з любов'ю в Україні</span></div>
     </div>
   </div>
 </section>
@@ -275,9 +272,9 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <section>
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-tag">Контакти</div>
-      <h2>Зв'яжіться з нами</h2>
-      <p>Маєте питання або пропозиції? Ми завжди раді почути від вас.</p>
+      <div class="section-tag" data-uk="Контакти" data-en="Contacts">Контакти</div>
+      <h2 data-uk="Зв'яжіться з нами" data-en="Contact us">Зв'яжіться з нами</h2>
+      <p data-uk="Маєте питання або пропозиції? Ми завжди раді почути від вас." data-en="Have a question or suggestion? We are always happy to hear from you.">Маєте питання або пропозиції? Ми завжди раді почути від вас.</p>
     </div>
     <div class="contact-grid">
       <div class="contact-card reveal">
@@ -287,12 +284,12 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
       </div>
       <div class="contact-card reveal">
         <span class="contact-icon">🌐</span>
-        <h3>Сайт</h3>
+        <h3 data-uk="Сайт" data-en="Website">Сайт</h3>
         <a href="https://surgeup.app">surgeup.app</a>
       </div>
     </div>
     <div style="text-align:center;margin-top:48px;">
-      <a href="/app" class="btn-primary" style="font-size:16px;padding:16px 32px;">🚀 Спробувати SurgeUp</a>
+      <a href="/app" class="btn-primary" style="font-size:16px;padding:16px 32px;" data-uk="🚀 Спробувати SurgeUp" data-en="🚀 Try SurgeUp">🚀 Спробувати SurgeUp</a>
     </div>
   </div>
 </section>
@@ -300,26 +297,29 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a><p>Платформа взаємного росту YouTube каналів.</p></div>
-      <div class="footer-col"><h4>Продукт</h4><a href="/about">Про нас</a><a href="/#features">Можливості</a><a href="/#how">Як це працює</a><a href="/#pricing">Ціни</a><a href="/#faq">FAQ</a></div>
-      <div class="footer-col"><h4>Юридичне</h4><a href="/privacy">Конфіденційність</a><a href="/terms">Умови</a><a href="/child-safety">Безпека дітей</a><a href="/delete-account">Видалити акаунт</a><a href="mailto:support@surgeup.app">Підтримка</a></div>
+      <div class="footer-brand"><a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a><p data-uk="Платформа взаємного росту YouTube каналів." data-en="The mutual growth platform for YouTube channels.">Платформа взаємного росту YouTube каналів.</p></div>
+      <div class="footer-col"><h4 data-uk="Продукт" data-en="Product">Продукт</h4><a href="/about" data-uk="Про нас" data-en="About us">Про нас</a><a href="/#features" data-uk="Можливості" data-en="Features">Можливості</a><a href="/#how" data-uk="Як це працює" data-en="How it works">Як це працює</a><a href="/#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a><a href="/#faq">FAQ</a></div>
+      <div class="footer-col"><h4 data-uk="Юридичне" data-en="Legal">Юридичне</h4><a href="/privacy" data-uk="Конфіденційність" data-en="Privacy">Конфіденційність</a><a href="/terms" data-uk="Умови" data-en="Terms">Умови</a><a href="/child-safety" data-uk="Безпека дітей" data-en="Child safety">Безпека дітей</a><a href="/delete-account" data-uk="Видалити акаунт" data-en="Delete account">Видалити акаунт</a><a href="mailto:support@surgeup.app" data-uk="Підтримка" data-en="Support">Підтримка</a></div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 SurgeUp. Всі права захищено.</span>
-      <span>Зроблено з 💜 в Україні</span>
+      <span>© 2026 SurgeUp. <span data-uk="Всі права захищено." data-en="All rights reserved.">Всі права захищено.</span></span>
+      <span data-uk="Зроблено з 💜 в Україні" data-en="Made with 💜 in Ukraine">Зроблено з 💜 в Україні</span>
     </div>
   </div>
 </footer>
 
 <script>
-const currentLang = localStorage.getItem('surgeup_lang') || 'uk';
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.classList.toggle('active', btn.dataset.lang === currentLang);
-  btn.addEventListener('click', () => {
-    localStorage.setItem('surgeup_lang', btn.dataset.lang);
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
+function setLanguage(lang) {
+  localStorage.setItem('surgeup_lang', lang);
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-uk], [data-en]').forEach(el => {
+    const text = el.getAttribute('data-' + lang);
+    if (text) el.textContent = text;
   });
-});
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+setLanguage(localStorage.getItem('surgeup_lang') || 'uk');
 </script>
 
 <!-- Scroll reveal -->

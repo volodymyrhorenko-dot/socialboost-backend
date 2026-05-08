@@ -144,6 +144,8 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 .hero {
   position: relative; min-height: 80vh; padding: 100px 0;
   display: flex; align-items: center; justify-content: center; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
 }
 .hero-bg-gradient {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -165,11 +167,6 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   content: ''; position: absolute; inset: -40px; z-index: -1; pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(15,23,32,.7) 0%, rgba(15,23,32,.4) 50%, transparent 80%);
   filter: blur(20px);
-}
-.hero::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 200px;
-  background: linear-gradient(to bottom, transparent 0%, #06060B 100%);
-  pointer-events: none; z-index: 4;
 }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
