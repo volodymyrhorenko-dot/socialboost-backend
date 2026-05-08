@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const youtube_service_1 = require("./youtube.service");
 const youtube_controller_1 = require("./youtube.controller");
 const users_module_1 = require("../users/users.module");
+const notifications_module_1 = require("../notifications/notifications.module");
 let YouTubeModule = class YouTubeModule {
 };
 exports.YouTubeModule = YouTubeModule;
 exports.YouTubeModule = YouTubeModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule],
+        imports: [users_module_1.UsersModule, notifications_module_1.NotificationsModule],
         controllers: [youtube_controller_1.YouTubeController],
         providers: [youtube_service_1.YouTubeService],
         exports: [youtube_service_1.YouTubeService],

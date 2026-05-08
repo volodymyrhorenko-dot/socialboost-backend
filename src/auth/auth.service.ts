@@ -3,12 +3,16 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthProvider } from '../users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationType } from '../notifications/enums/notification-type.enum';
+import { NotificationPriority } from '../notifications/enums/notification-priority.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async register(data: { email: string; password: string; displayName?: string }) {
@@ -25,6 +29,20 @@ export class AuthService {
     });
 
     const token = this.jwtService.sign({ sub: user.id, email: user.email });
+    try {
+      await this.notificationsService.create({
+        userId: user.id,
+        type: NotificationType.WELCOME_BONUS,
+        priority: NotificationPriority.HIGH,
+        title: 'Вітаємо в SurgeUp! 🎉',
+        body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+        icon: '🎁',
+        actionLabel: 'Почати',
+        actionLink: '/dashboard',
+      });
+    } catch (e) {
+      console.error('Failed to create notification', e);
+    }
     return { user, token };
   }
 
@@ -50,6 +68,20 @@ export class AuthService {
         authProvider: AuthProvider.GOOGLE,
         pointBalance: 500,
       });
+      try {
+        await this.notificationsService.create({
+          userId: user.id,
+          type: NotificationType.WELCOME_BONUS,
+          priority: NotificationPriority.HIGH,
+          title: 'Вітаємо в SurgeUp! 🎉',
+          body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+          icon: '🎁',
+          actionLabel: 'Почати',
+          actionLink: '/dashboard',
+        });
+      } catch (e) {
+        console.error('Failed to create notification', e);
+      }
     }
     const token = this.jwtService.sign({ sub: user.id, email: user.email });
     return { user, token };
@@ -64,6 +96,20 @@ export class AuthService {
         authProvider: AuthProvider.APPLE,
         pointBalance: 500,
       });
+      try {
+        await this.notificationsService.create({
+          userId: user.id,
+          type: NotificationType.WELCOME_BONUS,
+          priority: NotificationPriority.HIGH,
+          title: 'Вітаємо в SurgeUp! 🎉',
+          body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+          icon: '🎁',
+          actionLabel: 'Почати',
+          actionLink: '/dashboard',
+        });
+      } catch (e) {
+        console.error('Failed to create notification', e);
+      }
     }
     const token = this.jwtService.sign({ sub: user.id, email: user.email });
     return { user, token };

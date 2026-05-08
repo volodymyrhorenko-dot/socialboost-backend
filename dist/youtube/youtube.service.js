@@ -13,15 +13,19 @@ exports.YouTubeService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const users_service_1 = require("../users/users.service");
+const notifications_service_1 = require("../notifications/notifications.service");
+const notification_type_enum_1 = require("../notifications/enums/notification-type.enum");
 let YouTubeService = class YouTubeService {
     configService;
     usersService;
+    notificationsService;
     clientId;
     clientSecret;
     redirectUri;
-    constructor(configService, usersService) {
+    constructor(configService, usersService, notificationsService) {
         this.configService = configService;
         this.usersService = usersService;
+        this.notificationsService = notificationsService;
         this.clientId = this.configService.get('YOUTUBE_CLIENT_ID');
         this.clientSecret = this.configService.get('YOUTUBE_CLIENT_SECRET');
         this.redirectUri = this.configService.get('YOUTUBE_REDIRECT_URI');
@@ -77,6 +81,20 @@ let YouTubeService = class YouTubeService {
             url: `https://youtube.com/channel/${channel.id}`,
             channelId: channel.id,
         });
+        const channelTitle = channel?.snippet?.customUrl || channel?.snippet?.title || channel.id;
+        try {
+            await this.notificationsService.create({
+                userId,
+                type: notification_type_enum_1.NotificationType.CHANNEL_CONNECTED,
+                title: 'YouTube канал підключено! 📺',
+                body: `Канал "${channelTitle}" готовий до роботи.`,
+                icon: '📺',
+                metadata: { channelId: channel.id, channelTitle },
+            });
+        }
+        catch (e) {
+            console.error('Failed to create notification', e);
+        }
     }
     async disconnect(userId) {
         await this.usersService.disconnectYouTube(userId);
@@ -212,6 +230,7 @@ exports.YouTubeService = YouTubeService;
 exports.YouTubeService = YouTubeService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
-        users_service_1.UsersService])
+        users_service_1.UsersService,
+        notifications_service_1.NotificationsService])
 ], YouTubeService);
 //# sourceMappingURL=youtube.service.js.map

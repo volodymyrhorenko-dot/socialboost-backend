@@ -21,16 +21,21 @@ const task_completion_entity_1 = require("./task-completion.entity");
 const users_service_1 = require("../users/users.service");
 const transactions_service_1 = require("../transactions/transactions.service");
 const transaction_entity_1 = require("../transactions/transaction.entity");
+const notifications_service_1 = require("../notifications/notifications.service");
+const notification_type_enum_1 = require("../notifications/enums/notification-type.enum");
+const notification_priority_enum_1 = require("../notifications/enums/notification-priority.enum");
 let TasksService = class TasksService {
     campaignRepo;
     completionRepo;
     usersService;
     transactionsService;
-    constructor(campaignRepo, completionRepo, usersService, transactionsService) {
+    notificationsService;
+    constructor(campaignRepo, completionRepo, usersService, transactionsService, notificationsService) {
         this.campaignRepo = campaignRepo;
         this.completionRepo = completionRepo;
         this.usersService = usersService;
         this.transactionsService = transactionsService;
+        this.notificationsService = notificationsService;
     }
     async findAll(userId, _platform, type) {
         const completedIds = await this.completionRepo
@@ -95,6 +100,53 @@ let TasksService = class TasksService {
             description: `YouTube • ${typeLabel} +${pointsToAdd} балів${completingUser?.isVip ? ' 👑' : ''}`,
             balanceAfter: user.pointBalance,
         });
+        const channelName = campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
+        try {
+            await this.notificationsService.create({
+                userId,
+                type: notification_type_enum_1.NotificationType.REWARD_EARNED,
+                title: `+${pointsToAdd} балів за виконання завдання`,
+                body: `Ти виконав завдання "${typeLabel}" на каналі "${channelName}"`,
+                icon: '💰',
+                metadata: { taskId: campaign.id, amount: pointsToAdd },
+                actionLabel: 'Баланс',
+                actionLink: '/profile/balance',
+            });
+        }
+        catch (e) {
+            console.error('Failed to create notification', e);
+        }
+        try {
+            await this.notificationsService.create({
+                userId: campaign.owner.id,
+                type: notification_type_enum_1.NotificationType.TASK_COMPLETED,
+                title: 'Виконання твоєї кампанії!',
+                body: `Хтось виконав завдання "${typeLabel}" (${campaign.completedCount}/${campaign.targetCount})`,
+                icon: '✅',
+                metadata: { campaignId: campaign.id },
+                actionLabel: 'Кампанія',
+                actionLink: `/campaign/${campaign.id}`,
+            });
+        }
+        catch (e) {
+            console.error('Failed to create notification', e);
+        }
+        if (campaign.status === campaign_entity_1.CampaignStatus.COMPLETED) {
+            try {
+                await this.notificationsService.create({
+                    userId: campaign.owner.id,
+                    type: notification_type_enum_1.NotificationType.CAMPAIGN_FINISHED,
+                    priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                    title: 'Кампанія успішно завершена! 🎯',
+                    body: `Усі ${campaign.targetCount} виконань отримано. Створюй нову, щоб продовжити зростання.`,
+                    icon: '🏁',
+                    metadata: { campaignId: campaign.id },
+                });
+            }
+            catch (e) {
+                console.error('Failed to create notification', e);
+            }
+        }
         return { points: pointsToAdd, balanceAfter: user.pointBalance };
     }
     async seed() {
@@ -109,6 +161,7 @@ exports.TasksService = TasksService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         users_service_1.UsersService,
-        transactions_service_1.TransactionsService])
+        transactions_service_1.TransactionsService,
+        notifications_service_1.NotificationsService])
 ], TasksService);
 //# sourceMappingURL=tasks.service.js.map

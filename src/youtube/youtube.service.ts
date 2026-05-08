@@ -1,6 +1,8 @@
 import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationType } from '../notifications/enums/notification-type.enum';
 
 @Injectable()
 export class YouTubeService {
@@ -11,6 +13,7 @@ export class YouTubeService {
   constructor(
     private configService: ConfigService,
     private usersService: UsersService,
+    private notificationsService: NotificationsService,
   ) {
     this.clientId = this.configService.get('YOUTUBE_CLIENT_ID');
     this.clientSecret = this.configService.get('YOUTUBE_CLIENT_SECRET');
@@ -76,6 +79,20 @@ export class YouTubeService {
       url: `https://youtube.com/channel/${channel.id}`,
       channelId: channel.id,
     });
+
+    const channelTitle = channel?.snippet?.customUrl || channel?.snippet?.title || channel.id;
+    try {
+      await this.notificationsService.create({
+        userId,
+        type: NotificationType.CHANNEL_CONNECTED,
+        title: 'YouTube канал підключено! 📺',
+        body: `Канал "${channelTitle}" готовий до роботи.`,
+        icon: '📺',
+        metadata: { channelId: channel.id, channelTitle },
+      });
+    } catch (e) {
+      console.error('Failed to create notification', e);
+    }
   }
 
   async disconnect(userId: string): Promise<{ success: boolean }> {

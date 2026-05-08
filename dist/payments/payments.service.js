@@ -19,6 +19,9 @@ const stripe_1 = __importDefault(require("stripe"));
 const users_service_1 = require("../users/users.service");
 const transactions_service_1 = require("../transactions/transactions.service");
 const transaction_entity_1 = require("../transactions/transaction.entity");
+const notifications_service_1 = require("../notifications/notifications.service");
+const notification_type_enum_1 = require("../notifications/enums/notification-type.enum");
+const notification_priority_enum_1 = require("../notifications/enums/notification-priority.enum");
 const PACKAGES = {
     'pack_500': { points: 500, price: 99, name: '500 балів' },
     'pack_1200': { points: 1200, price: 199, name: '1200 балів' },
@@ -29,11 +32,13 @@ let PaymentsService = class PaymentsService {
     configService;
     usersService;
     transactionsService;
+    notificationsService;
     stripe;
-    constructor(configService, usersService, transactionsService) {
+    constructor(configService, usersService, transactionsService, notificationsService) {
         this.configService = configService;
         this.usersService = usersService;
         this.transactionsService = transactionsService;
+        this.notificationsService = notificationsService;
         this.stripe = new stripe_1.default(this.configService.get('STRIPE_SECRET_KEY'), {
             apiVersion: '2025-03-31.basil',
         });
@@ -122,6 +127,27 @@ let PaymentsService = class PaymentsService {
                 await this.creditPurchase(userId, parseInt(points));
             }
         }
+        else if (event.type === 'payment_intent.payment_failed') {
+            const intent = event.data.object;
+            const userId = intent.metadata?.userId;
+            if (userId) {
+                try {
+                    await this.notificationsService.create({
+                        userId,
+                        type: notification_type_enum_1.NotificationType.PAYMENT_FAILED,
+                        priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                        title: 'Платіж не пройшов',
+                        body: 'Спробуй ще раз або обери інший спосіб оплати.',
+                        icon: '⚠️',
+                        actionLabel: 'Магазин',
+                        actionLink: '/store',
+                    });
+                }
+                catch (e) {
+                    console.error('Failed to create notification', e);
+                }
+            }
+        }
         return { received: true };
     }
     async handleSuccess(sessionId) {
@@ -157,6 +183,20 @@ let PaymentsService = class PaymentsService {
             description: `Покупка ${points} балів`,
             balanceAfter: user.pointBalance,
         });
+        try {
+            await this.notificationsService.create({
+                userId,
+                type: notification_type_enum_1.NotificationType.BALANCE_TOPPED_UP,
+                priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                title: `+${points} балів додано до балансу`,
+                body: `Дякуємо за покупку! Платіж успішно оброблено.`,
+                icon: '💳',
+                metadata: { amount: points },
+            });
+        }
+        catch (e) {
+            console.error('Failed to create notification', e);
+        }
     }
 };
 exports.PaymentsService = PaymentsService;
@@ -164,6 +204,7 @@ exports.PaymentsService = PaymentsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
         users_service_1.UsersService,
-        transactions_service_1.TransactionsService])
+        transactions_service_1.TransactionsService,
+        notifications_service_1.NotificationsService])
 ], PaymentsService);
 //# sourceMappingURL=payments.service.js.map

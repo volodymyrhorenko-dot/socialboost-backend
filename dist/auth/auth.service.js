@@ -48,12 +48,17 @@ const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
 const user_entity_1 = require("../users/entities/user.entity");
 const bcrypt = __importStar(require("bcryptjs"));
+const notifications_service_1 = require("../notifications/notifications.service");
+const notification_type_enum_1 = require("../notifications/enums/notification-type.enum");
+const notification_priority_enum_1 = require("../notifications/enums/notification-priority.enum");
 let AuthService = class AuthService {
     usersService;
     jwtService;
-    constructor(usersService, jwtService) {
+    notificationsService;
+    constructor(usersService, jwtService, notificationsService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
+        this.notificationsService = notificationsService;
     }
     async register(data) {
         const existing = await this.usersService.findByEmail(data.email);
@@ -68,6 +73,21 @@ let AuthService = class AuthService {
             pointBalance: 500,
         });
         const token = this.jwtService.sign({ sub: user.id, email: user.email });
+        try {
+            await this.notificationsService.create({
+                userId: user.id,
+                type: notification_type_enum_1.NotificationType.WELCOME_BONUS,
+                priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                title: 'Вітаємо в SurgeUp! 🎉',
+                body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+                icon: '🎁',
+                actionLabel: 'Почати',
+                actionLink: '/dashboard',
+            });
+        }
+        catch (e) {
+            console.error('Failed to create notification', e);
+        }
         return { user, token };
     }
     async login(data) {
@@ -92,6 +112,21 @@ let AuthService = class AuthService {
                 authProvider: user_entity_1.AuthProvider.GOOGLE,
                 pointBalance: 500,
             });
+            try {
+                await this.notificationsService.create({
+                    userId: user.id,
+                    type: notification_type_enum_1.NotificationType.WELCOME_BONUS,
+                    priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                    title: 'Вітаємо в SurgeUp! 🎉',
+                    body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+                    icon: '🎁',
+                    actionLabel: 'Почати',
+                    actionLink: '/dashboard',
+                });
+            }
+            catch (e) {
+                console.error('Failed to create notification', e);
+            }
         }
         const token = this.jwtService.sign({ sub: user.id, email: user.email });
         return { user, token };
@@ -105,6 +140,21 @@ let AuthService = class AuthService {
                 authProvider: user_entity_1.AuthProvider.APPLE,
                 pointBalance: 500,
             });
+            try {
+                await this.notificationsService.create({
+                    userId: user.id,
+                    type: notification_type_enum_1.NotificationType.WELCOME_BONUS,
+                    priority: notification_priority_enum_1.NotificationPriority.HIGH,
+                    title: 'Вітаємо в SurgeUp! 🎉',
+                    body: 'Ми додали 500 балів на твій баланс. Спробуй платформу безкоштовно!',
+                    icon: '🎁',
+                    actionLabel: 'Почати',
+                    actionLink: '/dashboard',
+                });
+            }
+            catch (e) {
+                console.error('Failed to create notification', e);
+            }
         }
         const token = this.jwtService.sign({ sub: user.id, email: user.email });
         return { user, token };
@@ -117,6 +167,7 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        notifications_service_1.NotificationsService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -15,12 +15,13 @@ const campaign_entity_1 = require("../campaigns/entities/campaign.entity");
 const task_completion_entity_1 = require("./task-completion.entity");
 const users_module_1 = require("../users/users.module");
 const transactions_module_1 = require("../transactions/transactions.module");
+const notifications_module_1 = require("../notifications/notifications.module");
 let TasksModule = class TasksModule {
 };
 exports.TasksModule = TasksModule;
 exports.TasksModule = TasksModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign, task_completion_entity_1.TaskCompletion]), users_module_1.UsersModule, transactions_module_1.TransactionsModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign, task_completion_entity_1.TaskCompletion]), users_module_1.UsersModule, transactions_module_1.TransactionsModule, notifications_module_1.NotificationsModule],
         controllers: [tasks_controller_1.TasksController],
         providers: [tasks_service_1.TasksService],
         exports: [tasks_service_1.TasksService],

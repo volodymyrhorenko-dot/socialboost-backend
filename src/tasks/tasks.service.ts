@@ -6,6 +6,9 @@ import { TaskCompletion } from './task-completion.entity';
 import { UsersService } from '../users/users.service';
 import { TransactionsService } from '../transactions/transactions.service';
 import { TransactionType } from '../transactions/transaction.entity';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationType } from '../notifications/enums/notification-type.enum';
+import { NotificationPriority } from '../notifications/enums/notification-priority.enum';
 
 @Injectable()
 export class TasksService {
@@ -16,6 +19,7 @@ export class TasksService {
     private completionRepo: Repository<TaskCompletion>,
     private usersService: UsersService,
     private transactionsService: TransactionsService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async findAll(userId: string, _platform?: string, type?: string): Promise<any[]> {
@@ -88,6 +92,54 @@ export class TasksService {
       description: `YouTube • ${typeLabel} +${pointsToAdd} балів${completingUser?.isVip ? ' 👑' : ''}`,
       balanceAfter: user.pointBalance,
     });
+
+    const channelName = campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
+
+    try {
+      await this.notificationsService.create({
+        userId,
+        type: NotificationType.REWARD_EARNED,
+        title: `+${pointsToAdd} балів за виконання завдання`,
+        body: `Ти виконав завдання "${typeLabel}" на каналі "${channelName}"`,
+        icon: '💰',
+        metadata: { taskId: campaign.id, amount: pointsToAdd },
+        actionLabel: 'Баланс',
+        actionLink: '/profile/balance',
+      });
+    } catch (e) {
+      console.error('Failed to create notification', e);
+    }
+
+    try {
+      await this.notificationsService.create({
+        userId: campaign.owner.id,
+        type: NotificationType.TASK_COMPLETED,
+        title: 'Виконання твоєї кампанії!',
+        body: `Хтось виконав завдання "${typeLabel}" (${campaign.completedCount}/${campaign.targetCount})`,
+        icon: '✅',
+        metadata: { campaignId: campaign.id },
+        actionLabel: 'Кампанія',
+        actionLink: `/campaign/${campaign.id}`,
+      });
+    } catch (e) {
+      console.error('Failed to create notification', e);
+    }
+
+    if (campaign.status === CampaignStatus.COMPLETED) {
+      try {
+        await this.notificationsService.create({
+          userId: campaign.owner.id,
+          type: NotificationType.CAMPAIGN_FINISHED,
+          priority: NotificationPriority.HIGH,
+          title: 'Кампанія успішно завершена! 🎯',
+          body: `Усі ${campaign.targetCount} виконань отримано. Створюй нову, щоб продовжити зростання.`,
+          icon: '🏁',
+          metadata: { campaignId: campaign.id },
+        });
+      } catch (e) {
+        console.error('Failed to create notification', e);
+      }
+    }
 
     return { points: pointsToAdd, balanceAfter: user.pointBalance };
   }

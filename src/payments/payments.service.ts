@@ -4,6 +4,9 @@ import Stripe from 'stripe';
 import { UsersService } from '../users/users.service';
 import { TransactionsService } from '../transactions/transactions.service';
 import { TransactionType } from '../transactions/transaction.entity';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationType } from '../notifications/enums/notification-type.enum';
+import { NotificationPriority } from '../notifications/enums/notification-priority.enum';
 
 const PACKAGES = {
   'pack_500': { points: 500, price: 99, name: '500 балів' },
@@ -20,6 +23,7 @@ export class PaymentsService {
     private configService: ConfigService,
     private usersService: UsersService,
     private transactionsService: TransactionsService,
+    private notificationsService: NotificationsService,
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE_SECRET_KEY'), {
       apiVersion: '2025-03-31.basil',
@@ -112,6 +116,25 @@ export class PaymentsService {
       } else if (points) {
         await this.creditPurchase(userId, parseInt(points));
       }
+    } else if (event.type === 'payment_intent.payment_failed') {
+      const intent = event.data.object;
+      const userId = intent.metadata?.userId;
+      if (userId) {
+        try {
+          await this.notificationsService.create({
+            userId,
+            type: NotificationType.PAYMENT_FAILED,
+            priority: NotificationPriority.HIGH,
+            title: 'Платіж не пройшов',
+            body: 'Спробуй ще раз або обери інший спосіб оплати.',
+            icon: '⚠️',
+            actionLabel: 'Магазин',
+            actionLink: '/store',
+          });
+        } catch (e) {
+          console.error('Failed to create notification', e);
+        }
+      }
     }
     return { received: true };
   }
@@ -147,5 +170,18 @@ export class PaymentsService {
       description: `Покупка ${points} балів`,
       balanceAfter: user.pointBalance,
     });
+    try {
+      await this.notificationsService.create({
+        userId,
+        type: NotificationType.BALANCE_TOPPED_UP,
+        priority: NotificationPriority.HIGH,
+        title: `+${points} балів додано до балансу`,
+        body: `Дякуємо за покупку! Платіж успішно оброблено.`,
+        icon: '💳',
+        metadata: { amount: points },
+      });
+    } catch (e) {
+      console.error('Failed to create notification', e);
+    }
   }
 }
