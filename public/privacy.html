@@ -53,17 +53,40 @@ a:hover { text-decoration: underline; }
 [data-en] { display: none; }
 .lang-en [data-uk] { display: none; }
 .lang-en [data-en] { display: revert; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: #9B99BB; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: #F1F0FF; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #7C3AED, #9333EA); color: white; text-decoration: none; border: none; cursor: pointer; border-radius: 12px; font-weight: 700; font-size: 14px; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); transition: transform 0.2s, box-shadow 0.2s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(124, 58, 237, 0.5); }
+footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; }
+footer .container { max-width: 1200px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand p { color: #9B99BB; font-size: 14px; margin-top: 14px; max-width: 320px; }
+.footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: #5B5980; margin-bottom: 14px; text-transform: uppercase; }
+.footer-col a { display: block; color: #9B99BB; text-decoration: none; font-size: 14px; padding: 6px 0; transition: color 0.2s; }
+.footer-col a:hover { color: #A78BFA; }
+.footer-bottom { padding-top: 24px; border-top: 1px solid #2A2A3A; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; color: #5B5980; font-size: 13px; }
+@media (max-width: 768px) { .nav-links { display: none; } .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; } .footer-col a { display: inline-block; margin: 0 12px; } }
 </style>
 </head>
 <body>
 <div class="bg-gradient"></div>
 <nav>
   <div class="nav-inner">
-    <a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a>
-    <a href="/about" style="color:#9B99BB;font-size:14px;font-weight:500;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#F1F0FF'" onmouseout="this.style.color='#9B99BB'">Про нас</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lang="uk">UA</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+    <a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" width="40" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a>
+    <div class="nav-links">
+      <a href="/#features"><span data-uk>Можливості</span><span data-en>Features</span></a>
+      <a href="/#how"><span data-uk>Як це працює</span><span data-en>How it works</span></a>
+      <a href="/#pricing"><span data-uk>Ціни</span><span data-en>Pricing</span></a>
+      <a href="/#faq">FAQ</a>
+      <a href="/about"><span data-uk>Про нас</span><span data-en>About</span></a>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="uk">UA</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="/app" class="btn-primary"><span data-uk>Відкрити додаток</span><span data-en>Open app</span></a>
     </div>
   </div>
 </nav>
@@ -152,6 +175,20 @@ a:hover { text-decoration: underline; }
     <span data-en>Back to home</span>
   </a>
 </div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" width="40" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a><p><span data-uk>Платформа взаємного росту YouTube каналів.</span><span data-en>A mutual growth platform for YouTube channels.</span></p></div>
+      <div class="footer-col"><h4><span data-uk>Продукт</span><span data-en>Product</span></h4><a href="/about"><span data-uk>Про нас</span><span data-en>About</span></a><a href="/#features"><span data-uk>Можливості</span><span data-en>Features</span></a><a href="/#how"><span data-uk>Як це працює</span><span data-en>How it works</span></a><a href="/#pricing"><span data-uk>Ціни</span><span data-en>Pricing</span></a><a href="/#faq">FAQ</a></div>
+      <div class="footer-col"><h4><span data-uk>Юридичне</span><span data-en>Legal</span></h4><a href="/privacy"><span data-uk>Конфіденційність</span><span data-en>Privacy</span></a><a href="/terms"><span data-uk>Умови</span><span data-en>Terms</span></a><a href="/child-safety"><span data-uk>Безпека дітей</span><span data-en>Child safety</span></a><a href="/delete-account"><span data-uk>Видалити акаунт</span><span data-en>Delete account</span></a><a href="mailto:support@surgeup.app"><span data-uk>Підтримка</span><span data-en>Support</span></a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SurgeUp. <span data-uk>Всі права захищено.</span><span data-en>All rights reserved.</span></span>
+      <span><span data-uk>Зроблено з 💜 в Україні</span><span data-en>Made with 💜 in Ukraine</span></span>
+    </div>
+  </div>
+</footer>
 
 <script>
 const lang = localStorage.getItem('surgeup_lang') || 'uk';
