@@ -2,6 +2,12 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
+<!-- Preload critical resources -->
+<link rel="preload" href="/brand/logo-dark-80h.png" as="image" fetchpriority="high">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SurgeUp — українська платформа взаємного росту YouTube каналів. Реальні підписники, лайки, коментарі від справжніх креаторів. 500 балів безкоштовно для нових. Без ботів, без накруток.">
 <title>SurgeUp — Просування YouTube каналу через спільноту креаторів</title>
@@ -76,7 +82,7 @@ nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); -webk
 .hero p { font-size: clamp(16px, 2.5vw, 20px); color: #9B99BB; max-width: 640px; margin: 0 auto 40px; }
 .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
 .hero-cta .btn-primary, .hero-cta .btn-secondary { padding: 16px 32px; font-size: 16px; }
-.trust-bar { display: flex; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap; padding: 32px 24px; background: linear-gradient(135deg, rgba(15, 15, 24, 0.8), rgba(11, 11, 18, 0.5)); border-radius: 24px; border: 1px solid rgba(124, 58, 237, 0.15); backdrop-filter: blur(20px); }
+.trust-bar { min-height: 120px; display: flex; justify-content: center; gap: clamp(20px, 5vw, 60px); flex-wrap: wrap; padding: 32px 24px; background: linear-gradient(135deg, rgba(15, 15, 24, 0.8), rgba(11, 11, 18, 0.5)); border-radius: 24px; border: 1px solid rgba(124, 58, 237, 0.15); backdrop-filter: blur(20px); }
 .trust-item { text-align: center; }
 .trust-num { font-size: clamp(28px, 4vw, 40px); font-weight: 800; background: linear-gradient(135deg, #7C3AED, #EC4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .trust-label { font-size: 12px; color: #5B5980; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
@@ -321,7 +327,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 
 <nav>
   <div class="container nav-inner">
-    <a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a>
+    <a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" width="40" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a>
     <div class="nav-links">
       <a href="#features" data-uk="Можливості" data-en="Features">Можливості</a>
       <a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a>
@@ -423,7 +429,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
            onmouseover="this.style.transform='translateY(-2px)'"
            onmouseout="this.style.transform='translateY(0)'">
           <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-               alt="Get it on Google Play"
+               alt="Get it on Google Play" width="180" height="56"
                style="height: 56px; width: auto; vertical-align: middle;">
         </a>
         <span class="coming-soon">📱 <span data-uk="App Store — скоро" data-en="App Store — soon">App Store — скоро</span></span>
@@ -453,7 +459,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a><p data-uk="Платформа взаємного росту YouTube каналів." data-en="A mutual growth platform for YouTube channels.">Платформа взаємного росту YouTube каналів.</p></div>
+      <div class="footer-brand"><a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp logo" width="40" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a><p data-uk="Платформа взаємного росту YouTube каналів." data-en="A mutual growth platform for YouTube channels.">Платформа взаємного росту YouTube каналів.</p></div>
       <div class="footer-col"><h4 data-uk="Продукт" data-en="Product">Продукт</h4><a href="/about" data-uk="Про нас" data-en="About">Про нас</a><a href="#features" data-uk="Можливості" data-en="Features">Можливості</a><a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a><a href="#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a><a href="#faq">FAQ</a></div>
       <div class="footer-col"><h4 data-uk="Юридичне" data-en="Legal">Юридичне</h4><a href="/privacy" data-uk="Конфіденційність" data-en="Privacy">Конфіденційність</a><a href="/terms" data-uk="Умови" data-en="Terms">Умови</a><a href="/child-safety" data-uk="Безпека дітей" data-en="Child safety">Безпека дітей</a><a href="/delete-account" data-uk="Видалити акаунт" data-en="Delete account">Видалити акаунт</a><a href="mailto:support@surgeup.app" data-uk="Підтримка" data-en="Support">Підтримка</a></div>
     </div>
@@ -723,17 +729,20 @@ fetchUserProfile();
 </script>
 
 <!-- VanillaTilt 3D card tilt -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   if (window.innerWidth >= 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     VanillaTilt.init(document.querySelectorAll('.feature-card, .price-card'), {
       max: 8, speed: 400, glare: true, 'max-glare': 0.15, scale: 1.02
     });
   }
+});
 </script>
 
 <!-- Magnetic CTA buttons -->
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   if (window.innerWidth >= 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll('.btn-primary').forEach(btn => {
       btn.addEventListener('mousemove', (e) => {
@@ -745,11 +754,13 @@ fetchUserProfile();
       btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
   }
+});
 </script>
 
 <!-- Three.js 3D Hero Scene -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   (() => {
     if (window.innerWidth < 768) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -816,6 +827,7 @@ fetchUserProfile();
     };
     animate();
   })();
+});
 </script>
 </body>
 </html>
