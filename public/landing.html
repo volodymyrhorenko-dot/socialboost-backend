@@ -38,6 +38,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(6, 6, 11, 0.7); border-bottom: 1px solid rgba(124, 58, 237, 0.15); padding: 14px 0; }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; transition: opacity 0.2s ease; }
+.brand:hover { opacity: 0.85; }
+.brand-logo { height: 40px; width: auto; display: block; }
+.brand-text { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; line-height: 1; font-family: inherit; }
+@media (max-width: 480px) { .brand-text { font-size: 20px; } .brand-logo { height: 32px; } }
+.hero-eyebrow { font-size: 14px; font-weight: 700; color: #81FC10; letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 16px 0; }
 .logo img { height: 40px; width: auto; display: block; }
 .nav-links { display: flex; gap: 28px; align-items: center; }
 .nav-links a { color: #9B99BB; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
@@ -225,7 +231,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 
 <nav>
   <div class="container nav-inner">
-    <a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a>
+    <a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a>
     <div class="nav-links">
       <a href="#features" data-uk="Можливості" data-en="Features">Можливості</a>
       <a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a>
@@ -248,6 +254,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
   <canvas id="hero-3d" class="hero-3d-canvas"></canvas>
   <div class="container">
     <div class="hero-badge"><span>✨</span><span data-uk="Тільки YouTube. Тільки реальні підписники." data-en="YouTube only. Real subscribers only.">Тільки YouTube. Тільки реальні підписники.</span></div>
+    <p class="hero-eyebrow">SurgeUp</p>
     <h1 class="gradient-heading"><span data-uk="Зростай на YouTube" data-en="Grow on YouTube">Зростай на YouTube</span><br><span class="gradient" data-uk="разом зі спільнотою" data-en="with the community">разом зі спільнотою</span></h1>
     <p data-uk="Заробляй бали виконуючи завдання. Витрачай їх на просування каналу через реальних креаторів. Без ботів, без накруток." data-en="Earn points by completing tasks. Spend them to promote your channel through real creators. No bots, no fake numbers.">Заробляй бали виконуючи завдання. Витрачай їх на просування каналу через реальних креаторів. Без ботів, без накруток.</p>
     <div class="hero-cta">
@@ -356,7 +363,7 @@ footer { padding: 60px 0 32px; border-top: 1px solid #2A2A3A; margin-top: 40px; 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><a href="/" class="logo"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="SurgeUp" height="40"/></a><p data-uk="Платформа взаємного росту YouTube каналів." data-en="A mutual growth platform for YouTube channels.">Платформа взаємного росту YouTube каналів.</p></div>
+      <div class="footer-brand"><a href="/" class="brand" aria-label="SurgeUp — головна"><img src="/brand/logo-dark-80h.png" srcset="/brand/logo-dark-40h.png 1x, /brand/logo-dark-80h.png 2x, /brand/logo-dark-120h.png 3x" alt="" height="40" class="brand-logo" aria-hidden="true"/><span class="brand-text">SurgeUp</span></a><p data-uk="Платформа взаємного росту YouTube каналів." data-en="A mutual growth platform for YouTube channels.">Платформа взаємного росту YouTube каналів.</p></div>
       <div class="footer-col"><h4 data-uk="Продукт" data-en="Product">Продукт</h4><a href="/about" data-uk="Про нас" data-en="About">Про нас</a><a href="#features" data-uk="Можливості" data-en="Features">Можливості</a><a href="#how" data-uk="Як це працює" data-en="How it works">Як це працює</a><a href="#pricing" data-uk="Ціни" data-en="Pricing">Ціни</a><a href="#faq">FAQ</a></div>
       <div class="footer-col"><h4 data-uk="Юридичне" data-en="Legal">Юридичне</h4><a href="/privacy" data-uk="Конфіденційність" data-en="Privacy">Конфіденційність</a><a href="/terms" data-uk="Умови" data-en="Terms">Умови</a><a href="/child-safety" data-uk="Безпека дітей" data-en="Child safety">Безпека дітей</a><a href="/delete-account" data-uk="Видалити акаунт" data-en="Delete account">Видалити акаунт</a><a href="mailto:support@surgeup.app" data-uk="Підтримка" data-en="Support">Підтримка</a></div>
     </div>
