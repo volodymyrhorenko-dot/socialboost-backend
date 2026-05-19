@@ -52,7 +52,10 @@ let TasksService = class TasksService {
         if (completedIds.length > 0) {
             query.andWhere('campaign.id NOT IN (:...ids)', { ids: completedIds });
         }
-        const campaigns = await query.orderBy('campaign.createdAt', 'DESC').getMany();
+        const campaigns = await query
+            .orderBy('owner.isVip', 'DESC')
+            .addOrderBy('campaign.createdAt', 'DESC')
+            .getMany();
         return campaigns.map(c => ({
             id: c.id,
             platform: c.platform,
