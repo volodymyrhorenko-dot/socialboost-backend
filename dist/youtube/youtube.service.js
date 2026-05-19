@@ -225,6 +225,74 @@ let YouTubeService = class YouTubeService {
         }
         return null;
     }
+    async getChannelMeta(userId, channelUrl) {
+        const accessToken = await this.getValidAccessToken(userId);
+        const channelId = await this.extractChannelId(channelUrl, accessToken);
+        if (!channelId)
+            return null;
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}`, { headers: { 'Authorization': `Bearer ${accessToken}` } });
+        if (!response.ok)
+            return null;
+        const data = await response.json();
+        const item = data.items?.[0];
+        if (!item)
+            return null;
+        return {
+            channelId,
+            channelTitle: item.snippet?.title || '',
+            channelThumbnail: item.snippet?.thumbnails?.medium?.url
+                || item.snippet?.thumbnails?.default?.url
+                || '',
+            channelSubscribers: parseInt(item.statistics?.subscriberCount || '0', 10),
+        };
+    }
+    async getVideoMeta(userId, videoUrl) {
+        const accessToken = await this.getValidAccessToken(userId);
+        const videoId = this.extractVideoId(videoUrl);
+        if (!videoId)
+            return null;
+        const videoResp = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${videoId}`, { headers: { 'Authorization': `Bearer ${accessToken}` } });
+        if (!videoResp.ok)
+            return null;
+        const videoData = await videoResp.json();
+        const v = videoData.items?.[0];
+        if (!v)
+            return null;
+        const channelId = v.snippet?.channelId || '';
+        let channelThumbnail = '';
+        if (channelId) {
+            try {
+                const chResp = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}`, { headers: { 'Authorization': `Bearer ${accessToken}` } });
+                if (chResp.ok) {
+                    const chData = await chResp.json();
+                    channelThumbnail = chData.items?.[0]?.snippet?.thumbnails?.medium?.url
+                        || chData.items?.[0]?.snippet?.thumbnails?.default?.url
+                        || '';
+                }
+            }
+            catch (_) {
+            }
+        }
+        return {
+            videoId,
+            videoTitle: v.snippet?.title || '',
+            videoThumbnail: v.snippet?.thumbnails?.medium?.url
+                || v.snippet?.thumbnails?.default?.url
+                || '',
+            videoDuration: this.parseDuration(v.contentDetails?.duration || ''),
+            channelId,
+            channelTitle: v.snippet?.channelTitle || '',
+            channelThumbnail,
+        };
+    }
+    parseDuration(iso) {
+        const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+        if (!m)
+            return 0;
+        return (parseInt(m[1] || '0') * 3600)
+            + (parseInt(m[2] || '0') * 60)
+            + parseInt(m[3] || '0');
+    }
 };
 exports.YouTubeService = YouTubeService;
 exports.YouTubeService = YouTubeService = __decorate([

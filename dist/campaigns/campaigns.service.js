@@ -20,14 +20,17 @@ const campaign_entity_1 = require("./entities/campaign.entity");
 const users_service_1 = require("../users/users.service");
 const transactions_service_1 = require("../transactions/transactions.service");
 const transaction_entity_1 = require("../transactions/transaction.entity");
+const youtube_service_1 = require("../youtube/youtube.service");
 let CampaignsService = class CampaignsService {
     campaignRepo;
     usersService;
     transactionsService;
-    constructor(campaignRepo, usersService, transactionsService) {
+    youtubeService;
+    constructor(campaignRepo, usersService, transactionsService, youtubeService) {
         this.campaignRepo = campaignRepo;
         this.usersService = usersService;
         this.transactionsService = transactionsService;
+        this.youtubeService = youtubeService;
     }
     async findByUser(userId) {
         return this.campaignRepo.createQueryBuilder('campaign')
@@ -43,7 +46,40 @@ let CampaignsService = class CampaignsService {
         if (user.pointBalance < (data.totalCost || 0)) {
             throw new common_1.BadRequestException('Недостатньо балів для створення кампанії');
         }
-        const campaign = this.campaignRepo.create({ ...data, owner: { id: userId } });
+        let metadata = {};
+        if (data.platform === 'youtube' && data.targetUrl) {
+            try {
+                if (data.type === 'subscribe') {
+                    const meta = await this.youtubeService.getChannelMeta(userId, data.targetUrl);
+                    if (meta) {
+                        metadata = {
+                            channelId: meta.channelId,
+                            channelTitle: meta.channelTitle,
+                            channelThumbnail: meta.channelThumbnail,
+                            channelSubscribers: meta.channelSubscribers,
+                        };
+                    }
+                }
+                else {
+                    const meta = await this.youtubeService.getVideoMeta(userId, data.targetUrl);
+                    if (meta) {
+                        metadata = {
+                            videoId: meta.videoId,
+                            videoTitle: meta.videoTitle,
+                            videoThumbnail: meta.videoThumbnail,
+                            videoDuration: meta.videoDuration,
+                            channelId: meta.channelId,
+                            channelTitle: meta.channelTitle,
+                            channelThumbnail: meta.channelThumbnail,
+                        };
+                    }
+                }
+            }
+            catch (e) {
+                console.error('Failed to fetch YouTube metadata for campaign:', e);
+            }
+        }
+        const campaign = this.campaignRepo.create({ ...data, ...metadata, owner: { id: userId } });
         const saved = await this.campaignRepo.save(campaign);
         const updated = await this.usersService.updatePoints(userId, -(data.totalCost || 0));
         await this.usersService.incrementCampaignsCreated(userId);
@@ -75,6 +111,7 @@ exports.CampaignsService = CampaignsService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(campaign_entity_1.Campaign)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         users_service_1.UsersService,
-        transactions_service_1.TransactionsService])
+        transactions_service_1.TransactionsService,
+        youtube_service_1.YouTubeService])
 ], CampaignsService);
 //# sourceMappingURL=campaigns.service.js.map

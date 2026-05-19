@@ -40,6 +40,14 @@ let Campaign = class Campaign {
     completedCount;
     pointsPerAction;
     totalCost;
+    channelId;
+    channelTitle;
+    channelThumbnail;
+    channelSubscribers;
+    videoId;
+    videoTitle;
+    videoThumbnail;
+    videoDuration;
     status;
     createdAt;
     updatedAt;
@@ -82,6 +90,38 @@ __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Campaign.prototype, "totalCost", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "channelId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "channelTitle", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "channelThumbnail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    __metadata("design:type", Number)
+], Campaign.prototype, "channelSubscribers", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "videoId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "videoTitle", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "videoThumbnail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    __metadata("design:type", Number)
+], Campaign.prototype, "videoDuration", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: CampaignStatus, default: CampaignStatus.ACTIVE }),
     __metadata("design:type", String)

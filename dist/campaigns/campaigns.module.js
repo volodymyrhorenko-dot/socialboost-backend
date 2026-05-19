@@ -14,12 +14,13 @@ const campaigns_controller_1 = require("./campaigns.controller");
 const campaign_entity_1 = require("./entities/campaign.entity");
 const users_module_1 = require("../users/users.module");
 const transactions_module_1 = require("../transactions/transactions.module");
+const youtube_module_1 = require("../youtube/youtube.module");
 let CampaignsModule = class CampaignsModule {
 };
 exports.CampaignsModule = CampaignsModule;
 exports.CampaignsModule = CampaignsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign]), users_module_1.UsersModule, transactions_module_1.TransactionsModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([campaign_entity_1.Campaign]), users_module_1.UsersModule, transactions_module_1.TransactionsModule, youtube_module_1.YouTubeModule],
         controllers: [campaigns_controller_1.CampaignsController],
         providers: [campaigns_service_1.CampaignsService],
         exports: [campaigns_service_1.CampaignsService],

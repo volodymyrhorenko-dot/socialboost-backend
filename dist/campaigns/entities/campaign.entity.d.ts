@@ -24,6 +24,14 @@ export declare class Campaign {
     completedCount: number;
     pointsPerAction: number;
     totalCost: number;
+    channelId: string;
+    channelTitle: string;
+    channelThumbnail: string;
+    channelSubscribers: number;
+    videoId: string;
+    videoTitle: string;
+    videoThumbnail: string;
+    videoDuration: number;
     status: CampaignStatus;
     createdAt: Date;
     updatedAt: Date;

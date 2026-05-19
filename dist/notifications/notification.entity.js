@@ -49,19 +49,19 @@ __decorate([
 ], Notification.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Notification.prototype, "body", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 16, nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Notification.prototype, "icon", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 50, nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Notification.prototype, "actionLabel", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 200, nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], Notification.prototype, "actionLink", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'json', nullable: true }),
@@ -73,7 +73,7 @@ __decorate([
 ], Notification.prototype, "isRead", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
-    __metadata("design:type", Date)
+    __metadata("design:type", Object)
 ], Notification.prototype, "expiresAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
