@@ -39,8 +39,8 @@ let PaymentsService = class PaymentsService {
         this.usersService = usersService;
         this.transactionsService = transactionsService;
         this.notificationsService = notificationsService;
-        this.stripe = new stripe_1.default(this.configService.get('STRIPE_SECRET_KEY'), {
-            apiVersion: '2025-03-31.basil',
+        this.stripe = new stripe_1.default(this.configService.get('STRIPE_SECRET_KEY') ?? '', {
+            apiVersion: '2026-04-22.dahlia',
         });
     }
     async createCheckoutSession(userId, packageId) {

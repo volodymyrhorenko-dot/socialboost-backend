@@ -30,13 +30,13 @@ export class Notification {
   @Column({ type: 'text', nullable: true })
   body: string | null;
 
-  @Column({ length: 16, nullable: true })
+  @Column({ type: 'varchar', length: 16, nullable: true })
   icon: string | null;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   actionLabel: string | null;
 
-  @Column({ length: 200, nullable: true })
+  @Column({ type: 'varchar', length: 200, nullable: true })
   actionLink: string | null;
 
   @Column({ type: 'json', nullable: true })

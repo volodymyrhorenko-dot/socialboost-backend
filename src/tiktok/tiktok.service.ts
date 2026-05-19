@@ -12,9 +12,9 @@ export class TikTokService {
     private configService: ConfigService,
     private usersService: UsersService,
   ) {
-    this.clientKey = this.configService.get('TIKTOK_CLIENT_KEY');
-    this.clientSecret = this.configService.get('TIKTOK_CLIENT_SECRET');
-    this.redirectUri = this.configService.get('TIKTOK_REDIRECT_URI');
+    this.clientKey = this.configService.get<string>('TIKTOK_CLIENT_KEY') ?? '';
+    this.clientSecret = this.configService.get<string>('TIKTOK_CLIENT_SECRET') ?? '';
+    this.redirectUri = this.configService.get<string>('TIKTOK_REDIRECT_URI') ?? '';
   }
 
   getAuthUrl(userId: string): string {

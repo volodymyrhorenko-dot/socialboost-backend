@@ -1,5 +1,5 @@
 import { TikTokService } from './tiktok.service';
-import { Response } from 'express';
+import type { Response } from 'express';
 export declare class TikTokController {
     private tiktokService;
     constructor(tiktokService: TikTokService);

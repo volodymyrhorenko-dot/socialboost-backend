@@ -1,12 +1,14 @@
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
+import { NotificationsService } from '../notifications/notifications.service';
 export declare class YouTubeService {
     private configService;
     private usersService;
+    private notificationsService;
     private clientId;
     private clientSecret;
     private redirectUri;
-    constructor(configService: ConfigService, usersService: UsersService);
+    constructor(configService: ConfigService, usersService: UsersService, notificationsService: NotificationsService);
     getAuthUrl(userId: string): string;
     handleCallback(code: string, userId: string): Promise<void>;
     disconnect(userId: string): Promise<{

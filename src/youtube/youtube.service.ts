@@ -15,9 +15,9 @@ export class YouTubeService {
     private usersService: UsersService,
     private notificationsService: NotificationsService,
   ) {
-    this.clientId = this.configService.get('YOUTUBE_CLIENT_ID');
-    this.clientSecret = this.configService.get('YOUTUBE_CLIENT_SECRET');
-    this.redirectUri = this.configService.get('YOUTUBE_REDIRECT_URI');
+    this.clientId = this.configService.get<string>('YOUTUBE_CLIENT_ID') ?? '';
+    this.clientSecret = this.configService.get<string>('YOUTUBE_CLIENT_SECRET') ?? '';
+    this.redirectUri = this.configService.get<string>('YOUTUBE_REDIRECT_URI') ?? '';
   }
 
   getAuthUrl(userId: string): string {

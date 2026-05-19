@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Res, Param, Body } from '@nestjs/common';
-import { Response } from 'express';
+import type { Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { UsersService } from './users/users.service';

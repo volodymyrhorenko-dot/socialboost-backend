@@ -26,9 +26,9 @@ let YouTubeService = class YouTubeService {
         this.configService = configService;
         this.usersService = usersService;
         this.notificationsService = notificationsService;
-        this.clientId = this.configService.get('YOUTUBE_CLIENT_ID');
-        this.clientSecret = this.configService.get('YOUTUBE_CLIENT_SECRET');
-        this.redirectUri = this.configService.get('YOUTUBE_REDIRECT_URI');
+        this.clientId = this.configService.get('YOUTUBE_CLIENT_ID') ?? '';
+        this.clientSecret = this.configService.get('YOUTUBE_CLIENT_SECRET') ?? '';
+        this.redirectUri = this.configService.get('YOUTUBE_REDIRECT_URI') ?? '';
     }
     getAuthUrl(userId) {
         const scope = 'https://www.googleapis.com/auth/youtube.force-ssl';

@@ -1,5 +1,5 @@
 import { PaymentsService } from './payments.service';
-import { Response } from 'express';
+import type { Response } from 'express';
 export declare class PaymentsController {
     private paymentsService;
     constructor(paymentsService: PaymentsService);

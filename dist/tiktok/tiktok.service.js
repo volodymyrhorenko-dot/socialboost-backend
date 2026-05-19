@@ -22,9 +22,9 @@ let TikTokService = class TikTokService {
     constructor(configService, usersService) {
         this.configService = configService;
         this.usersService = usersService;
-        this.clientKey = this.configService.get('TIKTOK_CLIENT_KEY');
-        this.clientSecret = this.configService.get('TIKTOK_CLIENT_SECRET');
-        this.redirectUri = this.configService.get('TIKTOK_REDIRECT_URI');
+        this.clientKey = this.configService.get('TIKTOK_CLIENT_KEY') ?? '';
+        this.clientSecret = this.configService.get('TIKTOK_CLIENT_SECRET') ?? '';
+        this.redirectUri = this.configService.get('TIKTOK_REDIRECT_URI') ?? '';
     }
     getAuthUrl(userId) {
         const params = new URLSearchParams({

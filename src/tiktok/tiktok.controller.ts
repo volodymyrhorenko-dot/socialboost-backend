@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards, Request, Res } from '@nestjs/common';
 import { TikTokService } from './tiktok.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Response } from 'express';
+import type { Response } from 'express';
 
 @Controller('tiktok')
 export class TikTokController {

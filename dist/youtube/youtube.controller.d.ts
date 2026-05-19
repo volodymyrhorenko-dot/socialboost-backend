@@ -1,5 +1,5 @@
 import { YouTubeService } from './youtube.service';
-import { Response } from 'express';
+import type { Response } from 'express';
 export declare class YouTubeController {
     private youtubeService;
     constructor(youtubeService: YouTubeService);

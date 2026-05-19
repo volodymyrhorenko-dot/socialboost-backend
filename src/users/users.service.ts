@@ -82,12 +82,12 @@ export class UsersService {
   async disconnectYouTube(userId: string): Promise<User> {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');
-    user.youtubeAccessToken = null;
-    user.youtubeRefreshToken = null;
-    user.youtubeTokenExpiry = null;
-    user.youtubeChannelId = null;
-    user.youtubeHandle = null;
-    user.youtubeUrl = null;
+    user.youtubeAccessToken = null as any;
+    user.youtubeRefreshToken = null as any;
+    user.youtubeTokenExpiry = null as any;
+    user.youtubeChannelId = null as any;
+    user.youtubeHandle = null as any;
+    user.youtubeUrl = null as any;
     return this.userRepo.save(user);
   }
 
