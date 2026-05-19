@@ -5,6 +5,7 @@ import { Campaign, CampaignStatus } from './entities/campaign.entity';
 import { UsersService } from '../users/users.service';
 import { TransactionsService } from '../transactions/transactions.service';
 import { TransactionType } from '../transactions/transaction.entity';
+import { YouTubeService } from '../youtube/youtube.service';
 
 @Injectable()
 export class CampaignsService {
@@ -13,6 +14,7 @@ export class CampaignsService {
     private campaignRepo: Repository<Campaign>,
     private usersService: UsersService,
     private transactionsService: TransactionsService,
+    private youtubeService: YouTubeService,
   ) {}
 
   async findByUser(userId: string): Promise<Campaign[]> {
@@ -30,7 +32,42 @@ export class CampaignsService {
       throw new BadRequestException('Недостатньо балів для створення кампанії');
     }
 
-    const campaign = this.campaignRepo.create({ ...data, owner: { id: userId } as any });
+    // Підтягуємо метадані каналу/відео з YouTube (некритично — у разі помилки кампанія створиться без них)
+    let metadata: Partial<Campaign> = {};
+    if (data.platform === 'youtube' && data.targetUrl) {
+      try {
+        if (data.type === 'subscribe') {
+          const meta = await this.youtubeService.getChannelMeta(userId, data.targetUrl);
+          if (meta) {
+            metadata = {
+              channelId: meta.channelId,
+              channelTitle: meta.channelTitle,
+              channelThumbnail: meta.channelThumbnail,
+              channelSubscribers: meta.channelSubscribers,
+            };
+          }
+        } else {
+          // like, watch, comment — всі video-based
+          const meta = await this.youtubeService.getVideoMeta(userId, data.targetUrl);
+          if (meta) {
+            metadata = {
+              videoId: meta.videoId,
+              videoTitle: meta.videoTitle,
+              videoThumbnail: meta.videoThumbnail,
+              videoDuration: meta.videoDuration,
+              channelId: meta.channelId,
+              channelTitle: meta.channelTitle,
+              channelThumbnail: meta.channelThumbnail,
+            };
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch YouTube metadata for campaign:', e);
+        // Не блокуємо — кампанія створиться без метаданих, оновити можна буде потім
+      }
+    }
+
+    const campaign = this.campaignRepo.create({ ...data, ...metadata, owner: { id: userId } as any });
     const saved = await this.campaignRepo.save(campaign);
 
     const updated = await this.usersService.updatePoints(userId, -(data.totalCost || 0));

@@ -26,4 +26,20 @@ export declare class YouTubeService {
     }>;
     private extractVideoId;
     private extractChannelId;
+    getChannelMeta(userId: string, channelUrl: string): Promise<{
+        channelId: string;
+        channelTitle: string;
+        channelThumbnail: string;
+        channelSubscribers: number;
+    } | null>;
+    getVideoMeta(userId: string, videoUrl: string): Promise<{
+        videoId: string;
+        videoTitle: string;
+        videoThumbnail: string;
+        videoDuration: number;
+        channelId: string;
+        channelTitle: string;
+        channelThumbnail: string;
+    } | null>;
+    private parseDuration;
 }

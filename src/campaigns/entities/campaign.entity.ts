@@ -49,6 +49,31 @@ export class Campaign {
   @Column({ default: 0 })
   totalCost: number;
 
+  // YouTube metadata (заповнюється при створенні кампанії — крок 3)
+  @Column({ nullable: true })
+  channelId: string;
+
+  @Column({ nullable: true })
+  channelTitle: string;
+
+  @Column({ nullable: true })
+  channelThumbnail: string;
+
+  @Column({ type: 'int', nullable: true })
+  channelSubscribers: number;
+
+  @Column({ nullable: true })
+  videoId: string;
+
+  @Column({ nullable: true })
+  videoTitle: string;
+
+  @Column({ nullable: true })
+  videoThumbnail: string;
+
+  @Column({ type: 'int', nullable: true })
+  videoDuration: number;
+
   @Column({ type: 'enum', enum: CampaignStatus, default: CampaignStatus.ACTIVE })
   status: CampaignStatus;
 

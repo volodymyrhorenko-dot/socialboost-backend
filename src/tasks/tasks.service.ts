@@ -46,10 +46,20 @@ export class TasksService {
       platform: c.platform,
       type: c.type,
       targetUrl: c.targetUrl,
-      targetChannel: c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
+      // Спочатку — реальна назва YouTube каналу, потім fallback на displayName creator'а
+      targetChannel: c.channelTitle || c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
       pointsReward: c.pointsPerAction,
       timeRequiredSeconds: c.type === 'watch' ? 30 : 0,
       remaining: c.targetCount - c.completedCount,
+      // YouTube metadata (null для старих кампаній без enrichment)
+      channelId: c.channelId ?? null,
+      channelTitle: c.channelTitle ?? null,
+      channelThumbnail: c.channelThumbnail ?? null,
+      channelSubscribers: c.channelSubscribers ?? null,
+      videoId: c.videoId ?? null,
+      videoTitle: c.videoTitle ?? null,
+      videoThumbnail: c.videoThumbnail ?? null,
+      videoDuration: c.videoDuration ?? null,
     }));
   }
 
@@ -93,7 +103,7 @@ export class TasksService {
       balanceAfter: user.pointBalance,
     });
 
-    const channelName = campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
+    const channelName = campaign.channelTitle || campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
 
     try {
       await this.notificationsService.create({
