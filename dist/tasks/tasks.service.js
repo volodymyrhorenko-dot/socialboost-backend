@@ -58,18 +58,10 @@ let TasksService = class TasksService {
             platform: c.platform,
             type: c.type,
             targetUrl: c.targetUrl,
-            targetChannel: c.channelTitle || c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
+            targetChannel: c.owner?.displayName || c.targetUrl.split('/').pop() || 'Channel',
             pointsReward: c.pointsPerAction,
             timeRequiredSeconds: c.type === 'watch' ? 30 : 0,
             remaining: c.targetCount - c.completedCount,
-            channelId: c.channelId ?? null,
-            channelTitle: c.channelTitle ?? null,
-            channelThumbnail: c.channelThumbnail ?? null,
-            channelSubscribers: c.channelSubscribers ?? null,
-            videoId: c.videoId ?? null,
-            videoTitle: c.videoTitle ?? null,
-            videoThumbnail: c.videoThumbnail ?? null,
-            videoDuration: c.videoDuration ?? null,
         }));
     }
     async complete(campaignId, userId) {
@@ -108,7 +100,7 @@ let TasksService = class TasksService {
             description: `YouTube • ${typeLabel} +${pointsToAdd} балів${completingUser?.isVip ? ' 👑' : ''}`,
             balanceAfter: user.pointBalance,
         });
-        const channelName = campaign.channelTitle || campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
+        const channelName = campaign.owner?.displayName || campaign.targetUrl.split('/').pop() || 'Channel';
         try {
             await this.notificationsService.create({
                 userId,

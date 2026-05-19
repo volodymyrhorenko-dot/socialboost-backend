@@ -1,11 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { NotificationsService } from '../notifications/notifications.service';
 export declare class AuthService {
     private usersService;
     private jwtService;
-    private notificationsService;
-    constructor(usersService: UsersService, jwtService: JwtService, notificationsService: NotificationsService);
+    constructor(usersService: UsersService, jwtService: JwtService);
     register(data: {
         email: string;
         password: string;

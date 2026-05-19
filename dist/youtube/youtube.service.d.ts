@@ -1,14 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
-import { NotificationsService } from '../notifications/notifications.service';
 export declare class YouTubeService {
     private configService;
     private usersService;
-    private notificationsService;
     private clientId;
     private clientSecret;
     private redirectUri;
-    constructor(configService: ConfigService, usersService: UsersService, notificationsService: NotificationsService);
+    constructor(configService: ConfigService, usersService: UsersService);
     getAuthUrl(userId: string): string;
     handleCallback(code: string, userId: string): Promise<void>;
     disconnect(userId: string): Promise<{
@@ -26,20 +24,4 @@ export declare class YouTubeService {
     }>;
     private extractVideoId;
     private extractChannelId;
-    getChannelMeta(userId: string, channelUrl: string): Promise<{
-        channelId: string;
-        channelTitle: string;
-        channelThumbnail: string;
-        channelSubscribers: number;
-    } | null>;
-    getVideoMeta(userId: string, videoUrl: string): Promise<{
-        videoId: string;
-        videoTitle: string;
-        videoThumbnail: string;
-        videoDuration: number;
-        channelId: string;
-        channelTitle: string;
-        channelThumbnail: string;
-    } | null>;
-    private parseDuration;
 }

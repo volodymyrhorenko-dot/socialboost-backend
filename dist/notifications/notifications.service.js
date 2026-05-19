@@ -25,7 +25,7 @@ let NotificationsService = class NotificationsService {
     async create(dto) {
         const notification = this.notificationRepo.create({
             ...dto,
-            expiresAt: dto.expiresAt ?? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            expiresAt: dto.expiresAt != null ? dto.expiresAt : new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
         });
         return this.notificationRepo.save(notification);
     }
@@ -79,7 +79,7 @@ let NotificationsService = class NotificationsService {
             .delete()
             .where('expiresAt IS NOT NULL AND expiresAt < :now', { now: new Date() })
             .execute();
-        return result.affected ?? 0;
+        return result.affected != null ? result.affected : 0;
     }
 };
 exports.NotificationsService = NotificationsService;

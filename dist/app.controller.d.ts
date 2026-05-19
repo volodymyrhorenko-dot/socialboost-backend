@@ -21,8 +21,6 @@ export declare class AppController {
     about(res: Response): void;
     sitemap(res: Response): void;
     robots(res: Response): void;
-    deleteAccount(res: Response): void;
-    childSafety(res: Response): void;
     tiktokVerification(res: Response): void;
     appIndex(res: Response): void;
     appStatic(filePath: string, res: Response): void;
